@@ -14,63 +14,70 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-
-//**********************************************************************************************************************
-// ModuleName_checkModuleAdmin
-//**********************************************************************************************************************
-// return true if moduladmin framworks exists.
-//**********************************************************************************************************************
-function TDMMoney_checkModuleAdmin()
-{
-    if ( file_exists($GLOBALS['xoops']->path('/Frameworks/moduleclasses/moduleadmin/moduleadmin.php'))){
-        include_once $GLOBALS['xoops']->path('/Frameworks/moduleclasses/moduleadmin/moduleadmin.php');
-        return true;
-    }else{
-        echo xoops_error("Error: You don't use the Frameworks \"admin module\". Please install this Frameworks");
-        return false;
-    }
-}
-
-function TDMMoney_MygetItemIds($permtype,$dirname)
+/**
+ * @param $permtype
+ * @param $dirname
+ * @return mixed
+ */
+function TDMMoney_MygetItemIds($permtype, $dirname)
 {
     global $xoopsUser;
-    $module_handler =& xoops_gethandler('module');
-    $tdmModule =& $module_handler->getByDirname($dirname);
-    $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler =& xoops_gethandler('groupperm');
-    $categories = $gperm_handler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
+    $moduleHandler = xoops_getHandler('module');
+    $tdmModule     = $moduleHandler->getByDirname($dirname);
+    $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $gpermHandler  = xoops_getHandler('groupperm');
+    $categories    = $gpermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
+
     return $categories;
 }
 
-function TDMMoney_PathTree($mytree, $key, $category_array, $title, $prefix = '' )
+/**
+ * @param        $mytree
+ * @param        $key
+ * @param        $category_array
+ * @param        $title
+ * @param string $prefix
+ * @return string
+ */
+function TDMMoney_PathTree($mytree, $key, $category_array, $title, $prefix = '')
 {
     $category_parent = $mytree->getAllParent($key);
     $category_parent = array_reverse($category_parent);
-    $Path = '';
+    $Path            = '';
     foreach (array_keys($category_parent) as $j) {
         $Path .= $category_parent[$j]->getVar($title) . $prefix;
     }
-    if (array_key_exists($key, $category_array)){
+    if (array_key_exists($key, $category_array)) {
         $first_category = $category_array[$key]->getVar($title);
-    }else{
+    } else {
         $first_category = '';
     }
     $Path .= $first_category;
+
     return $Path;
 }
 
-function TDMMoney_CleanVars( &$global, $key, $default = '', $type = 'int' ) {
-    switch ( $type ) {
+/**
+ * @param        $global
+ * @param        $key
+ * @param string $default
+ * @param string $type
+ * @return mixed|string
+ */
+function TDMMoney_CleanVars(&$global, $key, $default = '', $type = 'int')
+{
+    switch ($type) {
         case 'string':
-            $ret = ( isset( $global[$key] ) ) ? filter_var( $global[$key], FILTER_SANITIZE_MAGIC_QUOTES ) : $default;
+            $ret = isset($global[$key]) ? filter_var($global[$key], FILTER_SANITIZE_MAGIC_QUOTES) : $default;
             break;
-        case 'int': default:
-            $ret = ( isset( $global[$key] ) ) ? filter_var( $global[$key], FILTER_SANITIZE_NUMBER_INT ) : $default;
+        case 'int':
+        default:
+            $ret = isset($global[$key]) ? filter_var($global[$key], FILTER_SANITIZE_NUMBER_INT) : $default;
             break;
     }
-    if ( $ret === false ) {
+    if ($ret === false) {
         return $default;
     }
+
     return $ret;
 }
-?>

@@ -16,27 +16,55 @@
 
 include_once XOOPS_ROOT_PATH . '/class/tree.php';
 
-class TDMObjectTree extends XoopsObjectTree {
-
-    function __constrcut(){
+/**
+ * Class TDMObjectTree
+ */
+class TDMObjectTree extends XoopsObjectTree
+{
+    /**
+     * TDMObjectTree constructor.
+     * @param array  $objectArr
+     * @param string $myId
+     * @param string $parentId
+     * @param null   $rootId
+     */
+    public function __construct(&$objectArr, $myId, $parentId, $rootId = null)
+    {
+        parent::__construct($objectArr, $myId, $parentId, $rootId);
     }
-    function _makeArrayTreeOptions( $fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '' ) {
-        if ( $key > 0 ) {
-            $value = $this->_tree[$key]['obj']->getVar( $this->_myId );
-            $ret[$value] = $prefix_curr . $this->_tree[$key]['obj']->getVar( $fieldName );
-            $prefix_curr .= $prefix_orig;
 
+    /**
+     * @param        $fieldName
+     * @param        $key
+     * @param        $ret
+     * @param        $prefix_orig
+     * @param string $prefix_curr
+     */
+    public function _makeArrayTreeOptions($fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '')
+    {
+        if ($key > 0) {
+            $value       = $this->tree[$key]['obj']->getVar($this->myId);
+            $ret[$value] = $prefix_curr . $this->tree[$key]['obj']->getVar($fieldName);
+            $prefix_curr .= $prefix_orig;
         }
-        if ( isset( $this->_tree[$key]['child'] ) && !empty( $this->_tree[$key]['child'] ) ) {
-            foreach ( $this->_tree[$key]['child'] as $childkey ) {
-                $this->_makeArrayTreeOptions( $fieldName, $childkey, $ret, $prefix_orig, $prefix_curr );
+        if (isset($this->tree[$key]['child']) && !empty($this->tree[$key]['child'])) {
+            foreach ($this->tree[$key]['child'] as $childkey) {
+                $this->_makeArrayTreeOptions($fieldName, $childkey, $ret, $prefix_orig, $prefix_curr);
             }
         }
     }
-    function makeArrayTree( $fieldName, $prefix = '-', $key = 0) {
+
+    /**
+     * @param        $fieldName
+     * @param string $prefix
+     * @param int    $key
+     * @return array
+     */
+    public function makeArrayTree($fieldName, $prefix = '-', $key = 0)
+    {
         $ret = array();
-        $this->_makeArrayTreeOptions( $fieldName, $key, $ret, $prefix );
+        $this->_makeArrayTreeOptions($fieldName, $key, $ret, $prefix);
+
         return $ret;
     }
 }
-?>

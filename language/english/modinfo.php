@@ -14,27 +14,39 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
- // Nom du module
-define("_MI_TDMMONEY_NAME","TDMMoney");
+// Nom du module
+define('_MI_TDMMONEY_NAME', 'TDMMoney');
 
 // Description du module
-define("_MI_TDMMONEY_DESC","TDMMoney permet d'organiser et de gérer les finances personnelles, d'association ou autre.");
+define('_MI_TDMMONEY_DESC', 'TDMMoney enables to organize and manage personal finances, or other association.');
 
 //Menu
-define("_MI_TDMMONEY_MANAGER_INDEX","Index");
-define("_MI_TDMMONEY_MANAGER_ACCOUNT","Accounts");
-define("_MI_TDMMONEY_MANAGER_CATEGORY","categories");
-define("_MI_TDMMONEY_MANAGER_OPERATION","Operations");
-define("_MI_TDMMONEY_MANAGER_ABOUT","About");
-define("_MI_TDMMONEY_MANAGER_PERMISSIONS","Permissions");
+define('_MI_TDMMONEY_MANAGER_INDEX', 'Index');
+define('_MI_TDMMONEY_MANAGER_ACCOUNT', 'Accounts');
+define('_MI_TDMMONEY_MANAGER_CATEGORY', 'Categories');
+define('_MI_TDMMONEY_MANAGER_OPERATION', 'Operations');
+define('_MI_TDMMONEY_MANAGER_ABOUT', 'About');
+define('_MI_TDMMONEY_MANAGER_PERMISSIONS', 'Permissions');
 
 //Config
-define("_MI_TDMMONEY_EDITOR","Text Editor");
-define("_MI_TDMMONEY_FILTER","Filtering operations by default");
-define("_MI_TDMMONEY_FILTER1","Without filter");
-define("_MI_TDMMONEY_FILTER2","Current Month");
-define("_MI_TDMMONEY_FILTER3","Current Year");
+define('_MI_TDMMONEY_EDITOR', 'Text Editor');
+define('_MI_TDMMONEY_FILTER', 'Filtering operations by default');
+define('_MI_TDMMONEY_FILTER1', 'No filter');
+define('_MI_TDMMONEY_FILTER2', 'Current Month');
+define('_MI_TDMMONEY_FILTER3', 'Current Year');
 
 //Sous menu
-define("_MI_TDMMONEY_SUBMIT","Add an operation");
-?>
+define('_MI_TDMMONEY_SUBMIT', 'Add an operation');
+//1.2
+//Help
+define('_MI_TDMMONEY_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_TDMMONEY_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_TDMMONEY_BACK_2_ADMIN', 'Back to Administration of ');
+define('_MI_TDMMONEY_OVERVIEW', 'Overview');
+
+//define('_MI_TDMMONEY_HELP_DIR', __DIR__);
+
+//help multi-page
+define('_MI_TDMMONEY_DISCLAIMER', 'Disclaimer');
+define('_MI_TDMMONEY_LICENSE', 'License');
+define('_MI_TDMMONEY_SUPPORT', 'Support');

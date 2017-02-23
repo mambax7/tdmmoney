@@ -14,29 +14,28 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include 'header.php';
+include_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = TDMMoney_CleanVars($_REQUEST, 'op', 'list', 'string');
 
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
-switch ($op)
-{
+switch ($op) {
     // Vue liste
-    case "list":
+    case 'list':
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
-        if (TDMMoney_checkModuleAdmin()){
-            $account_admin = new ModuleAdmin();
-            echo $account_admin->addNavigation('account.php');
-            $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
-            echo $account_admin->renderButton();
-        }
+
+        $account_admin = new ModuleAdmin();
+        echo $account_admin->addNavigation('account.php');
+        $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
+        echo $account_admin->renderButton('left');
+
         $criteria = new CriteriaCompo();
         $criteria->setSort('account_name');
         $criteria->setOrder('ASC');
         $account_arr = $accountHandler->getall($criteria);
-        if (count($account_arr)>0) {
+        if (count($account_arr) > 0) {
             //pour le calcul des soldes:
             $criteria = new CriteriaCompo();
             $criteria->setSort('operation_account');
@@ -57,83 +56,86 @@ switch ($op)
                 //calcul des soldes
                 $balance_operation = $account_arr[$i]->getVar('account_balance');
                 foreach (array_keys($operation_arr) as $j) {
-                    if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')){
-                        $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
+                    if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')) {
+                        $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation
+                                                                                                                                                                       + $operation_arr[$j]->getVar('operation_amount');
                     }
                 }
-                echo '<tr class="'.$class.'">';
+                echo '<tr class="' . $class . '">';
                 echo '<td align="center" >' . $account_arr[$i]->getVar('account_name') . '</td>';
                 echo '<td align="center">' . $account_arr[$i]->getVar('account_bank') . '</td>';
                 echo '<td align="center">' . $account_arr[$i]->getVar('account_adress') . '</td>';
-                $display_account_balance = $account_arr[$i]->getVar('account_balance') < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $account_arr[$i]->getVar('account_balance') . '</span>' : '<span style="font-weight: bold">' . $account_arr[$i]->getVar('account_balance') . '</span>';
+                $display_account_balance = $account_arr[$i]->getVar('account_balance') < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $account_arr[$i]->getVar('account_balance')
+                                                                                             . '</span>' : '<span style="font-weight: bold">' . $account_arr[$i]->getVar('account_balance') . '</span>';
                 echo '<td align="center">' . $display_account_balance . ' ' . $account_arr[$i]->getVar('account_currency') . '</td>';
-                $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $balance_operation . '</span>' : '<span style="font-weight: bold">' . $balance_operation . '</span>';
+                $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $balance_operation . '</span>' : '<span style="font-weight: bold">'
+                                                                                                                                                            . $balance_operation . '</span>';
                 echo '<td align="center">' . $display_balance_operation . ' ' . $account_arr[$i]->getVar('account_currency') . '</td>';
                 echo '<td align="center" width="10%">';
-                echo '<a href="operation.php?op=list&account_id=' . $i . '"><img src="../images/deco/view.png" alt="' . _AM_TDMMONEY_DISPLAY . '" title="' . _AM_TDMMONEY_DISPLAY . '"></a> ';
-                echo '<a href="account.php?op=edit&account_id=' . $i . '"><img src="../images/deco/edit.gif" alt="' . _AM_TDMMONEY_EDIT . '" title="' . _AM_TDMMONEY_EDIT . '"></a> ';
-                echo '<a href="account.php?op=del&account_id=' . $i . '"><img src="../images/deco/delete.gif" alt="' . _AM_TDMMONEY_DEL . '" title="' . _AM_TDMMONEY_DEL . '"></a>';
+                echo '<a href="operation.php?op=list&account_id=' . $i . '"><img src="' . $pathIcon16 . '/view.png" alt="' . _AM_TDMMONEY_DISPLAY . '" title="' . _AM_TDMMONEY_DISPLAY . '"></a> ';
+                echo '<a href="account.php?op=edit&account_id=' . $i . '"><img src="' . $pathIcon16 . '/edit.png" alt="' . _AM_TDMMONEY_EDIT . '" title="' . _AM_TDMMONEY_EDIT . '"></a> ';
+                echo '<a href="account.php?op=del&account_id=' . $i . '"><img src="' . $pathIcon16 . '/delete.png" alt="' . _AM_TDMMONEY_DEL . '" title="' . _AM_TDMMONEY_DEL . '"></a>';
                 echo '</td>';
                 echo '</tr>';
-                $class = ($class == 'even') ? 'odd' : 'even';
+                $class = ($class === 'even') ? 'odd' : 'even';
             }
             echo '</table>';
         }
-    break;
+        break;
 
-    // vue création
-    case "new":
+    // vue crÃ©ation
+    case 'new':
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
-        if (TDMMoney_checkModuleAdmin()){
-            $account_admin = new ModuleAdmin();
-            echo $account_admin->addNavigation('account.php');
-            $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
-            echo $account_admin->renderButton();
-        }
-        //Affichage du formulaire de création des comptes
-        $obj =& $accountHandler->create();
+
+        $account_admin = new ModuleAdmin();
+        echo $account_admin->addNavigation('account.php');
+        $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
+        echo $account_admin->renderButton('left');
+
+        //Affichage du formulaire de crÃ©ation des comptes
+        $obj  = $accountHandler->create();
         $form = $obj->getForm();
         $form->display();
-    break;
+        break;
 
-    // Pour éditer un compte
-    case "edit":
+    // Pour Ã©diter un compte
+    case 'edit':
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
-        if (TDMMoney_checkModuleAdmin()){
-            $account_admin = new ModuleAdmin();
-            echo $account_admin->addNavigation('account.php');
-            $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
-            $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
-            echo $account_admin->renderButton();
-        }
-        //Affichage du formulaire de création des comptes
+
+        $account_admin = new ModuleAdmin();
+        echo $account_admin->addNavigation('account.php');
+        $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
+        $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
+        echo $account_admin->renderButton('left');
+
+        //Affichage du formulaire de crÃ©ation des comptes
         $account_id = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
-        $obj = $accountHandler->get($account_id);
-        $form = $obj->getForm();
+        $obj        = $accountHandler->get($account_id);
+        $form       = $obj->getForm();
         $form->display();
-    break;
+        break;
 
     // Pour supprimer un compte
-    case "del":
+    case 'del':
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
-        if (TDMMoney_checkModuleAdmin()){
-            $account_admin = new ModuleAdmin();
-            echo $account_admin->addNavigation('account.php');
-            $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
-            $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
-            echo $account_admin->renderButton();
-        }
+
+        $account_admin = new ModuleAdmin();
+        echo $account_admin->addNavigation('account.php');
+        $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
+        $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
+        echo $account_admin->renderButton('left');
+
         global $xoopsModule;
         $account_id = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
-        $obj =& $accountHandler->get($account_id);
+        $obj        =& $accountHandler->get($account_id);
         if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('account.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
-            // supression des opérations du compte
+            // supression des opÃ©rations du compte
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('operation_account', $account_id));
             $contents_arr = $operationHandler->getall($criteria);
@@ -147,73 +149,77 @@ switch ($op)
                 echo $obj->getHtmlErrors();
             }
         } else {
-            $message = '';
+            $message  = '';
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('operation_account', $account_id));
-            $operation_arr = $operationHandler->getall( $criteria );
+            $operation_arr = $operationHandler->getall($criteria);
             if (count($operation_arr) > 0) {
-                $message .= _AM_TDMMONEY_CAT_DELOPERATION .'<br>';
+                $message .= _AM_TDMMONEY_CAT_DELOPERATION . '<br>';
                 foreach (array_keys($operation_arr) as $i) {
-                    $message .= '<span style="color : Red">' . $operation_arr[$i]->getVar('operation_id') . ' - ' . formatTimeStamp($operation_arr[$i]->getVar('operation_date'), 's') . ' (' . $operation_arr[$i]->getVar('operation_amount') . ')</span><br>';
+                    $message .= '<span style="color : Red">' . $operation_arr[$i]->getVar('operation_id') . ' - ' . formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's') . ' ('
+                                . $operation_arr[$i]->getVar('operation_amount') . ')</span><br>';
                 }
             }
-            xoops_confirm(array('ok' => 1, 'account_id' => $account_id, 'op' => 'del'), $_SERVER['REQUEST_URI'], sprintf(_AM_TDMMONEY_SUREDEL, $obj->getVar('account_name')) . '<br><br>' . $message);
+            xoops_confirm(array('ok'         => 1,
+                                'account_id' => $account_id,
+                                'op'         => 'del'
+                          ), $_SERVER['REQUEST_URI'], sprintf(_AM_TDMMONEY_SUREDEL, $obj->getVar('account_name')) . '<br><br>' . $message);
         }
-    break;
+        break;
 
     // Pour sauver un compte
-    case "save":
+    case 'save':
         if (!$GLOBALS['xoopsSecurity']->check()) {
-           redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
+            redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
         $account_id = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
         if (isset($_REQUEST['account_id'])) {
-           $obj =& $accountHandler->get($account_id);
+            $obj =& $accountHandler->get($account_id);
         } else {
-           $obj =& $accountHandler->create();
+            $obj = $accountHandler->create();
         }
-        $erreur = false;
+        $erreur         = false;
         $message_erreur = '';
-        // Récupération des variables:
+        // RÃ©cupÃ©ration des variables:
         $obj->setVar('account_name', $_POST['account_name']);
         $obj->setVar('account_bank', $_POST['account_bank']);
         $obj->setVar('account_adress', $_POST['account_adress']);
         $obj->setVar('account_balance', $_POST['account_balance']);
         $obj->setVar('account_currency', $_POST['account_currency']);
-        //vérification que account_balance soit un entier
-        if (intval($_REQUEST['account_balance'])==0 && $_REQUEST['account_balance'] != '0'){
-            $erreur=true;
+        //vÃ©rification que account_balance soit un entier
+        if ((int)$_REQUEST['account_balance'] == 0 && $_REQUEST['account_balance'] != '0') {
+            $erreur         = true;
             $message_erreur = _AM_TDMMONEY_ACCOUNT_ERREUR_BALANCE . '<br>';
         }
-        if ($erreur==true){
+        if ($erreur === true) {
             echo '<div class="errorMsg" style="text-align: left;">' . $message_erreur . '</div>';
-        }else{
+        } else {
             if ($accountHandler->insert($obj)) {
                 $newaccount_id = $obj->get_new_enreg();
                 //permission pour voir
-                $perm_id = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
-                $gperm_handler = &xoops_gethandler('groupperm');
-                $criteria = new CriteriaCompo();
+                $perm_id      = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
+                $gpermHandler = xoops_getHandler('groupperm');
+                $criteria     = new CriteriaCompo();
                 $criteria->add(new Criteria('gperm_itemid', $perm_id, '='));
-                $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'),'='));
+                $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new Criteria('gperm_name', 'tdmmoney_view', '='));
-                $gperm_handler->deleteAll($criteria);
-                if(isset($_POST['groups_view'])) {
-                    foreach($_POST['groups_view'] as $onegroup_id) {
-                        $gperm_handler->addRight('tdmmoney_view', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
+                $gpermHandler->deleteAll($criteria);
+                if (isset($_POST['groups_view'])) {
+                    foreach ($_POST['groups_view'] as $onegroup_id) {
+                        $gpermHandler->addRight('tdmmoney_view', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
                 }
                 //permission pour editer
-                $perm_id = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
-                $gperm_handler = &xoops_gethandler('groupperm');
-                $criteria = new CriteriaCompo();
+                $perm_id      = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
+                $gpermHandler = xoops_getHandler('groupperm');
+                $criteria     = new CriteriaCompo();
                 $criteria->add(new Criteria('gperm_itemid', $perm_id, '='));
-                $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'),'='));
+                $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new Criteria('gperm_name', 'tdmmoney_submit', '='));
-                $gperm_handler->deleteAll($criteria);
-                if(isset($_POST['groups_submit'])) {
-                    foreach($_POST['groups_submit'] as $onegroup_id) {
-                        $gperm_handler->addRight('tdmmoney_submit', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
+                $gpermHandler->deleteAll($criteria);
+                if (isset($_POST['groups_submit'])) {
+                    foreach ($_POST['groups_submit'] as $onegroup_id) {
+                        $gpermHandler->addRight('tdmmoney_submit', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
                 }
 
@@ -223,8 +229,7 @@ switch ($op)
         }
         $form =& $obj->getForm();
         $form->display();
-    break;
+        break;
 }
 //Affichage de la partie basse de l'administration de Xoops
 xoops_cp_footer();
-?>

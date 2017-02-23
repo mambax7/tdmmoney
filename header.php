@@ -14,25 +14,27 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include "../../mainfile.php";
+include __DIR__ . '/../../mainfile.php';
 
-include_once XOOPS_ROOT_PATH."/class/xoopsformloader.php";
-include_once XOOPS_ROOT_PATH."/class/tree.php";
-include_once XOOPS_ROOT_PATH."/class/xoopslists.php";
-include_once XOOPS_ROOT_PATH.'/class/xoopsform/grouppermform.php';
-include_once XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->getVar("dirname").'/include/functions.php';
+include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+include_once XOOPS_ROOT_PATH . '/class/tree.php';
+include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/include/functions.php';
+
+if (!isset($moduleDirName)) {
+    $moduleDirName = basename(dirname(__DIR__));
+}
 
 //permission
-$gperm_handler =& xoops_gethandler('groupperm');
+$gpermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
-xoops_loadLanguage("admin", $xoopsModule->getVar("dirname", "e"));
+xoops_loadLanguage('admin', $xoopsModule->getVar('dirname', 'e'));
 
-$accountHandler =& xoops_getModuleHandler("tdmmoney_account", "TDMMoney");
-$categoryHandler =& xoops_getModuleHandler("tdmmoney_category", "TDMMoney");
-$operationHandler =& xoops_getModuleHandler("tdmmoney_operation", "TDMMoney");
-
-?>
+$accountHandler   = xoops_getModuleHandler('tdmmoney_account', $moduleDirName);
+$categoryHandler  = xoops_getModuleHandler('tdmmoney_category', $moduleDirName);
+$operationHandler = xoops_getModuleHandler('tdmmoney_operation', $moduleDirName);
