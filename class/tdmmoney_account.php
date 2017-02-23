@@ -53,7 +53,7 @@ class TDMMoney_account extends XoopsObject
 
         //nom du formulaire selon l'action (editer ou ajouter):
         $title = $this->isNew() ? sprintf(_AM_TDMMONEY_ACCOUNT_ADD) : sprintf(_AM_TDMMONEY_ACCOUNT_EDIT, $this->getVar('account_name'));
-        //création du formulaire
+        //crÃ©ation du formulaire
         $form = new XoopsThemeForm($title, 'form', $action, 'post', true);
         $form->setExtra('enctype="multipart/form-data"');
         //nom

@@ -64,7 +64,7 @@ switch ($op)
         }
     break;
 
-    // vue création
+    // vue crÃ©ation
     case "new":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -74,13 +74,13 @@ switch ($op)
             $category_admin->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
             echo $category_admin->renderButton();
         }
-        //Affichage du formulaire de création des catégories
+        //Affichage du formulaire de crÃ©ation des catÃ©gories
         $obj =& $categoryHandler->create();
         $form = $obj->getForm();
         $form->display();
     break;
 
-    // Pour éditer une catégorie
+    // Pour Ã©diter une catÃ©gorie
     case "edit":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -91,14 +91,14 @@ switch ($op)
             $category_admin->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
             echo $category_admin->renderButton();
         }
-        //Affichage du formulaire de création des catégories
+        //Affichage du formulaire de crÃ©ation des catÃ©gories
         $cid = TDMMoney_CleanVars($_REQUEST, 'cid', 0, 'int');
         $obj = $categoryHandler->get($cid);
         $form = $obj->getForm();
         $form->display();
     break;
 
-    // Pour supprimer une catégorie
+    // Pour supprimer une catÃ©gorie
     case "del":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -116,12 +116,12 @@ switch ($op)
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
-            // supression des sous catégories
+            // supression des sous catÃ©gories
             $category_arr = $categoryHandler->getall();
             $mytree = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $category_childcat=$mytree->getAllChild($cid);
             foreach (array_keys($category_childcat) as $i) {
-                // supression de la sous catégorie
+                // supression de la sous catÃ©gorie
                 $objchild =& $categoryHandler->get($category_childcat[$i]->getVar('cat_cid'));
                 $categoryHandler->delete($objchild) or $objchild->getHtmlErrors();
 
@@ -148,7 +148,7 @@ switch ($op)
         }
     break;
 
-    // Pour sauver une catégorie
+    // Pour sauver une catÃ©gorie
     case "save":
         if (!$GLOBALS['xoopsSecurity']->check()) {
            redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -161,17 +161,17 @@ switch ($op)
         }
         $erreur = false;
         $message_erreur = '';
-        // Récupération des variables:
+        // RÃ©cupÃ©ration des variables:
         $obj->setVar('cat_pid', $_POST['cat_pid']);
         $obj->setVar('cat_title', $_POST['cat_title']);
         $obj->setVar('cat_desc', $_POST['cat_desc']);
         $obj->setVar('cat_weight', $_POST["cat_weight"]);
-        //vérification que cat_weight soit un entier
+        //vÃ©rification que cat_weight soit un entier
         if (intval($_REQUEST['cat_weight'])==0 && $_REQUEST['cat_weight'] != '0'){
             $erreur=true;
             $message_erreur = _AM_TDMMONEY_CAT_ERREUR_WEIGHT . '<br>';
         }
-        //vérification que pid ne soit pas égale à cid
+        //vÃ©rification que pid ne soit pas Ã©gale Ã  cid
         if (isset($_REQUEST['cid'])){
             if ($_REQUEST['cid'] == $_REQUEST['cat_pid']){
                 $erreur=true;

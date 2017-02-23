@@ -28,32 +28,32 @@ $op = TDMMoney_CleanVars ( $_REQUEST, 'op', 'new', 'string' );
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op)
 {
-    // vue création
+    // vue crÃ©ation
     case "new": default:
         //permissions
         if ($perm_submit == false){
             redirect_header('index.php', 2, _NOPERM);
         }
-        //Affichage du formulaire de création des opérations
+        //Affichage du formulaire de crÃ©ation des opÃ©rations
         $obj =& $operationHandler->create();
         $form = $obj->getForm();
         $xoopsTpl->assign('form', $form->render());
     break;
 
-    // Pour éditer une opération
+    // Pour Ã©diter une opÃ©ration
     case "edit":
         //permissions
         if ($perm_edit == false){
             redirect_header('index.php', 2, _NOPERM);
         }
-        //Affichage du formulaire de création des opérations
+        //Affichage du formulaire de crÃ©ation des opÃ©rations
         $operation_id = TDMMoney_CleanVars($_REQUEST, 'operation_id', 0, 'int');
         $obj = $operationHandler->get($operation_id);
         $form = $obj->getForm();
         $xoopsTpl->assign('form', $form->render());
     break;
 
-    // Pour supprimer une opération
+    // Pour supprimer une opÃ©ration
     case "del":
         //permissions
         if ($perm_edit == false){
@@ -67,7 +67,7 @@ switch ($op)
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
-            // supression de l'opération
+            // supression de l'opÃ©ration
             if ($operationHandler->delete($obj)) {
                 redirect_header('viewaccount.php?account_id=' . $account_id, 1, _AM_TDMMONEY_OPERATION_DELOK);
             } else {
@@ -78,7 +78,7 @@ switch ($op)
         }
     break;
 
-    // Pour sauver une opération
+    // Pour sauver une opÃ©ration
     case "save":
         if (!$GLOBALS['xoopsSecurity']->check()) {
            redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -91,7 +91,7 @@ switch ($op)
         }
         $erreur = false;
         $message_erreur = '';
-        //récupération des variables:
+        //rÃ©cupÃ©ration des variables:
         $obj->setVar('operation_account', $_POST['operation_account']);
         $obj->setVar('operation_category', $_POST['operation_category']);
         $obj->setVar('operation_type', $_POST['operation_type']);
@@ -107,7 +107,7 @@ switch ($op)
             $obj->setVar('operation_sender', $_POST['operation_sender']);
             $obj->setVar('operation_outsender', '');
         }
-        //vérification que operation_amount soit un entier
+        //vÃ©rification que operation_amount soit un entier
         if (intval($_REQUEST['operation_amount'])==0 && $_REQUEST['operation_amount'] != '0'){
             $erreur=true;
             $message_erreur = _AM_TDMMONEY_OPERATION_ERREUR_AMOUNT . '<br>';

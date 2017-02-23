@@ -81,7 +81,7 @@ switch ($op)
         }
     break;
 
-    // vue création
+    // vue crÃ©ation
     case "new":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -91,13 +91,13 @@ switch ($op)
             $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
             echo $account_admin->renderButton();
         }
-        //Affichage du formulaire de création des comptes
+        //Affichage du formulaire de crÃ©ation des comptes
         $obj =& $accountHandler->create();
         $form = $obj->getForm();
         $form->display();
     break;
 
-    // Pour éditer un compte
+    // Pour Ã©diter un compte
     case "edit":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -108,7 +108,7 @@ switch ($op)
             $account_admin->addItemButton(_AM_TDMMONEY_ACCOUNT_LIST, 'account.php?op=list', 'list');
             echo $account_admin->renderButton();
         }
-        //Affichage du formulaire de création des comptes
+        //Affichage du formulaire de crÃ©ation des comptes
         $account_id = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj = $accountHandler->get($account_id);
         $form = $obj->getForm();
@@ -133,7 +133,7 @@ switch ($op)
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('account.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
-            // supression des opérations du compte
+            // supression des opÃ©rations du compte
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('operation_account', $account_id));
             $contents_arr = $operationHandler->getall($criteria);
@@ -174,13 +174,13 @@ switch ($op)
         }
         $erreur = false;
         $message_erreur = '';
-        // Récupération des variables:
+        // RÃ©cupÃ©ration des variables:
         $obj->setVar('account_name', $_POST['account_name']);
         $obj->setVar('account_bank', $_POST['account_bank']);
         $obj->setVar('account_adress', $_POST['account_adress']);
         $obj->setVar('account_balance', $_POST['account_balance']);
         $obj->setVar('account_currency', $_POST['account_currency']);
-        //vérification que account_balance soit un entier
+        //vÃ©rification que account_balance soit un entier
         if (intval($_REQUEST['account_balance'])==0 && $_REQUEST['account_balance'] != '0'){
             $erreur=true;
             $message_erreur = _AM_TDMMONEY_ACCOUNT_ERREUR_BALANCE . '<br>';

@@ -19,9 +19,9 @@ include 'header.php';
 xoops_cp_header();
 //compte le nombre de comptes
 $count_account = $accountHandler->getCount();
-//compte le nombre de catégories
+//compte le nombre de catÃ©gories
 $count_category = $categoryHandler->getCount();
-//compte le nombre d'opération catégories
+//compte le nombre d'opÃ©ration catÃ©gories
 $count_operation = $operationHandler->getCount();
 
 if (TDMMoney_checkModuleAdmin()){

@@ -70,7 +70,7 @@ switch ($op)
                     $date_start = mktime(0,0,0,date('m'),1,date('Y'));
                     $date_end = mktime(0,0,0,date('m'),date('t'),date('Y'));
                 }
-                //filtre année actuelle
+                //filtre annÃ©e actuelle
                 if ($xoopsModuleConfig['TDMMoney_filter'] == 3){
                     $date_start = mktime(0,0,0,1,1,date('Y'));
                     $date_end = mktime(0,0,0,12,31,date('Y'));
@@ -89,7 +89,7 @@ switch ($op)
             $form->addElement(new XoopsFormHidden('account_id', $account_id));
             $form->display();
         }
-        // extraction des données
+        // extraction des donnÃ©es
         $criteria->setSort('operation_date');
         $criteria->setOrder('DESC');
         //pour faire une jointure de table
@@ -137,7 +137,7 @@ switch ($op)
             echo '<th align="center" width="8%">' . _AM_TDMMONEY_ACTION . '</th>';
             echo '</tr>';
             $class = 'odd';
-            // début de l'affichage des opérations
+            // dÃ©but de l'affichage des opÃ©rations
             $category_arr = $categoryHandler->getall();
             $mytree = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
             foreach (array_keys($operation_arr) as $i) {
@@ -192,7 +192,7 @@ switch ($op)
         }
     break;
 
-    // vue création
+    // vue crÃ©ation
     case "new":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -202,13 +202,13 @@ switch ($op)
             $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
             echo $operation_admin->renderButton();
         }
-        //Affichage du formulaire de création des opérations
+        //Affichage du formulaire de crÃ©ation des opÃ©rations
         $obj =& $operationHandler->create();
         $form = $obj->getForm();
         $form->display();
     break;
 
-    // Pour éditer une opération
+    // Pour Ã©diter une opÃ©ration
     case "edit":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -219,14 +219,14 @@ switch ($op)
             $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
             echo $operation_admin->renderButton();
         }
-        //Affichage du formulaire de création des opérations
+        //Affichage du formulaire de crÃ©ation des opÃ©rations
         $operation_id = TDMMoney_CleanVars($_REQUEST, 'operation_id', 0, 'int');
         $obj = $operationHandler->get($operation_id);
         $form = $obj->getForm();
         $form->display();
     break;
 
-    // Pour supprimer une opération
+    // Pour supprimer une opÃ©ration
     case "del":
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
@@ -245,7 +245,7 @@ switch ($op)
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
-            // supression de l'opération
+            // supression de l'opÃ©ration
             if ($operationHandler->delete($obj)) {
                 redirect_header('operation.php?op=list&account_id=' . $account_id, 1, _AM_TDMMONEY_OPERATION_DELOK);
             } else {
@@ -256,7 +256,7 @@ switch ($op)
         }
     break;
 
-    // Pour sauver une opération
+    // Pour sauver une opÃ©ration
     case "save":
         if (!$GLOBALS['xoopsSecurity']->check()) {
            redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -269,7 +269,7 @@ switch ($op)
         }
         $erreur = false;
         $message_erreur = '';
-        //récupération des variables:
+        //rÃ©cupÃ©ration des variables:
         $obj->setVar('operation_account', $_POST['operation_account']);
         $obj->setVar('operation_category', $_POST['operation_category']);
         $obj->setVar('operation_type', $_POST['operation_type']);
@@ -285,7 +285,7 @@ switch ($op)
             $obj->setVar('operation_sender', $_POST['operation_sender']);
             $obj->setVar('operation_outsender', '');
         }
-        //vérification que operation_amount soit un entier
+        //vÃ©rification que operation_amount soit un entier
         if (intval($_REQUEST['operation_amount'])==0 && $_REQUEST['operation_amount'] != '0'){
             $erreur=true;
             $message_erreur = _AM_TDMMONEY_OPERATION_ERREUR_AMOUNT . '<br>';

@@ -50,7 +50,7 @@ if (isset($_REQUEST['date_start']) && isset($_REQUEST['date_end'])){
         $date_start = mktime(0,0,0,date('m'),1,date('Y'));
         $date_end = mktime(0,0,0,date('m'),date('t'),date('Y'));
     }
-    //filtre année actuelle
+    //filtre annÃ©e actuelle
     if ($xoopsModuleConfig['TDMMoney_filter'] == 3){
         $date_start = mktime(0,0,0,1,1,date('Y'));
         $date_end = mktime(0,0,0,12,31,date('Y'));
@@ -73,7 +73,7 @@ $xoopsTpl->assign('form', $form->render());
 $operationHandler->table_link = $operationHandler->db->prefix("tdmmoney_account"); // Nom de la table en jointure
 $operationHandler->field_link = "account_id"; // champ de la table en jointure
 $operationHandler->field_object = "operation_account"; // champ de la table courante
-// extraction des données
+// extraction des donnÃ©es
 $criteria->setSort('operation_date');
 $criteria->setOrder('DESC');
 $operation_arr = $operationHandler->getByLink($criteria);
@@ -97,7 +97,7 @@ if (count($operation_arr)>0) {
         $balance = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
         $operation_balance[$i] = $balance;
     }
-    // début de l'affichage des opérations
+    // dÃ©but de l'affichage des opÃ©rations
     $category_arr = $categoryHandler->getall();
     $mytree = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
     foreach (array_keys($operation_arr) as $i) {

@@ -30,13 +30,13 @@ $perm_pdf = ($gperm_handler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule
 if ($perm_pdf == false){
     redirect_header('../index.php', 2, _NOPERM);
 }
-// Génération du pdf
+// GÃ©nÃ©ration du pdf
 $PDF = new phpToPDF();
 $PDF->AddPage();
 
 $PDF->startPageNums();
 
-// Définition des propriétés du tableau.
+// DÃ©finition des propriÃ©tÃ©s du tableau.
 $proprietesTableau = array(
     'TB_ALIGN' => 'L',
     'L_MARGIN' => 5,
@@ -44,7 +44,7 @@ $proprietesTableau = array(
     'BRD_SIZE' => '0.3',
     );
 
-// Définition des propriétés du header du tableau.
+// DÃ©finition des propriÃ©tÃ©s du header du tableau.
 $proprieteHeader = array(
     'T_COLOR' => array(0,0,0),
     'T_SIZE' => 10,
@@ -68,7 +68,7 @@ $contenuHeader = array(
     '[B]' . utf8_decode(_AM_TDMMONEY_OPERATION_DATE), '[B]' . utf8_decode(_AM_TDMMONEY_OPERATION_SENDER), '[B]' . utf8_decode(_AM_TDMMONEY_OPERATION_CATEGORY), '[B]' . utf8_decode(_AM_TDMMONEY_OPERATION_DESCRIPTION), '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_WITHDRAW), '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_DEPOSIT), '[BR]' . utf8_decode(_AM_TDMMONEY_OPERATION_BALANCE)
     );
 
-// Définition des propriétés du reste du contenu du tableau.
+// DÃ©finition des propriÃ©tÃ©s du reste du contenu du tableau.
 $proprieteContenu = array(
     'T_COLOR' => array(0,0,0),
     'T_SIZE' => 10,
@@ -178,8 +178,8 @@ $j++;
 $contenuTableau[$j] = '[R]' . $balance_save;
 
 
-// D'abord le PDF, puis les propriétés globales du tableau.
-// Ensuite, le header du tableau (propriétés et données) puis le contenu (propriétés et données)
+// D'abord le PDF, puis les propriÃ©tÃ©s globales du tableau.
+// Ensuite, le header du tableau (propriÃ©tÃ©s et donnÃ©es) puis le contenu (propriÃ©tÃ©s et donnÃ©es)
 $PDF->drawTableau($PDF, $proprietesTableau, $proprieteHeader, $contenuHeader, $proprieteContenu, $contenuTableau);
 
 $PDF->Output();

@@ -59,10 +59,10 @@ class TDMMoney_operation extends XoopsObject
         }
         //nom du formulaire selon l'action (editer ou ajouter):
         $title = $this->isNew() ? sprintf(_AM_TDMMONEY_OPERATION_ADD) : sprintf(_AM_TDMMONEY_OPERATION_EDIT, $this->getVar('operation_id'));
-        //création du formulaire
+        //crÃ©ation du formulaire
         $form = new XoopsThemeForm($title, "form", $action, "post", true);
         $form->setExtra('enctype="multipart/form-data"');
-        //type d'opération
+        //type d'opÃ©ration
         $type = new XoopsFormRadio(_AM_TDMMONEY_OPERATION_TYPE, 'operation_type', $this->isNew() ? 1 : $this->getVar('operation_type', 'e'));
         $options = array(1 => _AM_TDMMONEY_OPERATION_WITHDRAW, 2 => _AM_TDMMONEY_OPERATION_DEPOSIT);
         $type->addOptionArray($options);
@@ -95,7 +95,7 @@ class TDMMoney_operation extends XoopsObject
         $outsender = new XoopsFormText(_AM_TDMMONEY_OPERATION_OUTSENDER, 'operation_outsender', 25, 50, $this->getVar('operation_outsender'));
         $sender->addElement($outsender);
         $form->addElement($sender);
-        //choix de la catégorie
+        //choix de la catÃ©gorie
         $categoryHandler =& xoops_getModuleHandler("tdmmoney_category", "TDMMoney");
         $criteria = new CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');

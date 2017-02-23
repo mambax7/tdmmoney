@@ -47,7 +47,7 @@ class TDMMoney_category extends XoopsObject
         }
         //nom du formulaire selon l'action (editer ou ajouter):
         $title = $this->isNew() ? sprintf(_AM_TDMMONEY_CAT_ADD) : sprintf(_AM_TDMMONEY_CAT_EDIT, $this->getVar("cat_title"));
-        //création du formulaire
+        //crÃ©ation du formulaire
         $form = new XoopsThemeForm($title, 'form', $action, 'post', true);
         $form->setExtra('enctype="multipart/form-data"');
         //titre
@@ -62,7 +62,7 @@ class TDMMoney_category extends XoopsObject
     	$editor_configs["height"] = "400px";
     	$editor_configs["editor"] = $xoopsModuleConfig['TDMMoney_editor'];
 		$form->addElement( new XoopsFormEditor(_AM_TDMMONEY_CAT_DSC, "cat_desc", $editor_configs), false);
-        // Pour faire une sous-catégorie
+        // Pour faire une sous-catÃ©gorie
         $categoryHandler =& xoops_getModuleHandler("tdmmoney_category", "TDMMoney");
         $criteria = new CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
@@ -70,11 +70,11 @@ class TDMMoney_category extends XoopsObject
 		$category_arr = $categoryHandler->getall($criteria);
 		$mytree = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
 		$form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title','--',$this->getVar('cat_pid'),true)));
-        //poids de la catégorie
+        //poids de la catÃ©gorie
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_CAT_WEIGHT, 'cat_weight', 5, 5, $this->getVar('cat_weight', 'e')), true);
         //pour enregistrer le formulaire
         $form->addElement(new XoopsFormHidden('op', 'save'));
-        // pour passer "cid" si on modifie la catégorie
+        // pour passer "cid" si on modifie la catÃ©gorie
         if (!$this->isNew()) {
         	$form->addElement(new XoopsFormHidden('cid', $this->getVar('cat_cid')));
         }
