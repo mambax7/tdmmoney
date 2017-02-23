@@ -12,53 +12,55 @@
  * @copyright   Gregory Mage (Aka Mage)
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
+ * @param $queryarray
+ * @param $andor
+ * @param $limit
+ * @param $offset
+ * @param $userid
+ * @return array
  */
-
 
 function TDMMoney_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB;
 
-    $sql = "SELECT operation_id, operation_account, operation_category, operation_type, operation_sender, operation_outsender, operation_date, operation_amount, operation_description, operation_submitter, operation_date_created FROM ".$xoopsDB->prefix("tdmmoney_operation")." WHERE operation_date != 0";
+    $sql
+        = 'SELECT operation_id, operation_account, operation_category, operation_type, operation_sender, operation_outsender, operation_date, operation_amount, operation_description, operation_submitter, operation_date_created FROM '
+          . $xoopsDB->prefix('tdmmoney_operation') . ' WHERE operation_date != 0';
 
-    if ( $userid != 0 ) {
-        $sql .= " AND operation_submitter=".intval($userid)." ";
+    if ($userid != 0) {
+        $sql .= ' AND operation_submitter=' . (int)$userid . ' ';
     }
-    require_once XOOPS_ROOT_PATH.'/modules/TDMMoney/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/include/functions.php';
     $access_view = TDMMoney_MygetItemIds('tdmmoney_view', 'TDMMoney');
-    if(is_array($access_view) && count($access_view) > 0) {
-        $sql .= ' AND operation_account IN ('.implode(',', $access_view).') ';
+    if (is_array($access_view) && count($access_view) > 0) {
+        $sql .= ' AND operation_account IN (' . implode(',', $access_view) . ') ';
     } else {
         return null;
     }
 
-    if ( is_array($queryarray) && $count = count($queryarray) )
-    {
+    if (is_array($queryarray) && $count = count($queryarray)) {
         $sql .= " AND ((operation_description LIKE '%$queryarray[0]%' OR operation_outsender LIKE '%$queryarray[0]%')";
 
-        for($i=1;$i<$count;$i++)
-        {
+        for ($i = 1; $i < $count; ++$i) {
             $sql .= " $andor ";
             $sql .= "(operation_description LIKE '%$queryarray[$i]%' OR operation_outsender LIKE '%$queryarray[$i]%')";
         }
-        $sql .= ")";
+        $sql .= ')';
     }
 
-    $sql .= " ORDER BY operation_date DESC";
-    $result = $xoopsDB->query($sql,$limit,$offset);
+    $sql .= ' ORDER BY operation_date DESC';
+    $result = $xoopsDB->query($sql, $limit, $offset);
     $ret = array();
     $i = 0;
-    while($myrow = $xoopsDB->fetchArray($result))
-    {
-        $ret[$i]["image"] = "images/deco/contact.png";
-        $ret[$i]["link"] = "viewaccount.php?account_id=".$myrow["operation_account"]."";
-        $ret[$i]["title"] = $myrow["operation_amount"] . '-' .$myrow["operation_description"];
-        $ret[$i]["time"] = $myrow["operation_date_created"];
-        $ret[$i]["uid"] = $myrow["operation_submitter"];
-        $i++;
+    while ($myrow = $xoopsDB->fetchArray($result)) {
+        $ret[$i]['image'] = 'images/deco/contact.png';
+        $ret[$i]['link']  = 'viewaccount.php?account_id=' . $myrow['operation_account'] . '';
+        $ret[$i]['title'] = $myrow['operation_amount'] . '-' . $myrow['operation_description'];
+        $ret[$i]['time']  = $myrow['operation_date_created'];
+        $ret[$i]['uid']   = $myrow['operation_submitter'];
+        ++$i;
     }
+
     return $ret;
 }
-
-
-?>

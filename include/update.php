@@ -14,18 +14,19 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-function xoops_module_update_tdmmoney() {
-    $db =& Database::getInstance();
-    $sql = "ALTER TABLE `" . $db->prefix('tdmmoney_account') . "` CHANGE `account_balance` `account_balance` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00' ;";
+function xoops_module_update_tdmmoney()
+{
+    $db  = XoopsDatabaseFactory::getDatabaseConnection();
+    $sql = 'ALTER TABLE `' . $db->prefix('tdmmoney_account') . "` CHANGE `account_balance` `account_balance` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00' ;";
     $db->query($sql);
-    $sql = "ALTER TABLE `" . $db->prefix('tdmmoney_operation') . "` CHANGE `operation_amount` `operation_amount` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00' ;";
+    $sql = 'ALTER TABLE `' . $db->prefix('tdmmoney_operation') . "` CHANGE `operation_amount` `operation_amount` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00' ;";
     $db->query($sql);
-    $sql = "ALTER TABLE `" . $db->prefix('tdmmoney_category') . "` DROP `cat_budget` ;";
+    $sql = 'ALTER TABLE `' . $db->prefix('tdmmoney_category') . '` DROP `cat_budget` ;';
     $db->query($sql);
-    $sql = "ALTER TABLE `" . $db->prefix('tdmmoney_category') . "` DROP `cat_type` ;";
+    $sql = 'ALTER TABLE `' . $db->prefix('tdmmoney_category') . '` DROP `cat_type` ;';
     $db->query($sql);
-    $sql = "ALTER TABLE `" . $db->prefix('tdmmoney_category') . "` DROP `cat_interval` ;";
+    $sql = 'ALTER TABLE `' . $db->prefix('tdmmoney_category') . '` DROP `cat_interval` ;';
     $db->query($sql);
+
     return true;
 }
-?>

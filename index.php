@@ -14,15 +14,15 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once 'header.php';
+include_once __DIR__ . '/header.php';
 // template d'affichage
-$xoopsOption['template_main'] = 'tdmmoney_index.html';
-include_once XOOPS_ROOT_PATH."/header.php";
+$GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_index.tpl';
+include_once XOOPS_ROOT_PATH . '/header.php';
 
 // pour les permissions
 $access_account = TDMMoney_MygetItemIds('tdmmoney_view', 'TDMMoney');
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('account_id', '(' . implode(',', $access_account) . ')','IN'));
+$criteria       = new CriteriaCompo();
+$criteria->add(new Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
 $criteria->setSort('account_name');
 $criteria->setOrder('ASC');
 $account_arr = $accountHandler->getall($criteria);
@@ -40,14 +40,20 @@ foreach (array_keys($account_arr) as $i) {
     //calcul des soldes
     $balance_operation = $account_arr[$i]->getVar('account_balance');
     foreach (array_keys($operation_arr) as $j) {
-        if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')){
-            $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
+        if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')) {
+            $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation
+                                                                                                                                                           + $operation_arr[$j]->getVar('operation_amount');
         }
     }
-    $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $balance_operation . '</span>' : '<span style="font-weight: bold">' . $balance_operation . '</span>';
-    $xoopsTpl->append('account', array('account_id' => $account_arr[$i]->getVar('account_id'), 'account_name' => $account_arr[$i]->getVar('account_name'), 'balance' => $display_balance_operation, 'count' => $count));
-    $count++;
+    $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $balance_operation . '</span>' : '<span style="font-weight: bold">' . $balance_operation
+                                                                                                                                                . '</span>';
+    $xoopsTpl->append('account', array(
+                                   'account_id' => $account_arr[$i]->getVar('account_id'),
+                                   'account_name' => $account_arr[$i]->getVar('account_name'),
+                                   'balance' => $display_balance_operation,
+                                   'count' => $count
+                               ));
+    ++$count;
 }
 
-include_once XOOPS_ROOT_PATH."/footer.php";
-?>
+include_once XOOPS_ROOT_PATH . '/footer.php';
