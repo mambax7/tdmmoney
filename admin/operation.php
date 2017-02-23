@@ -103,7 +103,7 @@ switch ($op) {
             // si en vue compte on calcul les soldes
             if ($display_account === true) {
                 $operation_balance_arr = array_reverse($operation_arr, true);
-                $account_balance       =& $accountHandler->get($account_id);
+                $account_balance       = $accountHandler->get($account_id);
                 $balance               = $account_balance->getVar('account_balance');
                 $criteria_amount       = new CriteriaCompo();
                 $criteria_amount->add(new Criteria('operation_account', $account_id));
@@ -247,7 +247,7 @@ switch ($op) {
         global $xoopsModule;
         $operation_id = TDMMoney_CleanVars($_REQUEST, 'operation_id', 0, 'int');
         $account_id   = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
-        $obj          =& $operationHandler->get($operation_id);
+        $obj          = $operationHandler->get($operation_id);
         if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -274,7 +274,7 @@ switch ($op) {
         }
         $operation_id = TDMMoney_CleanVars($_REQUEST, 'operation_id', 0, 'int');
         if (isset($_REQUEST['operation_id'])) {
-            $obj =& $operationHandler->get($operation_id);
+            $obj = $operationHandler->get($operation_id);
         } else {
             $obj = $operationHandler->create();
         }

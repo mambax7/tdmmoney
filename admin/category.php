@@ -110,7 +110,7 @@ switch ($op) {
 
         global $xoopsModule;
         $cid = TDMMoney_CleanVars($_REQUEST, 'cid', 0, 'int');
-        $obj =& $categoryHandler->get($cid);
+        $obj = $categoryHandler->get($cid);
         if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -121,7 +121,7 @@ switch ($op) {
             $category_childcat = $mytree->getAllChild($cid);
             foreach (array_keys($category_childcat) as $i) {
                 // supression de la sous catégorie
-                $objchild =& $categoryHandler->get($category_childcat[$i]->getVar('cat_cid'));
+                $objchild = $categoryHandler->get($category_childcat[$i]->getVar('cat_cid'));
                 $categoryHandler->delete($objchild) or $objchild->getHtmlErrors();
             }
             if ($categoryHandler->delete($obj)) {
@@ -156,7 +156,7 @@ switch ($op) {
         }
         $cid = TDMMoney_CleanVars($_REQUEST, 'cid', 0, 'int');
         if (isset($_REQUEST['cid'])) {
-            $obj =& $categoryHandler->get($cid);
+            $obj = $categoryHandler->get($cid);
         } else {
             $obj = $categoryHandler->create();
         }

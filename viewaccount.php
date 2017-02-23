@@ -81,7 +81,7 @@ $operation_arr = $operationHandler->getByLink($criteria);
 if (count($operation_arr) > 0) {
     // calcul des soldes
     $operation_balance_arr = array_reverse($operation_arr, true);
-    $account_balance       =& $accountHandler->get($account_id);
+    $account_balance       = $accountHandler->get($account_id);
     $balance               = $account_balance->getVar('account_balance');
     $criteria_amount       = new CriteriaCompo();
     $criteria_amount->add(new Criteria('operation_account', $account_id));
@@ -122,8 +122,8 @@ if (count($operation_arr) > 0) {
         $perm_modif = $gpermHandler->checkRight('tdmmoney_ac', 8, $groups, $xoopsModule->getVar('mid')) ? true : false;
         $xoopsTpl->assign('perm_modif', $perm_modif);
         if ($perm_modif === true) {
-            $action = '<a href="submit.php?op=edit&operation_id=' . $i . '"><img src="images/deco/edit.gif" alt="' . _MD_TDMMONEY_EDIT . '" title="' . _MD_TDMMONEY_EDIT . '"></a> '
-                      . '<a href="submit.php?op=del&operation_id=' . $i . '&account_id=' . $account_id . '"><img src="images/deco/delete.gif" alt="' . _MD_TDMMONEY_DEL . '" title="' . _MD_TDMMONEY_DEL
+            $action = '<a href="submit.php?op=edit&operation_id=' . $i . '"><img src="' . $pathIcon16 . '/edit.png" alt="' . _MD_TDMMONEY_EDIT . '" title="' . _MD_TDMMONEY_EDIT . '"></a> '
+                      . '<a href="submit.php?op=del&operation_id=' . $i . '&account_id=' . $account_id . '"><img src="' . $pathIcon16 . '/delete.png" alt="' . _MD_TDMMONEY_DEL . '" title="' . _MD_TDMMONEY_DEL
                       . '"></a>';
         }
         $xoopsTpl->append('operation', array(
