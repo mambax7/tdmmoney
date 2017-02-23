@@ -23,9 +23,9 @@ include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/include/functions.php';
 
 if (!isset($moduleDirName)) {
-    $moduleDirName = basename(dirname(__DIR__));
+    $moduleDirName = basename(__DIR__);
 }
-
+$pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
 //permission
 $gpermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
@@ -33,6 +33,7 @@ if (is_object($xoopsUser)) {
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
+
 xoops_loadLanguage('admin', $xoopsModule->getVar('dirname', 'e'));
 
 $accountHandler   = xoops_getModuleHandler('tdmmoney_account', $moduleDirName);

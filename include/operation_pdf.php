@@ -133,7 +133,7 @@ $proprieteContenu = array(
     'BRD_TYPE'          => 'T',
     'BRD_TYPE_NEW_PAGE' => '',
 );
-$account          =& $accountHandler->get($account_id);
+$account          = $accountHandler->get($account_id);
 $criteria         = new CriteriaCompo();
 $criteria->add(new Criteria('operation_account', $account_id));
 $criteria->add(new Criteria('operation_date', $date_start, '>='));

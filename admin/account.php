@@ -130,7 +130,7 @@ switch ($op) {
 
         global $xoopsModule;
         $account_id = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
-        $obj        =& $accountHandler->get($account_id);
+        $obj        = $accountHandler->get($account_id);
         if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('account.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -140,7 +140,7 @@ switch ($op) {
             $criteria->add(new Criteria('operation_account', $account_id));
             $contents_arr = $operationHandler->getall($criteria);
             foreach (array_keys($contents_arr) as $i) {
-                $objcontents =& $operationHandler->get($contents_arr[$i]->getVar('operation_id'));
+                $objcontents = $operationHandler->get($contents_arr[$i]->getVar('operation_id'));
                 $operationHandler->delete($objcontents) or $objcontents->getHtmlErrors();
             }
             if ($accountHandler->delete($obj)) {
@@ -174,7 +174,7 @@ switch ($op) {
         }
         $account_id = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
         if (isset($_REQUEST['account_id'])) {
-            $obj =& $accountHandler->get($account_id);
+            $obj = $accountHandler->get($account_id);
         } else {
             $obj = $accountHandler->create();
         }
