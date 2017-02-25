@@ -4,7 +4,7 @@
 - removed @version (mamba)
 - removed TDMMoney_checkModuleAdmin() checks (mamba)
 - PSR-2 code cosmetics (mamba)
-- addNavigation(basename(__FILE__))  (mamba)
+- displayNavigation(basename(__FILE__))  (mamba)
 - dirname(__FILE__) to __DIR__ (mamba)
 - XOOPS 2.5.8, PHP 7 (mamba)
 - replaced < br /> with < br > (mamba)
@@ -13,12 +13,14 @@
 - Hardening to type safe (mamba)
 - update Help (mamba)
 - changed _handler to Handler (mamba)
-- changed to ->renderButton('left') (mamba)
+- changed to ->displayButton('left') (mamba)
 - HTML 5: removed 'selected' and 'checked' (mamba)
 - moved all images, CSS, and JS files to /assets (mamba)
 - renamed .html Smarty templates to .tpl (mamba)
 - removed PHP4 constructors (mamba)
 - started conversion to XMF (mamba)
+- added optional Load Sample Data button (mamba)
+- made PDF button optional (mamba)
 
 -------------------------------------------------
 Version: 1.1
