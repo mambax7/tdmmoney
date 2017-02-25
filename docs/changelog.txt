@@ -21,6 +21,7 @@
 - started conversion to XMF (mamba)
 - added optional Load Sample Data button (mamba)
 - made PDF button optional (mamba)
+- fix XoopsFormSelect bug (geekwright)
 
 -------------------------------------------------
 Version: 1.1
