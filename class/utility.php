@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class MyalbumUtil
+ * Class TdmmoneyUtility
  */
 class TdmmoneyUtility
 {

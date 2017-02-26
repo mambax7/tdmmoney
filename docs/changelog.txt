@@ -22,6 +22,10 @@
 - added optional Load Sample Data button (mamba)
 - made PDF button optional (mamba)
 - fix XoopsFormSelect bug (geekwright)
+- made stats numbers bold (mamba)
+- fixed bugs in install script (zap_english/mamba)
+- fixed bugs with '<{$module_url}>/' (mamba)
+- added blank.png (mamba)
 
 -------------------------------------------------
 Version: 1.1

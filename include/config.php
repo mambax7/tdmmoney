@@ -22,8 +22,7 @@ require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 $moduleDirName = basename(dirname(__DIR__));
 $capsDirName = strtoupper($moduleDirName);
 
-//if (!defined($moduleDirName . '_DIRNAME')) {
-if (!defined(constant($capsDirName . '_DIRNAME'))) {
+if (!defined($capsDirName . '_DIRNAME')) {
     define($capsDirName . '_DIRNAME', $GLOBALS['xoopsModule']->dirname());
     define($capsDirName . '_PATH', XOOPS_ROOT_PATH . '/modules/' . constant($capsDirName . '_DIRNAME'));
     define($capsDirName . '_URL', XOOPS_URL . '/modules/' . constant($capsDirName . '_DIRNAME'));
@@ -34,7 +33,7 @@ if (!defined(constant($capsDirName . '_DIRNAME'))) {
 
 // Define here the place where main upload path
 
-$img_dir = $GLOBALS['xoopsModuleConfig']['uploaddir'];
+//$img_dir = $GLOBALS['xoopsModuleConfig']['uploaddir'];
 
 define($capsDirName . '_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' .$moduleDirName); // WITHOUT Trailing slash
 //define("XXXXXX_UPLOAD_PATH", $img_dir); // WITHOUT Trailing slash
@@ -43,55 +42,6 @@ define($capsDirName . '_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . $moduleDirName);
 
 //constant($cloned_lang . '_CATEGORY_NOTIFY')
 
-$uploadFolders = [
-    constant($capsDirName . '_UPLOAD_PATH'),
-    constant($capsDirName . '_UPLOAD_PATH') . '/images',
-    constant($capsDirName . '_UPLOAD_PATH') . '/images/thumbnails'
-];
-
-
-$copyFiles = [
-    constant($capsDirName . '_UPLOAD_PATH'),
-    constant($capsDirName . '_UPLOAD_PATH') . '/images',
-    constant($capsDirName . '_UPLOAD_PATH') . '/images/thumbnails'
-];
-
-$oldFiles = [
-    '/include/update_functions.php',
-    '/include/install_functions.php'
-];
-/*
-//Configurator
-return array(
-    'name'          => 'Module Configurator',
-    'uploadFolders' => array(
-        constant($capsDirName . '_UPLOAD_PATH'),
-        constant($capsDirName . '_UPLOAD_PATH') . '/XXX'
-    ),
-    'blankFiles'     => array(
-        constant($capsDirName . '_UPLOAD_PATH'),
-        constant($capsDirName . '_UPLOAD_PATH') . '/XXXX'
-    ),
-
-    'templateFolders' => array(
-        '/templates/',
-        '/templates/blocks/',
-        '/templates/admin/'
-
-    ),
-    'oldFiles'        => array(
-        '/include/update_functions.php',
-        '/include/install_functions.php'
-    ),
-    'oldFolders'        => array(
-        '/images',
-        '/css',
-        '/js',
-        '/tcpdf',
-        '/images',
-    ),
-);
-*/
 
 /**
  * Class ModuleConfigurator

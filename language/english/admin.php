@@ -30,9 +30,9 @@ define('_AM_TDMMONEY_MANAGER_OPERATION', 'Operation');
 define('_AM_TDMMONEY_MANAGER_PERMISSIONS', 'Permissions');
 define('_AM_TDMMONEY_MANAGER_PREFERENCES', 'Preferences');
 define('_AM_TDMMONEY_MANAGER_UPDATE', 'Update');
-define('_AM_TDMMONEY_THEREARE_ACCOUNT', 'There is %s Accounts in our database');
-define('_AM_TDMMONEY_THEREARE_CATEGORY', 'There is %s categories in our database');
-define('_AM_TDMMONEY_THEREARE_OPERATION', 'There is %s operations in our database');
+define('_AM_TDMMONEY_THEREARE_ACCOUNT', "There are <span style='font-weight: bold'> %s </span>  Accounts in our database");
+define('_AM_TDMMONEY_THEREARE_CATEGORY', "There are <span style='font-weight: bold'> %s </span>  categories in our database");
+define('_AM_TDMMONEY_THEREARE_OPERATION', "There are <span style='font-weight: bold'> %s </span>  operations in our database");
 
 //category.php
 define('_AM_TDMMONEY_CAT_ADD', 'Add a category');

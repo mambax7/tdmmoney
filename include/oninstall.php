@@ -17,7 +17,7 @@
  * @author       XOOPS Development Team
  */
 
-require_once __DIR__ . '/setup.php';
+//require_once __DIR__ . '/setup.php';
 
 /**
  *
@@ -31,7 +31,7 @@ function xoops_module_pre_install_tdmmoney(XoopsModule $module)
     $moduleDirName = basename(dirname(__DIR__));
     $classUtil     = ucfirst($moduleDirName) . 'Utility';
     if (!class_exists($classUtil)) {
-        xoops_load('util', $moduleDirName);
+        xoops_load('utility', $moduleDirName);
     }
     //check for minimum XOOPS version
     if (!$classUtil::checkVerXoops($module)) {
@@ -77,9 +77,9 @@ function xoops_module_install_tdmmoney(XoopsModule $module)
     $moduleHelper->loadLanguage('modinfo');
 
     $configurator = new ModuleConfigurator();
-    $classUtil    = ucfirst($moduleDirName) . 'Util';
+    $classUtil    = ucfirst($moduleDirName) . 'Utility';
     if (!class_exists($classUtil)) {
-        xoops_load('util', $moduleDirName);
+        xoops_load('utility', $moduleDirName);
     }
 
     // default Permission Settings ----------------------
