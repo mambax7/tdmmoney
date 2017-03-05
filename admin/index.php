@@ -33,7 +33,7 @@ $count_category = $categoryHandler->getCount();
 //compte le nombre d'opération catégories
 $count_operation = $operationHandler->getCount();
 
-$adminObject = \Xmf\Module\Admin::getInstance();
+//$adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->addInfoBox(_AM_TDMMONEY_MANAGER_ACCOUNT);
 if ($count_account == 0) {
     $adminObject->addInfoBoxLine(sprintf(_AM_TDMMONEY_THEREARE_ACCOUNT, '<span class="red">' . $count_account . '</span>'), '', 'Red');
@@ -53,6 +53,10 @@ if ($count_operation == 0) {
     $adminObject->addInfoBoxLine(sprintf(_AM_TDMMONEY_THEREARE_OPERATION, '<span class="red">' . $count_operation . '</span>'), '', 'Red');
 } else {
     $adminObject->addInfoBoxLine(sprintf(_AM_TDMMONEY_THEREARE_OPERATION, '<span class="green">' . $count_operation . '</span>'), '', 'Green');
+}
+
+if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+    $adminObject->addConfigBoxLine('<span style="color:red;"><img src="' . XOOPS_URL . '/Frameworks/moduleclasses/icons/16/0.png" alt="!" />' . _MD_TDMMONEY_ERROR_NO_PDF . '</span>', 'default');
 }
 
 //$adminObject = \Xmf\Module\Admin::getInstance();

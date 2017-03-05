@@ -17,12 +17,12 @@
 include_once XOOPS_ROOT_PATH . '/class/tree.php';
 
 /**
- * Class TDMObjectTree
+ * Class TdmObjectTree
  */
-class TDMObjectTree extends XoopsObjectTree
+class TdmObjectTree extends XoopsObjectTree
 {
     /**
-     * TDMObjectTree constructor.
+     * TdmObjectTree constructor.
      * @param array  $objectArr
      * @param string $myId
      * @param string $parentId

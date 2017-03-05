@@ -17,13 +17,13 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * Class TDMMoney_category
+ * Class TdmMoneyCategory
  */
-class TDMMoney_category extends XoopsObject
+class TdmMoneyCategory extends XoopsObject
 {
     //Constructor
     /**
-     * TDMMoney_category constructor.
+     * TdmMoneyCategory constructor.
      */
     public function __construct()
     {
@@ -68,16 +68,25 @@ class TDMMoney_category extends XoopsObject
         $editor_configs['cols']   = 150;
         $editor_configs['width']  = '100%';
         $editor_configs['height'] = '400px';
-        $editor_configs['editor'] = $xoopsModuleConfig['TDMMoney_editor'];
+        $editor_configs['editor'] = $xoopsModuleConfig['TdmMoneyEditor'];
         $form->addElement(new XoopsFormEditor(_AM_TDMMONEY_CAT_DSC, 'cat_desc', $editor_configs), false);
         // Pour faire une sous-catégorie
-        $categoryHandler = xoops_getModuleHandler('tdmmoney_category', 'TDMMoney');
+        $categoryHandler = xoops_getModuleHandler('category', 'tdmmoney');
         $criteria        = new CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
         $category_arr = $categoryHandler->getall($criteria);
         $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
+//        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
+
+        if (TdmmoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
+            $catSelect = new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0, '', ''));
+            $form->addElement($catSelect);
+        } else {
+            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));        }
+
+
+
         //poids de la catégorie
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_CAT_WEIGHT, 'cat_weight', 5, 5, $this->getVar('cat_weight', 'e')), true);
         //pour enregistrer le formulaire
@@ -94,16 +103,16 @@ class TDMMoney_category extends XoopsObject
 }
 
 /**
- * Class TDMMoneytdmmoney_categoryHandler
+ * Class TdmMoneyCategoryHandler
  */
-class TDMMoneytdmmoney_categoryHandler extends XoopsPersistableObjectHandler
+class TdmMoneyCategoryHandler extends XoopsPersistableObjectHandler
 {
     /**
-     * TDMMoneytdmmoney_categoryHandler constructor.
+     * TdmMoneyCategoryHandler constructor.
      * @param null|object|XoopsDatabase $db
      */
     public function __construct($db)
     {
-        parent::__construct($db, 'tdmmoney_category', 'tdmmoney_category', 'cat_cid', 'cat_title');
+        parent::__construct($db, 'tdmmoney_category', 'TdmMoneyCategory', 'cat_cid', 'cat_title');
     }
 }

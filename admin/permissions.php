@@ -18,10 +18,10 @@ include_once __DIR__ . '/admin_header.php';
 //Affichage de la partie haute de l'administration de Xoops
 xoops_cp_header();
 
-$account_admin = new ModuleAdmin();
-echo $account_admin->addNavigation('permissions.php');
+//$adminObject = new ModuleAdmin();
+$adminObject->displayNavigation(basename(__FILE__));
 
-$permission = TDMMoney_CleanVars($_POST, 'permission', 1, 'int');
+$permission = TdmmoneyUtility::cleanVars($_POST, 'permission', 1, 'int');
 
 $selected                  = array(
     '',

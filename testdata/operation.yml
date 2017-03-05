@@ -1,0 +1,44 @@
+-
+  operation_account: 1
+  operation_category: 1
+  operation_type: 1
+  operation_sender: 1
+  operation_outsender: 1
+  operation_date: 1033101070
+  operation_amount: 100.00
+  operation_description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  operation_submitter: 1
+  operation_date_created: 1033141070
+-
+  operation_account: 2
+  operation_category: 2
+  operation_type: 2
+  operation_sender: 0
+  operation_outsender:
+  operation_date: 1033111072
+  operation_amount: 200.00
+  operation_description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  operation_submitter: 1
+  operation_date_created: 1033141072
+-
+  operation_account: 3
+  operation_category: 3
+  operation_type: 1
+  operation_sender: 0
+  operation_outsender:
+  operation_date: 1033121073
+  operation_amount: 300.00
+  operation_description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  operation_submitter: 1
+  operation_date_created: 1033141073
+-
+  operation_account: 4
+  operation_category: 4
+  operation_type: 2
+  operation_sender: 1
+  operation_outsender: 4
+  operation_date: 1033141074
+  operation_amount: 400.00
+  operation_description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  operation_submitter: 1
+  operation_date_created: 1033141074

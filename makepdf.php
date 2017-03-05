@@ -1,30 +1,19 @@
 <?php
 /**
- * TDMMoney
- *
- * You may not change or alter any portion of this comment or credits
- * of supporting developers from this source code or any supporting source code
- * which is considered copyrighted (c) material of the original comment or credit authors.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * @copyright   Gregory Mage (Aka Mage)
- * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @author      Gregory Mage (Aka Mage)
+ * File : makepdf.php for publisher
+ * For tcpdf_for_xoops 2.01 and higher
+ * Created by montuy337513 / philodenelle - http://www.chg-web.org
  */
 
-//use tecnickcom\tcpdf;
+use \Xmf\Request;
 
-require_once __DIR__ . '/../../../mainfile.php';
+error_reporting(E_ALL);
 
-require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
-//include __DIR__ . '/../fpdf/phpToPDF.php';
-include __DIR__ . '/../admin/admin_header.php';
+include_once __DIR__ . '/header.php';
 
-$account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
-$date_start = TdmmoneyUtility::cleanVars($_REQUEST, 'date_start', 0, 'int');
-$date_end   = TdmmoneyUtility::cleanVars($_REQUEST, 'date_end', 0, 'int');
+$account_id = Request::getInt('account_id', 0, 'GET');
+$date_start = Request::getInt('date_start', -1, 'GET');
+$date_end   = Request::getInt('date_end', -1, 'GET');
 
 if ($account_id == 0) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
@@ -35,12 +24,19 @@ $perm_pdf = $gpermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->
 if ($perm_pdf === false) {
     redirect_header('../index.php', 2, _NOPERM);
 }
+//2.5.8
+require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
+
+xoops_loadLanguage('main', PUBLISHER_DIRNAME);
+
+
+
 // Génération du pdf
 //$pdf = new phpToPDF();
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
 $pdf->AddPage();
 
-$pdf->startPageNums();
+//$pdf->startPageNums();
 
 // Définition des propriétés du tableau.
 $proprietesTableau = array(
@@ -173,67 +169,50 @@ foreach (array_keys($operation_balance_arr) as $i) {
     $operation_balance[$i] = $balance;
 }
 
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(5);
-$pdf->Cell(100, 8, $account->getVar('account_bank'), 0, 1, 'L');
-$pdf->Cell(5);
-$pdf->MultiCell(100, 5, str_replace('<br>', "\n", $account->getVar('account_adress')), 0, 'L', 0);
-$pdf->Cell(5);
-$pdf->Cell(10, 8, '', 0, 1, 'L');
-$pdf->Cell(5);
-$pdf->SetFont('Arial', 'B', 14);
-$pdf->Cell(100, 8, _AM_TDMMONEY_PDF_STATEMENT . ' ' . formatTimestamp($date_start, 's') . ' ' . _AM_TDMMONEY_PDF_TO . ' ' . formatTimestamp($date_end, 's'), 0, 1, 'L');
-$pdf->Cell(5);
-$pdf->Cell(10, 5, '', 0, 1, 'L');
-$pdf->Cell(5);
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(100, 8, _AM_TDMMONEY_OPERATION_BALANCE . ' ' . $balance . ' ' . $account->getVar('account_currency'), 0, 1, 'L');
-$pdf->Cell(5);
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(190, 8, _AM_TDMMONEY_PDF_ACCOUNT . ': ' . $account->getVar('account_name') . ' ' . _AM_TDMMONEY_PDF_CURRENCY . ' ' . $account->getVar('account_currency'), 0, 1, 'R');
 
-$j = 0;
-foreach (array_keys($operation_arr) as $i) {
-    $contenuTableau[$j] = formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's');
-    ++$j;
-    if ($operation_arr[$i]->getVar('operation_sender') == 0) {
-        if ($operation_arr[$i]->getVar('operation_outsender') == '') {
-            $contenuTableau[$j] = utf8_decode(XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1));
-        } else {
-            $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('operation_outsender'));
-        }
-    } else {
-        $contenuTableau[$j] = utf8_decode(XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1));
-    }
-    ++$j;
-    $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('cat_title'));
-    ++$j;
-    $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('operation_description'));
-    ++$j;
-    $contenuTableau[$j] = $operation_arr[$i]->getVar('operation_type') == 1 ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
-    ++$j;
-    $contenuTableau[$j] = $operation_arr[$i]->getVar('operation_type') == 2 ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
-    ++$j;
-    $contenuTableau[$j] = '[R]' . $operation_balance[$i];
-    ++$j;
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
+
+
+//$doc_title  = TdmmoneyUtility::convertCharset($myts->undoHtmlSpecialChars($itemObj->getTitle()));
+//$docSubject = $myts->undoHtmlSpecialChars($categoryObj->name());
+
+//$docKeywords = $myts->undoHtmlSpecialChars($itemObj->meta_keywords());
+if (array_key_exists('rtl', $pdf_data)) {
+    $pdf->setRTL($pdf_data['rtl']);
 }
+// set document information
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor(PDF_AUTHOR);
+$pdf->SetTitle($doc_title);
+$pdf->SetSubject($docSubject);
+//$pdf->SetKeywords(XOOPS_URL . ', '.' by TCPDF_for_XOOPS (chg-web.org), '.$doc_title);
+$pdf->SetKeywords($docKeywords);
 
-$contenuTableau[$j] = _AM_TDMMONEY_OPERATION_REPORT . formatTimestamp($date_start - 86400, 's');
-++$j;
-$contenuTableau[$j] = 'COLSPAN2';
-++$j;
-$contenuTableau[$j] = '';
-++$j;
-$contenuTableau[$j] = '';
-++$j;
-$contenuTableau[$j] = '';
-++$j;
-$contenuTableau[$j] = '';
-++$j;
-$contenuTableau[$j] = '[R]' . $balance_save;
+$firstLine  = TdmmoneyUtility::convertCharset($GLOBALS['xoopsConfig']['sitename']) . ' (' . XOOPS_URL . ')';
+$secondLine = TdmmoneyUtility::convertCharset($GLOBALS['xoopsConfig']['slogan']);
 
-// D'abord le PDF, puis les propriétés globales du tableau.
-// Ensuite, le header du tableau (propriétés et données) puis le contenu (propriétés et données)
-$pdf->drawTableau($pdf, $proprietesTableau, $proprieteHeader, $contenuHeader, $proprieteContenu, $contenuTableau);
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $firstLine, $secondLine);
+$pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $firstLine, $secondLine, array(0, 64, 255), array(0, 64, 128));
 
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+//set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+//set auto page breaks
+$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+
+$pdf->setHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); //set image scale factor
+
+//2.5.8
+$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+$pdf->setFooterData($tc = array(0, 64, 0), $lc = array(0, 64, 128));
+
+//initialize document
+$pdf->Open();
+$pdf->AddPage();
+$pdf->writeHTML($content, true, 0, true, 0);
 $pdf->Output();

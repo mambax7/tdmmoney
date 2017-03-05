@@ -16,10 +16,10 @@
 
 include_once __DIR__ . '/admin_header.php';
 //On recupere la valeur de l'argument op dans l'URL$
-$op = TDMMoney_CleanVars($_REQUEST, 'op', 'list', 'string');
+$op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
 //$pathIcon16      = \Xmf\Module\Admin::iconUrl('', 16);
 
-$account_id = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
+$account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 
 // Sous-menu
 $menu_account = '<form id="form_account" name="form_account" method="get" action="operation.php">';
@@ -43,11 +43,10 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $operation_admin = new ModuleAdmin();
-        echo $operation_admin->addNavigation('operation.php');
-        $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_NEW, 'operation.php?op=new', 'add');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_OPERATION_NEW, 'operation.php?op=new', 'add');
         echo $menu_account;
-        echo $operation_admin->renderButton('left');
+        $adminObject->displayButton('left');
 
         $criteria = new CriteriaCompo();
         // gestion de l'affichage des comptes
@@ -62,17 +61,17 @@ switch ($op) {
                 $date_end   = strtotime($_REQUEST['date_end']);
             } else {
                 //sans filtre
-                if ($xoopsModuleConfig['TDMMoney_filter'] == 1) {
+                if ($xoopsModuleConfig['TdmMoneyFilter'] == 1) {
                     $date_start = 0;
                     $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
                 }
                 //filtre mois actuel
-                if ($xoopsModuleConfig['TDMMoney_filter'] == 2) {
+                if ($xoopsModuleConfig['TdmMoneyFilter'] == 2) {
                     $date_start = mktime(0, 0, 0, date('m'), 1, date('Y'));
                     $date_end   = mktime(0, 0, 0, date('m'), date('t'), date('Y'));
                 }
                 //filtre année actuelle
-                if ($xoopsModuleConfig['TDMMoney_filter'] == 3) {
+                if ($xoopsModuleConfig['TdmMoneyFilter'] == 3) {
                     $date_start = mktime(0, 0, 0, 1, 1, date('Y'));
                     $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
                 }
@@ -142,9 +141,10 @@ switch ($op) {
             $class = 'odd';
             // début de l'affichage des opérations
             $category_arr = $categoryHandler->getall();
-            $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
+            include_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/tree.php';
+            $mytree       = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
             foreach (array_keys($operation_arr) as $i) {
-                $category = TDMMoney_PathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="../images/deco/arrow.gif"> ');
+                $category = TdmmoneyUtility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="../assets/images/deco/arrow.gif"> ');
                 if ($operation_arr[$i]->getVar('operation_sender') == 0) {
                     if ($operation_arr[$i]->getVar('operation_outsender') == '') {
                         $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
@@ -193,8 +193,8 @@ switch ($op) {
             echo '</table>';
             // export en pdf
             if ($display_account === true) {
-                echo '<br><div align="center">' . _AM_TDMMONEY_OPERATION_EXPORTPDF . ': <a href="../include/operation_pdf.php?account_id=' . $account_id . '&date_start=' . $date_start . '&date_end='
-                     . $date_end . '"><img src="../images/deco/pdf.png"></a></div>';
+                echo '<br><div align="center">' . _AM_TDMMONEY_OPERATION_EXPORTPDF . ': <a href="../makepdf.php?account_id=' . $account_id . '&date_start=' . $date_start . '&date_end='
+                     . $date_end . '"><img src="../assets/images/deco/pdf.png"></a></div>';
             }
         }
         break;
@@ -204,10 +204,9 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $operation_admin = new ModuleAdmin();
-        echo $operation_admin->addNavigation('operation.php');
-        $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
-        echo $operation_admin->renderButton('left');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
+        $adminObject->displayButton('left');
 
         //Affichage du formulaire de création des opérations
         $obj  = $operationHandler->create();
@@ -220,14 +219,13 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $operation_admin = new ModuleAdmin();
-        echo $operation_admin->addNavigation('operation.php');
-        $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_NEW, 'operation.php?op=new', 'add');
-        $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
-        echo $operation_admin->renderButton('left');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_OPERATION_NEW, 'operation.php?op=new', 'add');
+        $adminObject->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
+        $adminObject->displayButton('left');
 
         //Affichage du formulaire de création des opérations
-        $operation_id = TDMMoney_CleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
         $form         = $obj->getForm();
         $form->display();
@@ -238,15 +236,14 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $operation_admin = new ModuleAdmin();
-        echo $operation_admin->addNavigation('operation.php');
-        $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_NEW, 'operation.php?op=new', 'add');
-        $operation_admin->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
-        echo $operation_admin->renderButton('left');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_OPERATION_NEW, 'operation.php?op=new', 'add');
+        $adminObject->addItemButton(_AM_TDMMONEY_OPERATION_LIST, 'operation.php?op=list', 'list');
+        $adminObject->displayButton('left');
 
         global $xoopsModule;
-        $operation_id = TDMMoney_CleanVars($_REQUEST, 'operation_id', 0, 'int');
-        $account_id   = TDMMoney_CleanVars($_REQUEST, 'account_id', 0, 'int');
+        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $account_id   = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
         if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -272,7 +269,7 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        $operation_id = TDMMoney_CleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         if (isset($_REQUEST['operation_id'])) {
             $obj = $operationHandler->get($operation_id);
         } else {

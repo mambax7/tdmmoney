@@ -17,7 +17,7 @@
 include_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
-$op = TDMMoney_CleanVars($_REQUEST, 'op', 'list', 'string');
+$op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
 
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
@@ -26,10 +26,9 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $category_admin = new ModuleAdmin();
-        echo $category_admin->addNavigation('category.php');
-        $category_admin->addItemButton(_AM_TDMMONEY_CAT_NEW, 'category.php?op=new', 'add');
-        echo $category_admin->renderButton('left');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_CAT_NEW, 'category.php?op=new', 'add');
+        $adminObject->displayButton('left');
 
         $criteria = new CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
@@ -45,7 +44,7 @@ switch ($op) {
             echo '</tr>';
             $class = 'odd';
             include_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/tree.php';
-            $mytree             = new TDMObjectTree($category_arr, 'cat_cid', 'cat_pid');
+            $mytree             = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $category_ArrayTree = $mytree->makeArrayTree('cat_title', '<img src="../assets/images/deco/arrow.gif">');
             foreach (array_keys($category_ArrayTree) as $i) {
                 echo '<tr class="' . $class . '">';
@@ -68,10 +67,9 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $category_admin = new ModuleAdmin();
-        echo $category_admin->addNavigation('category.php');
-        $category_admin->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
-        echo $category_admin->renderButton('left');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
+        $adminObject->displayButton('left');
 
         //Affichage du formulaire de création des catégories
         $obj  = $categoryHandler->create();
@@ -84,14 +82,13 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $category_admin = new ModuleAdmin();
-        echo $category_admin->addNavigation('category.php');
-        $category_admin->addItemButton(_AM_TDMMONEY_CAT_NEW, 'category.php?op=new', 'add');
-        $category_admin->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
-        echo $category_admin->renderButton('left');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_CAT_NEW, 'category.php?op=new', 'add');
+        $adminObject->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
+        $adminObject->displayButton('left');
 
         //Affichage du formulaire de création des catégories
-        $cid  = TDMMoney_CleanVars($_REQUEST, 'cid', 0, 'int');
+        $cid  = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
         $obj  = $categoryHandler->get($cid);
         $form = $obj->getForm();
         $form->display();
@@ -102,14 +99,13 @@ switch ($op) {
         //Affichage de la partie haute de l'administration de Xoops
         xoops_cp_header();
 
-        $category_admin = new ModuleAdmin();
-        echo $category_admin->addNavigation('category.php');
-        $category_admin->addItemButton(_AM_TDMMONEY_CAT_NEW, 'category.php?op=new', 'add');
-        $category_admin->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
-        echo $category_admin->renderButton('left');
+        $adminObject->displayNavigation(basename(__FILE__));
+        $adminObject->addItemButton(_AM_TDMMONEY_CAT_NEW, 'category.php?op=new', 'add');
+        $adminObject->addItemButton(_AM_TDMMONEY_CAT_LIST, 'category.php?op=list', 'list');
+        $adminObject->displayButton('left');
 
         global $xoopsModule;
-        $cid = TDMMoney_CleanVars($_REQUEST, 'cid', 0, 'int');
+        $cid = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
         $obj = $categoryHandler->get($cid);
         if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -137,7 +133,7 @@ switch ($op) {
             if (count($category_childcat) > 0) {
                 $message .= _AM_TDMMONEY_CAT_DELSOUSCAT . ' <br><br>';
                 foreach (array_keys($category_childcat) as $i) {
-                    $message .= '<b><span style="color : Red">' . $category_childcat[$i]->getVar('cat_title') . '</span></b><br>';
+                    $message .= '<b><span style="color : Red;">' . $category_childcat[$i]->getVar('cat_title') . '</span></b><br>';
                 }
             } else {
                 $message .= '';
@@ -154,7 +150,7 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        $cid = TDMMoney_CleanVars($_REQUEST, 'cid', 0, 'int');
+        $cid = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
         if (isset($_REQUEST['cid'])) {
             $obj = $categoryHandler->get($cid);
         } else {

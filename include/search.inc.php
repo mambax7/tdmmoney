@@ -20,7 +20,7 @@
  * @return array
  */
 
-function TDMMoney_search($queryarray, $andor, $limit, $offset, $userid)
+function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB;
 
@@ -31,8 +31,8 @@ function TDMMoney_search($queryarray, $andor, $limit, $offset, $userid)
     if ($userid != 0) {
         $sql .= ' AND operation_submitter=' . (int)$userid . ' ';
     }
-    require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/include/functions.php';
-    $access_view = TDMMoney_MygetItemIds('tdmmoney_view', 'TDMMoney');
+    require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/utility.php';
+    $access_view = TdmmoneyUtility::getMygetItemIds('tdmmoney_view', 'TDMMoney');
     if (is_array($access_view) && count($access_view) > 0) {
         $sql .= ' AND operation_account IN (' . implode(',', $access_view) . ') ';
     } else {
@@ -54,7 +54,7 @@ function TDMMoney_search($queryarray, $andor, $limit, $offset, $userid)
     $ret = array();
     $i = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
-        $ret[$i]['image'] = 'images/deco/contact.png';
+        $ret[$i]['image'] = 'assets/images/deco/contact.png';
         $ret[$i]['link']  = 'viewaccount.php?account_id=' . $myrow['operation_account'] . '';
         $ret[$i]['title'] = $myrow['operation_amount'] . '-' . $myrow['operation_description'];
         $ret[$i]['time']  = $myrow['operation_date_created'];

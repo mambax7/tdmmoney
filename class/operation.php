@@ -17,13 +17,13 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * Class TDMMoney_operation
+ * Class TdmMoneyOperation
  */
-class TDMMoney_operation extends XoopsObject
+class TdmMoneyOperation extends XoopsObject
 {
     //Constructor
     /**
-     * TDMMoney_operation constructor.
+     * TdmMoneyOperation constructor.
      */
     public function __construct()
     {
@@ -79,8 +79,8 @@ class TDMMoney_operation extends XoopsObject
         $form->addElement($type, true);
         //choix du compte
         // pour les permissions
-        $accountHandler = xoops_getModuleHandler('tdmmoney_account', 'TDMMoney');
-        $access_account = TDMMoney_MygetItemIds('tdmmoney_submit', 'TDMMoney');
+        $accountHandler = xoops_getModuleHandler('account', 'TDMMoney');
+        $access_account = TdmmoneyUtility::getMygetItemIds('tdmmoney_submit', 'TDMMoney');
         $criteria       = new CriteriaCompo();
         $criteria->setSort('account_name');
         $criteria->setOrder('ASC');
@@ -106,13 +106,25 @@ class TDMMoney_operation extends XoopsObject
         $sender->addElement($outsender);
         $form->addElement($sender);
         //choix de la catégorie
-        $categoryHandler = xoops_getModuleHandler('tdmmoney_category', 'TDMMoney');
+        $categoryHandler = xoops_getModuleHandler('category', 'tdmmoney');
         $criteria        = new CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
         $category_arr = $categoryHandler->getall($criteria);
         $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
+//        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
+
+
+        if (TdmMoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
+            $catSelect = $mytree->makeSelectElement('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false, 0, '', _AM_TDMMONEY_OPERATION_CATEGORY);
+            $form->addElement($catSelect);
+        } else {
+            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);        }
+
+
+
+
+
         //date
         $form->addElement(new XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_DATE, 'operation_date', '', $this->getVar('operation_date')), true);
         //montant
@@ -125,7 +137,7 @@ class TDMMoney_operation extends XoopsObject
         $editor_configs['cols']   = 80;
         $editor_configs['width']  = '100%';
         $editor_configs['height'] = '400px';
-        $editor_configs['editor'] = $xoopsModuleConfig['TDMMoney_editor'];
+        $editor_configs['editor'] = $xoopsModuleConfig['TdmMoneyEditor'];
         $form->addElement(new XoopsFormEditor(_AM_TDMMONEY_OPERATION_DESCRIPTION, 'operation_description', $editor_configs));
         //pour enregistrer le formulaire
         $form->addElement(new XoopsFormHidden('op', 'save'));
@@ -141,16 +153,16 @@ class TDMMoney_operation extends XoopsObject
 }
 
 /**
- * Class TDMMoneytdmmoney_operationHandler
+ * Class TdmMoneyOperationHandler
  */
-class TDMMoneytdmmoney_operationHandler extends XoopsPersistableObjectHandler
+class TdmMoneyOperationHandler extends XoopsPersistableObjectHandler
 {
     /**
-     * TDMMoneytdmmoney_operationHandler constructor.
+     * TdmMoneyOperationHandler constructor.
      * @param null|object|XoopsDatabase $db
      */
     public function __construct($db)
     {
-        parent::__construct($db, 'tdmmoney_operation', 'tdmmoney_operation', 'operation_id', 'operation_amount');
+        parent::__construct($db, 'tdmmoney_operation', 'TdmMoneyOperation', 'operation_id', 'operation_amount');
     }
 }

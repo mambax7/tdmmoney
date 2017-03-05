@@ -17,13 +17,13 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * Class TDMMoney_account
+ * Class TdmMoneyAccount
  */
-class TDMMoney_account extends XoopsObject
+class TdmMoneyAccount extends XoopsObject
 {
     //Constructor
     /**
-     * TDMMoney_account constructor.
+     * TdmMoneyAccount constructor.
      */
     public function __construct()
     {
@@ -79,9 +79,11 @@ class TDMMoney_account extends XoopsObject
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_ACCOUNT_BALANCE, 'account_balance', 10, 10, $this->getVar('account_balance')), true);
         //devise
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_ACCOUNT_CURRENCY, 'account_currency', 10, 10, $this->getVar('account_currency')), true);
-        //ppermissions
+        //permissions
+        /* @var $memberHandler XoopsMemberHandler  */
         $memberHandler = xoops_getHandler('member');
         $group_list    = $memberHandler->getGroupList();
+        /* @var $gpermHandler XoopsGroupPermHandler  */
         $gpermHandler  = xoops_getHandler('groupperm');
         $full_list     = array_keys($group_list);
         global $xoopsModule;
@@ -119,14 +121,14 @@ class TDMMoney_account extends XoopsObject
 /**
  * Class TDMMoneytdmmoney_accountHandler
  */
-class TDMMoneytdmmoney_accountHandler extends XoopsPersistableObjectHandler
+class TdmMoneyAccountHandler extends XoopsPersistableObjectHandler
 {
     /**
-     * TDMMoneytdmmoney_accountHandler constructor.
+     * TdmMoneyAccountHandler constructor.
      * @param null|object|XoopsDatabase $db
      */
     public function __construct($db)
     {
-        parent::__construct($db, 'tdmmoney_account', 'tdmmoney_account', 'account_id', 'account_name');
+        parent::__construct($db, 'tdmmoney_account', 'TdmMoneyAccount', 'account_id', 'account_name');
     }
 }
