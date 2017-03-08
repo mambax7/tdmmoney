@@ -26,6 +26,7 @@
 - fixed bugs in install script (zap_english/mamba)
 - fixed bugs with '<{$module_url}>/' (mamba)
 - added blank.png (mamba)
+- fix sub-category bug (XoopsFormSelect) (Zap_English/geekwright)
 
 -------------------------------------------------
 Version: 1.1

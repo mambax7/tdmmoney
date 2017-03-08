@@ -42,5 +42,3 @@ define('_MD_TDMMONEY_VIEWACCOUNT_WITHDRAW', 'Withdrawal');
 //1.2
 define('_MD_TDMMONEY_ERROR_NO_PDF',
        'TCPF for XOOPS not installed in /class/libraries/vendor/tecnickcom/tcpdf/ <br> Please read the /docs/readme.txt or click on the Help tab to learn how to get it!');
-
-
