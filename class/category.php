@@ -77,15 +77,14 @@ class TdmMoneyCategory extends XoopsObject
         $criteria->setOrder('ASC');
         $category_arr = $categoryHandler->getall($criteria);
         $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-//        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
 
+        //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
         if (TdmmoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
-            $catSelect = new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0, '', ''));
+            $catSelect = $mytree->makeSelectElement('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false, 0, '', _AM_TDMMONEY_OPERATION_CATEGORY);
             $form->addElement($catSelect);
         } else {
-            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));        }
-
-
+            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
+        }
 
         //poids de la catégorie
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_CAT_WEIGHT, 'cat_weight', 5, 5, $this->getVar('cat_weight', 'e')), true);
