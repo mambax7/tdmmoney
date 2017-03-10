@@ -14,6 +14,8 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use \Xmf\Request;
+
 include_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
@@ -159,10 +161,10 @@ switch ($op) {
         $erreur         = false;
         $message_erreur = '';
         // Récupération des variables:
-        $obj->setVar('cat_pid', $_POST['cat_pid']);
-        $obj->setVar('cat_title', $_POST['cat_title']);
-        $obj->setVar('cat_desc', $_POST['cat_desc']);
-        $obj->setVar('cat_weight', $_POST['cat_weight']);
+        $obj->setVar('cat_pid', Request::getInt('cat_pid', 0, 'POST'));
+        $obj->setVar('cat_title',  Request::getString('cat_title', '', 'POST'));
+        $obj->setVar('cat_desc',  Request::getString('cat_desc', '', 'POST'));
+        $obj->setVar('cat_weight',  Request::getString('cat_weight', '', 'POST'));
         //vérification que cat_weight soit un entier
         if ((int)$_REQUEST['cat_weight'] == 0 && $_REQUEST['cat_weight'] != '0') {
             $erreur         = true;
@@ -183,7 +185,7 @@ switch ($op) {
             }
             echo $obj->getHtmlErrors();
         }
-        $form =& $obj->getForm();
+        $form = $obj->getForm();
         $form->display();
         break;
 }

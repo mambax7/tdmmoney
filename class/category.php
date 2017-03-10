@@ -80,10 +80,10 @@ class TdmMoneyCategory extends XoopsObject
 
         //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
         if (TdmmoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
-            $catSelect = $mytree->makeSelectElement('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false, 0, '', _AM_TDMMONEY_OPERATION_CATEGORY);
+            $catSelect = $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), false, 0, '', _AM_TDMMONEY_CAT_SUBCAT);
             $form->addElement($catSelect);
         } else {
-            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
+            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), false)), true);
         }
 
         //poids de la catégorie

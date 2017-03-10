@@ -46,7 +46,7 @@ define('_AM_TDMMONEY_CAT_ERREUR_WEIGHT', 'The weight must be a number');
 define('_AM_TDMMONEY_CAT_LIST', 'List of categories');
 define('_AM_TDMMONEY_CAT_NEW', 'New Category');
 define('_AM_TDMMONEY_CAT_SAVE', 'The category was saved');
-define('_AM_TDMMONEY_CAT_SUBCAT', 'Sub Category');
+define('_AM_TDMMONEY_CAT_SUBCAT', 'Sub Category of:');
 define('_AM_TDMMONEY_CAT_TITLE', 'Category Title');
 define('_AM_TDMMONEY_CAT_WEIGHT', 'Category Weight');
 define('_AM_TDMMONEY_CAT_WEIGHT2', 'Weight');
