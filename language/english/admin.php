@@ -47,6 +47,7 @@ define('_AM_TDMMONEY_CAT_LIST', 'List of categories');
 define('_AM_TDMMONEY_CAT_NEW', 'New Category');
 define('_AM_TDMMONEY_CAT_SAVE', 'The category was saved');
 define('_AM_TDMMONEY_CAT_SUBCAT', 'Sub Category');
+define('_AM_TDMMONEY_CAT_PARENT', 'Parent Category');
 define('_AM_TDMMONEY_CAT_TITLE', 'Category Title');
 define('_AM_TDMMONEY_CAT_WEIGHT', 'Category Weight');
 define('_AM_TDMMONEY_CAT_WEIGHT2', 'Weight');
@@ -125,4 +126,5 @@ define('_AM_TDMMONEY_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module'
 define('_AM_TDMMONEY_ADD_SAMPLEDATA', 'Add Sample Data');
 define('_AM_TDMMONEY_SAMPLEDATA_SUCCESS', 'Sample Data Upload Success');
 define('_AM_TDMMONEY_SAMPLEDATA_FAILED', 'Sample Data Upload Failed');
-
+define('_AM_TDMMONEY_ERROR_NO_PDF',
+    'TCPDF for XOOPS not installed in /class/libraries/vendor/tecnickcom/tcpdf/<br>Please read the /docs/readme.txt or click on the Help tab to learn how to get it!');

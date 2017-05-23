@@ -56,7 +56,7 @@ if ($count_operation == 0) {
 }
 
 if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
-    $adminObject->addConfigBoxLine('<span style="color:red;"><img src="' . XOOPS_URL . '/Frameworks/moduleclasses/icons/16/0.png" alt="!" />' . _MD_TDMMONEY_ERROR_NO_PDF . '</span>', 'default');
+    $adminObject->addConfigBoxLine('<span style="color:red;"><img src="' . XOOPS_URL . '/Frameworks/moduleclasses/icons/16/0.png" alt="!" />' . _AM_TDMMONEY_ERROR_NO_PDF . '</span>', 'default');
 }
 
 //$adminObject = \Xmf\Module\Admin::getInstance();
