@@ -16,7 +16,7 @@ Detailed instructions on installing modules are available in the XOOPS Operation
 https://www.gitbook.com/book/xoops/xoops-operations-guide/details"
 
 2) PDF in XOOPS 2.5.8
-If you want to use the PDF feature in Publisher, you will need to copy the TCPDF library to your XOOPS folder:
+If you want to use the PDF feature in TdmMoney, you will need to copy the TCPDF library to your XOOPS folder:
 
 /class/libraries/vendor/
 
@@ -44,7 +44,7 @@ and then run the command:
 
 Your PDF should now work.
 
-Enjoy your XOOPS Publisher module!
+Enjoy your XOOPS TdmMoney module!
 
 Your XOOPS Development Team
 
