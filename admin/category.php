@@ -14,8 +14,6 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-use \Xmf\Request;
-
 include_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
@@ -165,19 +163,12 @@ switch ($op) {
         $erreur         = false;
         $message_erreur = '';
         // Récupération des variables:
-<<<<<<< HEAD
-        $obj->setVar('cat_pid', Request::getInt('cat_pid', 0, 'POST'));
-        $obj->setVar('cat_title',  Request::getString('cat_title', '', 'POST'));
-        $obj->setVar('cat_desc',  Request::getString('cat_desc', '', 'POST'));
-        $obj->setVar('cat_weight',  Request::getString('cat_weight', '', 'POST'));
-=======
         $cat_weight = \Xmf\Request::getInt('cat_weight', 0, 'POST');
         $cat_pid    = \Xmf\Request::getInt('cat_pid', 0, 'POST');
         $obj->setVar('cat_pid', $cat_pid);
         $obj->setVar('cat_title', \Xmf\Request::getString('cat_title', '', 'POST'));
         $obj->setVar('cat_desc', \Xmf\Request::getString('cat_desc', '', 'POST'));
         $obj->setVar('cat_weight', $cat_weight);
->>>>>>> da214e388a4edef14aaf759176cab2ebb9fd6585
         //vérification que cat_weight soit un entier
         if (0 === (int)$cat_weight && '0' != $_POST['cat_weight']) {
             $erreur         = true;

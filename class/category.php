@@ -75,28 +75,16 @@ class TdmMoneyCategory extends XoopsObject
         $criteria        = new CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
-<<<<<<< HEAD
-        $category_arr = $categoryHandler->getall($criteria);
-        $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-
-        //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
-        if (TdmmoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
-            $catSelect = $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), false, 0, '', _AM_TDMMONEY_CAT_SUBCAT);
-            $form->addElement($catSelect);
-        } else {
-            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), false)), true);
-=======
         $category_arr = $categoryHandler->getAll($criteria);
         if (!empty($category_arr)) { // there are other categories so display parent selection box
-            $mytree = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-            //$form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
-            if (TdmmoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
+        $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
+        //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
+        if (TdmmoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
                 $catSelect = new XoopsFormLabel(_AM_TDMMONEY_CAT_PARENT, $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0)->render());
-                $form->addElement($catSelect);
-            } else {
+            $form->addElement($catSelect);
+        } else {
                 $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_PARENT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
             }
->>>>>>> da214e388a4edef14aaf759176cab2ebb9fd6585
         }
 
         //poids de la catégorie
