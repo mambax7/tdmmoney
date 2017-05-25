@@ -39,6 +39,9 @@ define('_MD_TDMMONEY_VIEWACCOUNT_REPORT', 'Balance Report to ');
 define('_MD_TDMMONEY_VIEWACCOUNT_START', 'Start');
 define('_MD_TDMMONEY_VIEWACCOUNT_SENDER', 'Sender');
 define('_MD_TDMMONEY_VIEWACCOUNT_WITHDRAW', 'Withdrawal');
+<<<<<<< HEAD
 //1.2
 define('_MD_TDMMONEY_ERROR_NO_PDF',
        'TCPF for XOOPS not installed in /class/libraries/vendor/tecnickcom/tcpdf/ <br> Please read the /docs/readme.txt or click on the Help tab to learn how to get it!');
+=======
+>>>>>>> da214e388a4edef14aaf759176cab2ebb9fd6585

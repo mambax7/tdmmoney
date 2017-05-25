@@ -152,33 +152,52 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
+        $cid = \Xmf\Request::getInt('cid', 0, 'POST');
+        $obj = $categoryHandler->get($cid);
+        /*
         $cid = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
         if (isset($_REQUEST['cid'])) {
             $obj = $categoryHandler->get($cid);
         } else {
             $obj = $categoryHandler->create();
         }
+        */
         $erreur         = false;
         $message_erreur = '';
         // Récupération des variables:
+<<<<<<< HEAD
         $obj->setVar('cat_pid', Request::getInt('cat_pid', 0, 'POST'));
         $obj->setVar('cat_title',  Request::getString('cat_title', '', 'POST'));
         $obj->setVar('cat_desc',  Request::getString('cat_desc', '', 'POST'));
         $obj->setVar('cat_weight',  Request::getString('cat_weight', '', 'POST'));
+=======
+        $cat_weight = \Xmf\Request::getInt('cat_weight', 0, 'POST');
+        $cat_pid    = \Xmf\Request::getInt('cat_pid', 0, 'POST');
+        $obj->setVar('cat_pid', $cat_pid);
+        $obj->setVar('cat_title', \Xmf\Request::getString('cat_title', '', 'POST'));
+        $obj->setVar('cat_desc', \Xmf\Request::getString('cat_desc', '', 'POST'));
+        $obj->setVar('cat_weight', $cat_weight);
+>>>>>>> da214e388a4edef14aaf759176cab2ebb9fd6585
         //vérification que cat_weight soit un entier
-        if ((int)$_REQUEST['cat_weight'] == 0 && $_REQUEST['cat_weight'] != '0') {
+        if (0 === (int)$cat_weight && '0' != $_POST['cat_weight']) {
             $erreur         = true;
             $message_erreur = _AM_TDMMONEY_CAT_ERREUR_WEIGHT . '<br>';
         }
         //vérification que pid ne soit pas égale à cid
+        if (!$obj->isNew() && $cid == $cat_pid) {
+            $erreur         = true;
+            $message_erreur .= _AM_TDMMONEY_CAT_ERREUR_CAT;
+        }
+        /*
         if (isset($_REQUEST['cid'])) {
             if ($_REQUEST['cid'] == $_REQUEST['cat_pid']) {
                 $erreur         = true;
                 $message_erreur .= _AM_TDMMONEY_CAT_ERREUR_CAT;
             }
         }
-        if ($erreur === true) {
-            echo '<div class="errorMsg" style="text-align: left;">' . $message_erreur . '</div>';
+        */
+        if (true === $erreur) {
+            echo '<div class="errorMsg left">' . $message_erreur . '</div>';
         } else {
             if ($categoryHandler->insert($obj)) {
                 redirect_header('category.php?op=list', 1, _AM_TDMMONEY_CAT_SAVE);
