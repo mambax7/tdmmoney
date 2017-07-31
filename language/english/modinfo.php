@@ -40,7 +40,7 @@ define('_MI_TDMMONEY_SUBMIT', 'Add an operation');
 //1.2
 //Help
 define('_MI_TDMMONEY_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_TDMMONEY_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_TDMMONEY_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_TDMMONEY_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_TDMMONEY_OVERVIEW', 'Overview');
 
@@ -52,5 +52,4 @@ define('_MI_TDMMONEY_LICENSE', 'License');
 define('_MI_TDMMONEY_SUPPORT', 'Support');
 define('_MI_TDMMONEY_SHOW_SAMPLE_DATA', 'Show "Load Sample Data" Button');
 define('_MI_TDMMONEY_DISPLAY_PDF', 'Display PDF Icon');
-define('_MI_TDMMONEY_DISPLAY_PDF_DSC',
-       'Select Yes to show PDF icon and allow users to create PDF files <br>Make sure you have the TCPDF library installed. Please read the "readme.txt" file in /docs folder for info how to get it.');
+define('_MI_TDMMONEY_DISPLAY_PDF_DSC', 'Select Yes to show PDF icon and allow users to create PDF files <br>Make sure you have the TCPDF library installed. Please read the "readme.txt" file in /docs folder for info how to get it.');

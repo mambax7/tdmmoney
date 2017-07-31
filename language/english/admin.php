@@ -126,5 +126,4 @@ define('_AM_TDMMONEY_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module'
 define('_AM_TDMMONEY_ADD_SAMPLEDATA', 'Add Sample Data');
 define('_AM_TDMMONEY_SAMPLEDATA_SUCCESS', 'Sample Data Upload Success');
 define('_AM_TDMMONEY_SAMPLEDATA_FAILED', 'Sample Data Upload Failed');
-define('_AM_TDMMONEY_ERROR_NO_PDF',
-    'TCPDF for XOOPS not installed in /class/libraries/vendor/tecnickcom/tcpdf/<br>Please read the /docs/readme.txt or click on the Help tab to learn how to get it!');
+define('_AM_TDMMONEY_ERROR_NO_PDF', 'TCPDF for XOOPS not installed in /class/libraries/vendor/tecnickcom/tcpdf/<br>Please read the /docs/readme.txt or click on the Help tab to learn how to get it!');
