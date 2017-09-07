@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once XOOPS_ROOT_PATH . '/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/class/tree.php';
 
 /**
  * Class TdmObjectTree
@@ -62,7 +62,7 @@ class TdmObjectTree extends XoopsObjectTree
      */
     public function makeArrayTree($fieldName, $prefix = '-', $key = 0)
     {
-        $ret = array();
+        $ret = [];
         $this->_makeArrayTreeOptions($fieldName, $key, $ret, $prefix);
 
         return $ret;

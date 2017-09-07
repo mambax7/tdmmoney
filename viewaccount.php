@@ -14,22 +14,20 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_viewaccount.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 
 $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 
 if ($account_id == 0) {
     redirect_header('index.php', 2, _MD_TDMMONEY_VIEWACCOUNT_REDIRECT_NOACCOUNT);
-    exit();
 }
 
 // pour les permissions
 if (!$gpermHandler->checkRight('tdmmoney_view', $account_id, $groups, $xoopsModule->getVar('mid'))) {
     redirect_header('index.php', 2, _NOPERM);
-    exit();
 }
 
 // affichage des filtres
@@ -89,14 +87,12 @@ if (count($operation_arr) > 0) {
     $operation_ammount = $operationHandler->getall($criteria_amount);
     $balance_ammount   = 0;
     foreach (array_keys($operation_ammount) as $i) {
-        $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount
-                                                                                                                                                           + $operation_ammount[$i]->getVar('operation_amount');
+        $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
     }
     $balance      += $balance_ammount;
     $balance_save = $balance;
     foreach (array_keys($operation_balance_arr) as $i) {
-        $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance
-                                                                                                                                                                 + $operation_balance_arr[$i]->getVar('operation_amount');
+        $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
         $operation_balance[$i] = $balance;
     }
     // début de l'affichage des opérations
@@ -115,18 +111,34 @@ if (count($operation_arr) > 0) {
         }
         $withdraw                  = $operation_arr[$i]->getVar('operation_type') == 1 ? $operation_arr[$i]->getVar('operation_amount') : '';
         $deposit                   = $operation_arr[$i]->getVar('operation_type') == 2 ? $operation_arr[$i]->getVar('operation_amount') : '';
-        $display_operation_balance = $operation_balance[$i] < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $operation_balance[$i] . '</span>' : '<span style="font-weight: bold">'
-                                                                                                                                                            . $operation_balance[$i] . '</span>';
+        $display_operation_balance = $operation_balance[$i] < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $operation_balance[$i] . '</span>' : '<span style="font-weight: bold">' . $operation_balance[$i] . '</span>';
 
         //action selon les permissions
         $perm_modif = $gpermHandler->checkRight('tdmmoney_ac', 8, $groups, $xoopsModule->getVar('mid')) ? true : false;
         $xoopsTpl->assign('perm_modif', $perm_modif);
         if ($perm_modif === true) {
-            $action = '<a href="submit.php?op=edit&operation_id=' . $i . '"><img src="' . $pathIcon16 . '/edit.png" alt="' . _MD_TDMMONEY_EDIT . '" title="' . _MD_TDMMONEY_EDIT . '"></a> '
-                      . '<a href="submit.php?op=del&operation_id=' . $i . '&account_id=' . $account_id . '"><img src="' . $pathIcon16 . '/delete.png" alt="' . _MD_TDMMONEY_DEL . '" title="' . _MD_TDMMONEY_DEL
+            $action = '<a href="submit.php?op=edit&operation_id='
+                      . $i
+                      . '"><img src="'
+                      . $pathIcon16
+                      . '/edit.png" alt="'
+                      . _MD_TDMMONEY_EDIT
+                      . '" title="'
+                      . _MD_TDMMONEY_EDIT
+                      . '"></a> '
+                      . '<a href="submit.php?op=del&operation_id='
+                      . $i
+                      . '&account_id='
+                      . $account_id
+                      . '"><img src="'
+                      . $pathIcon16
+                      . '/delete.png" alt="'
+                      . _MD_TDMMONEY_DEL
+                      . '" title="'
+                      . _MD_TDMMONEY_DEL
                       . '"></a>';
         }
-        $xoopsTpl->append('operation', array(
+        $xoopsTpl->append('operation', [
             'operation_date'        => formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's'),
             'operation_sender'      => $sender,
             'operation_category'    => $category,
@@ -135,7 +147,7 @@ if (count($operation_arr) > 0) {
             'operation_deposit'     => $deposit,
             'operation_balance'     => $display_operation_balance . ' ' . $operation_arr[$i]->getVar('account_currency'),
             'operation_action'      => $action
-        ));
+        ]);
     }
     //Solde initial
     $xoopsTpl->assign('operation_report', _MD_TDMMONEY_VIEWACCOUNT_REPORT . formatTimestamp($date_start - 86400, 's'));
@@ -163,4 +175,4 @@ if (count($operation_arr) > 0) {
     $xoopsTpl->assign('xoops_pagetitle', $account_balance->getVar('account_name') . '&nbsp;-&nbsp;' . $xoopsModule->name());
 }
 
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

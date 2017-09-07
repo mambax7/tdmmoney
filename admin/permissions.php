@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 //Affichage de la partie haute de l'administration de Xoops
 xoops_cp_header();
 
@@ -23,16 +23,26 @@ $adminObject->displayNavigation(basename(__FILE__));
 
 $permission = TdmmoneyUtility::cleanVars($_POST, 'permission', 1, 'int');
 
-$selected                  = array(
+$selected                  = [
     '',
     '',
     ''
-);
+];
 $selected[$permission - 1] = ' selected';
 
-echo "<form method='post' name='fselperm' action='permissions.php'><table border='0'><tr><td><select name='permission' onChange='document.fselperm.submit()'><option value='1'" . $selected[0] . '>'
-     . _AM_TDMMONEY_PERMISSIONS_OTHER . "</option><option value='2'" . $selected[1] . '>' . _AM_TDMMONEY_PERMISSIONS_VIEW . "</option><option value='3'" . $selected[2] . '>'
-     . _AM_TDMMONEY_PERMISSIONS_SUBMIT . "</option></select></td></tr><tr><td><input type='submit' name='go'></tr></table></form>";
+echo "<form method='post' name='fselperm' action='permissions.php'><table border='0'><tr><td><select name='permission' onChange='document.fselperm.submit()'><option value='1'"
+     . $selected[0]
+     . '>'
+     . _AM_TDMMONEY_PERMISSIONS_OTHER
+     . "</option><option value='2'"
+     . $selected[1]
+     . '>'
+     . _AM_TDMMONEY_PERMISSIONS_VIEW
+     . "</option><option value='3'"
+     . $selected[2]
+     . '>'
+     . _AM_TDMMONEY_PERMISSIONS_SUBMIT
+     . "</option></select></td></tr><tr><td><input type='submit' name='go'></tr></table></form>";
 
 $moduleId = $xoopsModule->getVar('mid');
 
@@ -41,11 +51,11 @@ switch ($permission) {
         $formTitle             = _AM_TDMMONEY_PERMISSIONS_OTHER;
         $permissionName        = 'tdmmoney_ac';
         $permissionDescription = _AM_TDMMONEY_PERMISSIONS_OTHER_DSC;
-        $global_perms_array    = array(
+        $global_perms_array    = [
             '4'  => _AM_TDMMONEY_PERMISSIONS_4,
             '8'  => _AM_TDMMONEY_PERMISSIONS_8,
             '16' => _AM_TDMMONEY_PERMISSIONS_16
-        );
+        ];
         break;
     case 2: // View permission
         $formTitle             = _AM_TDMMONEY_PERMISSIONS_VIEW;
@@ -77,4 +87,4 @@ echo $permissionsForm->render();
 echo "<br><br><br><br>\n";
 unset($permissionsForm);
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    XOOPS Project http://xoops.org/
+ * @copyright    XOOPS Project https://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
@@ -60,12 +60,10 @@ function xoops_module_pre_install_tdmmoney(XoopsModule $module)
  */
 function xoops_module_install_tdmmoney(XoopsModule $module)
 {
-    include_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    include_once dirname(__DIR__) . '/include/config.php';
+    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+    require_once dirname(__DIR__) . '/include/config.php';
 
-    if (!isset($moduleDirName)) {
-        $moduleDirName = basename(dirname(__DIR__));
-    }
+    $moduleDirName = basename(dirname(__DIR__));
 
     if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
     } else {
@@ -76,7 +74,7 @@ function xoops_module_install_tdmmoney(XoopsModule $module)
     $moduleHelper->loadLanguage('admin');
     $moduleHelper->loadLanguage('modinfo');
 
-    $configurator = new ModuleConfigurator();
+    $configurator = new TdmmoneyConfigurator();
     $classUtil    = ucfirst($moduleDirName) . 'Utility';
     if (!class_exists($classUtil)) {
         xoops_load('utility', $moduleDirName);
@@ -84,9 +82,9 @@ function xoops_module_install_tdmmoney(XoopsModule $module)
 
     // default Permission Settings ----------------------
     global $xoopsModule;
-    $moduleId     = $xoopsModule->getVar('mid');
-    $moduleId2    = $moduleHelper->getModule()->mid();
-    /* @var $gpermHandler XoopsGroupPermHandler  */
+    $moduleId  = $xoopsModule->getVar('mid');
+    $moduleId2 = $moduleHelper->getModule()->mid();
+    /* @var $gpermHandler XoopsGroupPermHandler */
     $gpermHandler = xoops_getHandler('groupperm');
     // access rights ------------------------------------------
     $gpermHandler->addRight($moduleDirName . '_approve', 1, XOOPS_GROUP_ADMIN, $moduleId);

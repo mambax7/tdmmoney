@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
@@ -18,13 +18,11 @@
  * @author       Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 // Display Admin header
 xoops_cp_header();
 
-if (!isset($moduleDirName)) {
-    $moduleDirName = basename(dirname(__DIR__));
-}
+$moduleDirName = basename(dirname(__DIR__));
 
 //compte le nombre de comptes
 $count_account = $accountHandler->getCount();
@@ -56,11 +54,11 @@ if ($count_operation == 0) {
 }
 
 if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
-    $adminObject->addConfigBoxLine('<span style="color:red;"><img src="' . XOOPS_URL . '/Frameworks/moduleclasses/icons/16/0.png" alt="!" />' . _AM_TDMMONEY_ERROR_NO_PDF . '</span>', 'default');
+    $adminObject->addConfigBoxLine('<span style="color:red;"><img src="' . XOOPS_URL . '/Frameworks/moduleclasses/icons/16/0.png" alt="!">' . _AM_TDMMONEY_ERROR_NO_PDF . '</span>', 'default');
 }
 
 //$adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 $adminObject->displayIndex();
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

@@ -2,12 +2,12 @@
 <div align="right">
     <form name="nav" action="journal.php" method="post">
         <{if $perm_add != ""}>
-        <input type="button" value="<{$smarty.const._MD_TDMMONEY_VIEWACCOUNT_ADD}>" onclick="location='submit.php'" />
+        <input type="button" value="<{$smarty.const._MD_TDMMONEY_VIEWACCOUNT_ADD}>" onclick="location='submit.php'">
         <{/if}>
         <{if $perm_modif != ""}>
-        <{*<input type="button" value="<{$smarty.const._MD_TDMMONEY_VIEWACCOUNT_EXPORTPDF}>" onclick="location='include/operation_pdf.php?account_id=<{$account_id}>&date_start=<{$date_start}>&date_end=<{$date_end}>'" />*}>
+        <{*<input type="button" value="<{$smarty.const._MD_TDMMONEY_VIEWACCOUNT_EXPORTPDF}>" onclick="location='include/operation_pdf.php?account_id=<{$account_id}>&date_start=<{$date_start}>&date_end=<{$date_end}>'">*}>
         <{if $displayPdf == 1}>
-            <input type="button" value="<{$smarty.const._MD_TDMMONEY_VIEWACCOUNT_EXPORTPDF}>" onclick="location='makepdf.php?account_id=<{$account_id}>&date_start=<{$date_start}>&date_end=<{$date_end}>'" />
+            <input type="button" value="<{$smarty.const._MD_TDMMONEY_VIEWACCOUNT_EXPORTPDF}>" onclick="location='makepdf.php?account_id=<{$account_id}>&date_start=<{$date_start}>&date_end=<{$date_end}>'">
         <{/if}>
         <{/if}>
     </form>

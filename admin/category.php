@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
@@ -43,7 +43,7 @@ switch ($op) {
             echo '<th align="center" width="10%">' . _AM_TDMMONEY_ACTION . '</th>';
             echo '</tr>';
             $class = 'odd';
-            include_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/tree.php';
+            require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/tree.php';
             $mytree             = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $category_ArrayTree = $mytree->makeArrayTree('cat_title', '<img src="../assets/images/deco/arrow.gif">');
             foreach (array_keys($category_ArrayTree) as $i) {
@@ -138,10 +138,11 @@ switch ($op) {
             } else {
                 $message .= '';
             }
-            xoops_confirm(array('ok'  => 1,
-                                'cid' => $cid,
-                                'op'  => 'del'
-                          ), $_SERVER['REQUEST_URI'], sprintf(_AM_TDMMONEY_SUREDEL, $obj->getVar('cat_title')) . '<br><br>' . $message);
+            xoops_confirm([
+                              'ok'  => 1,
+                              'cid' => $cid,
+                              'op'  => 'del'
+                          ], $_SERVER['REQUEST_URI'], sprintf(_AM_TDMMONEY_SUREDEL, $obj->getVar('cat_title')) . '<br><br>' . $message);
         }
         break;
 
@@ -200,4 +201,4 @@ switch ($op) {
         break;
 }
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

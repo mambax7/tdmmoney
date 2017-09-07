@@ -24,9 +24,9 @@ function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB;
 
-    $sql
-        = 'SELECT operation_id, operation_account, operation_category, operation_type, operation_sender, operation_outsender, operation_date, operation_amount, operation_description, operation_submitter, operation_date_created FROM '
-          . $xoopsDB->prefix('tdmmoney_operation') . ' WHERE operation_date != 0';
+    $sql = 'SELECT operation_id, operation_account, operation_category, operation_type, operation_sender, operation_outsender, operation_date, operation_amount, operation_description, operation_submitter, operation_date_created FROM '
+           . $xoopsDB->prefix('tdmmoney_operation')
+           . ' WHERE operation_date != 0';
 
     if ($userid != 0) {
         $sql .= ' AND operation_submitter=' . (int)$userid . ' ';
@@ -49,10 +49,10 @@ function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
         $sql .= ')';
     }
 
-    $sql .= ' ORDER BY operation_date DESC';
+    $sql    .= ' ORDER BY operation_date DESC';
     $result = $xoopsDB->query($sql, $limit, $offset);
-    $ret = array();
-    $i = 0;
+    $ret    = [];
+    $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $ret[$i]['image'] = 'assets/images/deco/contact.png';
         $ret[$i]['link']  = 'viewaccount.php?account_id=' . $myrow['operation_account'] . '';

@@ -6,40 +6,6 @@
 class TdmmoneyUtility
 {
     /**
-     * Check Xoops Version against a provided version
-     *
-     * @param int $x
-     * @param int $y
-     * @param int $z
-     * @param string $signal
-     * @return bool
-     */
-    public static function checkXoopsVersion($x, $y, $z, $signal = '==')
-    {
-        $xv = explode('-', str_replace('XOOPS ', '', XOOPS_VERSION));
-
-        list($a, $b, $c) = explode('.', $xv[0]);
-        $xv = $a*10000 + $b*100 + $c;
-        $mv = $x*10000 + $y*100 + $z;
-        if ($signal === '>') {
-            return $xv > $mv;
-        }
-        if ($signal === '>=') {
-            return $xv >= $mv;
-        }
-        if ($signal === '<') {
-            return $xv < $mv;
-        }
-        if ($signal === '<=') {
-            return $xv <= $mv;
-        }
-        if ($signal === '==') {
-            return $xv == $mv;
-        }
-
-        return false;
-    }
-    /**
      * Function responsible for checking if a directory exists, we can also write in and create an index.html file
      *
      * @param string $folder The full path of the directory to check
@@ -49,15 +15,15 @@ class TdmmoneyUtility
     public static function createFolder($folder)
     {
         //        try {
-//            if (!mkdir($folder) && !is_dir($folder)) {
-//                throw new \RuntimeException(sprintf('Unable to create the %s directory', $folder));
-//            } else {
-//                file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
-//            }
-//        }
-//        catch (Exception $e) {
-//            echo 'Caught exception: ', $e->getMessage(), "\n", '<br/>';
-//        }
+        //            if (!mkdir($folder) && !is_dir($folder)) {
+        //                throw new \RuntimeException(sprintf('Unable to create the %s directory', $folder));
+        //            } else {
+        //                file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
+        //            }
+        //        }
+        //        catch (Exception $e) {
+        //            echo 'Caught exception: ', $e->getMessage(), "\n", '<br>';
+        //        }
         try {
             if (!file_exists($folder)) {
                 if (!mkdir($folder) && !is_dir($folder)) {
@@ -67,7 +33,7 @@ class TdmmoneyUtility
                 }
             }
         } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n", '<br/>';
+            echo 'Caught exception: ', $e->getMessage(), "\n", '<br>';
         }
     }
 
@@ -86,7 +52,7 @@ class TdmmoneyUtility
         //                return copy($file, $folder);
         //            }
         //        } catch (Exception $e) {
-        //            echo 'Caught exception: ', $e->getMessage(), "\n", "<br/>";
+        //            echo 'Caught exception: ', $e->getMessage(), "\n", "<br>";
         //        }
         //        return false;
     }
@@ -117,17 +83,24 @@ class TdmmoneyUtility
      * @static
      * @param XoopsModule $module
      *
+     * @param null|string $requiredVer
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerXoops(XoopsModule $module)
+    public static function checkVerXoops(XoopsModule $module = null, $requiredVer = null)
     {
-        xoops_loadLanguage('admin', $module->dirname());
+        $moduleDirName = basename(dirname(__DIR__));
+        if (null === $module) {
+            $module = XoopsModule::getByDirname($moduleDirName);
+        }
+        xoops_loadLanguage('admin', $moduleDirName);
         //check for minimum XOOPS version
-        $currentVer  = substr(XOOPS_VERSION, 6); // get the numeric part of string
-        $currArray   = explode('.', $currentVer);
-        $requiredVer = '' . $module->getInfo('min_xoops'); //making sure it's a string
-        $reqArray    = explode('.', $requiredVer);
-        $success     = true;
+        $currentVer = substr(XOOPS_VERSION, 6); // get the numeric part of string
+        $currArray  = explode('.', $currentVer);
+        if (null === $requiredVer) {
+            $requiredVer = '' . $module->getInfo('min_xoops'); //making sure it's a string
+        }
+        $reqArray = explode('.', $requiredVer);
+        $success  = true;
         foreach ($reqArray as $k => $v) {
             if (isset($currArray[$k])) {
                 if ($currArray[$k] > $v) {
@@ -139,14 +112,14 @@ class TdmmoneyUtility
                     break;
                 }
             } else {
-                if ((int)$v > 0) { // handles things like x.x.x.0_RC2
+                if ((int)$v > 0) { // handles versions like x.x.x.0_RC2
                     $success = false;
                     break;
                 }
             }
         }
 
-        if (!$success) {
+        if (false === $success) {
             $module->setErrors(sprintf(_AM_TDMMONEY_ERROR_BAD_XOOPS, $requiredVer, $currentVer));
         }
 
@@ -186,13 +159,13 @@ class TdmmoneyUtility
     public static function getMygetItemIds($permtype, $dirname)
     {
         global $xoopsUser;
-        /* @var $moduleHandler XoopsModuleHandler  */
+        /* @var $moduleHandler XoopsModuleHandler */
         $moduleHandler = xoops_getHandler('module');
         $tdmModule     = $moduleHandler->getByDirname($dirname);
         $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        /* @var $gpermHandler XoopsGroupPermHandler  */
-        $gpermHandler  = xoops_getHandler('groupperm');
-        $categories    = $gpermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
+        /* @var $gpermHandler XoopsGroupPermHandler */
+        $gpermHandler = xoops_getHandler('groupperm');
+        $categories   = $gpermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
 
         return $categories;
     }
@@ -247,6 +220,7 @@ class TdmmoneyUtility
 
         return $ret;
     }
+
     /**
      * @param  string $item
      * @return string

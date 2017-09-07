@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class TdmMoneyOperation
@@ -71,10 +71,10 @@ class TdmMoneyOperation extends XoopsObject
         $form->setExtra('enctype="multipart/form-data"');
         //type d'opération
         $type    = new XoopsFormRadio(_AM_TDMMONEY_OPERATION_TYPE, 'operation_type', $this->isNew() ? 1 : $this->getVar('operation_type', 'e'));
-        $options = array(
+        $options = [
             1 => _AM_TDMMONEY_OPERATION_WITHDRAW,
             2 => _AM_TDMMONEY_OPERATION_DEPOSIT
-        );
+        ];
         $type->addOptionArray($options);
         $form->addElement($type, true);
         //choix du compte
@@ -99,7 +99,7 @@ class TdmMoneyOperation extends XoopsObject
         $account_select->addOptionArray($accountHandler->getList($criteria));
         $form->addElement($account_select, true);
         //tiers
-        include_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/formselectuser.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/formselectuser.php';
         $sender = new XoopsFormElementTray(_AM_TDMMONEY_OPERATION_SENDER);
         $sender->addElement(new TDMXoopsFormSelectUser('', 'operation_sender', false, _AM_TDMMONEY_OPERATION_OUTSIDE, $this->getVar('operation_sender'), 1, false), true);
         $outsender = new XoopsFormText(_AM_TDMMONEY_OPERATION_OUTSENDER, 'operation_outsender', 25, 50, $this->getVar('operation_outsender'));
@@ -112,26 +112,22 @@ class TdmMoneyOperation extends XoopsObject
         $criteria->setOrder('ASC');
         $category_arr = $categoryHandler->getall($criteria);
         $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-//        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
-
-
-        if (TdmMoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
+        //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
+        $moduleDirName = basename(dirname(__DIR__));
+        $module        = XoopsModule::getByDirname($moduleDirName);
+        if (TdmMoneyUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
             $catSelect = $mytree->makeSelectElement('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false, 0, '', _AM_TDMMONEY_OPERATION_CATEGORY);
             $form->addElement($catSelect);
         } else {
             $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
         }
 
-
-
-
-
         //date
         $form->addElement(new XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_DATE, 'operation_date', '', $this->getVar('operation_date')), true);
         //montant
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_OPERATION_AMOUNT, 'operation_amount', 10, 10, $this->getVar('operation_amount')), true);
         //description
-        $editor_configs           = array();
+        $editor_configs           = [];
         $editor_configs['name']   = 'operation_description';
         $editor_configs['value']  = $this->getVar('operation_description', 'e');
         $editor_configs['rows']   = 5;

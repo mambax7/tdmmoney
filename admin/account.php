@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
@@ -61,19 +61,16 @@ switch ($op) {
                 $balance_operation = $account_arr[$i]->getVar('account_balance');
                 foreach (array_keys($operation_arr) as $j) {
                     if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')) {
-                        $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation
-                                                                                                                                                                       + $operation_arr[$j]->getVar('operation_amount');
+                        $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
                     }
                 }
                 echo '<tr class="' . $class . '">';
                 echo '<td align="center" >' . $account_arr[$i]->getVar('account_name') . '</td>';
                 echo '<td align="center">' . $account_arr[$i]->getVar('account_bank') . '</td>';
                 echo '<td align="center">' . $account_arr[$i]->getVar('account_adress') . '</td>';
-                $display_account_balance = $account_arr[$i]->getVar('account_balance') < 0 ? '<span style="color: #ff0000; font-weight: bold;">' . $account_arr[$i]->getVar('account_balance')
-                                                                                             . '</span>' : '<span style="font-weight: bold;">' . $account_arr[$i]->getVar('account_balance') . '</span>';
+                $display_account_balance = $account_arr[$i]->getVar('account_balance') < 0 ? '<span style="color: #ff0000; font-weight: bold;">' . $account_arr[$i]->getVar('account_balance') . '</span>' : '<span style="font-weight: bold;">' . $account_arr[$i]->getVar('account_balance') . '</span>';
                 echo '<td align="center">' . $display_account_balance . ' ' . $account_arr[$i]->getVar('account_currency') . '</td>';
-                $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold;">' . $balance_operation . '</span>' : '<span style="font-weight: bold">'
-                                                                                                                                                            . $balance_operation . '</span>';
+                $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold;">' . $balance_operation . '</span>' : '<span style="font-weight: bold">' . $balance_operation . '</span>';
                 echo '<td align="center">' . $display_balance_operation . ' ' . $account_arr[$i]->getVar('account_currency') . '</td>';
                 echo '<td align="center" width="10%">';
                 echo '<a href="operation.php?op=list&account_id=' . $i . '"><img src="' . $pathIcon16 . '/view.png" alt="' . _AM_TDMMONEY_DISPLAY . '" title="' . _AM_TDMMONEY_DISPLAY . '"></a> ';
@@ -157,14 +154,14 @@ switch ($op) {
             if (count($operation_arr) > 0) {
                 $message .= _AM_TDMMONEY_CAT_DELOPERATION . '<br>';
                 foreach (array_keys($operation_arr) as $i) {
-                    $message .= '<span style="color : Red;">' . $operation_arr[$i]->getVar('operation_id') . ' - ' . formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's') . ' ('
-                                . $operation_arr[$i]->getVar('operation_amount') . ')</span><br>';
+                    $message .= '<span style="color : Red;">' . $operation_arr[$i]->getVar('operation_id') . ' - ' . formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's') . ' (' . $operation_arr[$i]->getVar('operation_amount') . ')</span><br>';
                 }
             }
-            xoops_confirm(array('ok'         => 1,
-                                'account_id' => $account_id,
-                                'op'         => 'del'
-                          ), $_SERVER['REQUEST_URI'], sprintf(_AM_TDMMONEY_SUREDEL, $obj->getVar('account_name')) . '<br><br>' . $message);
+            xoops_confirm([
+                              'ok'         => 1,
+                              'account_id' => $account_id,
+                              'op'         => 'del'
+                          ], $_SERVER['REQUEST_URI'], sprintf(_AM_TDMMONEY_SUREDEL, $obj->getVar('account_name')) . '<br><br>' . $message);
         }
         break;
 
@@ -198,8 +195,8 @@ switch ($op) {
             if ($accountHandler->insert($obj)) {
                 $newaccount_id = $obj->get_new_enreg();
                 //permission pour voir
-                $perm_id      = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
-                /* @var $gpermHandler XoopsGroupPermHandler  */
+                $perm_id = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
+                /* @var $gpermHandler XoopsGroupPermHandler */
                 $gpermHandler = xoops_getHandler('groupperm');
                 $criteria     = new CriteriaCompo();
                 $criteria->add(new Criteria('gperm_itemid', $perm_id, '='));
@@ -233,4 +230,4 @@ switch ($op) {
         $form->display();
         break;
 }
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

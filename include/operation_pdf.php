@@ -28,7 +28,6 @@ $date_end   = TdmmoneyUtility::cleanVars($_REQUEST, 'date_end', 0, 'int');
 
 if ($account_id == 0) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
-    exit();
 }
 //permissions
 $perm_pdf = $gpermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
@@ -43,24 +42,24 @@ $pdf->AddPage();
 $pdf->startPageNums();
 
 // Définition des propriétés du tableau.
-$proprietesTableau = array(
+$proprietesTableau = [
     'TB_ALIGN'  => 'L',
     'L_MARGIN'  => 5,
-    'BRD_COLOR' => array(
+    'BRD_COLOR' => [
         0,
         0,
         0
-    ),
+    ],
     'BRD_SIZE'  => '0.3',
-);
+];
 
 // Définition des propriétés du header du tableau.
-$proprieteHeader = array(
-    'T_COLOR'           => array(
+$proprieteHeader = [
+    'T_COLOR'           => [
         0,
         0,
         0
-    ),
+    ],
     'T_SIZE'            => 10,
     'T_FONT'            => 'Arial',
     'T_ALIGN_COL0'      => 'L',
@@ -68,28 +67,28 @@ $proprieteHeader = array(
     'V_ALIGN'           => 'M',
     'T_TYPE'            => 'B',
     'LN_SIZE'           => 7,
-    'BG_COLOR_COL0'     => array(
+    'BG_COLOR_COL0'     => [
         192,
         192,
         192
-    ),
-    'BG_COLOR'          => array(
+    ],
+    'BG_COLOR'          => [
         192,
         192,
         192
-    ),
-    'BRD_COLOR'         => array(
+    ],
+    'BRD_COLOR'         => [
         0,
         0,
         0
-    ),
+    ],
     'BRD_SIZE'          => 0.2,
     'BRD_TYPE'          => '0',
     'BRD_TYPE_NEW_PAGE' => '',
-);
+];
 
 // Contenu du header du tableau.
-$contenuHeader = array(
+$contenuHeader = [
     25,
     35,
     25,
@@ -104,15 +103,15 @@ $contenuHeader = array(
     '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_WITHDRAW),
     '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_DEPOSIT),
     '[BR]' . utf8_decode(_AM_TDMMONEY_OPERATION_BALANCE)
-);
+];
 
 // Définition des propriétés du reste du contenu du tableau.
-$proprieteContenu = array(
-    'T_COLOR'           => array(
+$proprieteContenu = [
+    'T_COLOR'           => [
         0,
         0,
         0
-    ),
+    ],
     'T_SIZE'            => 10,
     'T_FONT'            => 'Arial',
     'T_ALIGN_COL0'      => 'L',
@@ -120,25 +119,25 @@ $proprieteContenu = array(
     'V_ALIGN'           => 'T',
     'T_TYPE'            => '',
     'LN_SIZE'           => 6,
-    'BG_COLOR_COL0'     => array(
+    'BG_COLOR_COL0'     => [
         255,
         255,
         255
-    ),
-    'BG_COLOR'          => array(
+    ],
+    'BG_COLOR'          => [
         255,
         255,
         255
-    ),
-    'BRD_COLOR'         => array(
+    ],
+    'BRD_COLOR'         => [
         0,
         0,
         0
-    ),
+    ],
     'BRD_SIZE'          => 0.1,
     'BRD_TYPE'          => 'T',
     'BRD_TYPE_NEW_PAGE' => '',
-);
+];
 $account          = $accountHandler->get($account_id);
 $criteria         = new CriteriaCompo();
 $criteria->add(new Criteria('operation_account', $account_id));
@@ -162,14 +161,12 @@ $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
 $operation_ammount = $operationHandler->getall($criteria_amount);
 $balance_ammount   = 0;
 foreach (array_keys($operation_ammount) as $i) {
-    $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount
-                                                                                                                                                       + $operation_ammount[$i]->getVar('operation_amount');
+    $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
 }
 $balance      += $balance_ammount;
 $balance_save = $balance;
 foreach (array_keys($operation_balance_arr) as $i) {
-    $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance
-                                                                                                                                                             + $operation_balance_arr[$i]->getVar('operation_amount');
+    $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
     $operation_balance[$i] = $balance;
 }
 

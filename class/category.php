@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class TdmMoneyCategory
@@ -61,7 +61,7 @@ class TdmMoneyCategory extends XoopsObject
         //titre
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_CAT_TITLE, 'cat_title', 50, 255, $this->getVar('cat_title')), true);
         //editeur
-        $editor_configs           = array();
+        $editor_configs           = [];
         $editor_configs['name']   = 'cat_desc';
         $editor_configs['value']  = $this->getVar('cat_desc', 'e');
         $editor_configs['rows']   = 10;
@@ -77,12 +77,15 @@ class TdmMoneyCategory extends XoopsObject
         $criteria->setOrder('ASC');
         $category_arr = $categoryHandler->getAll($criteria);
         if (!empty($category_arr)) { // there are other categories so display parent selection box
-        $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-        //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
-        if (TdmmoneyUtility::checkXoopsVersion('2', '5', '9', '>=')) {
+            $mytree = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
+            //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
+
+            $moduleDirName = basename(dirname(__DIR__));
+            $module        = XoopsModule::getByDirname($moduleDirName);
+            if (TdmmoneyUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
                 $catSelect = new XoopsFormLabel(_AM_TDMMONEY_CAT_PARENT, $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0)->render());
-            $form->addElement($catSelect);
-        } else {
+                $form->addElement($catSelect);
+            } else {
                 $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_CAT_PARENT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
             }
         }

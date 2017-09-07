@@ -8,18 +8,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package
  * @since           2.5.9
  * @author          Michael Beck (aka Mamba)
  */
 
-include_once __DIR__ . '/../../../mainfile.php';
+require_once __DIR__ . '/../../../mainfile.php';
 
-if (!isset($moduleDirName)) {
-    $moduleDirName = basename(dirname(__DIR__));
-}
+$moduleDirName = basename(dirname(__DIR__));
 
 $op = \Xmf\Request::getCmd('op', '');
 
@@ -33,17 +31,15 @@ switch ($op) {
 
 function loadSampleData()
 {
-    if (!isset($moduleDirName)) {
-        $moduleDirName = basename(dirname(__DIR__));
-    }
+    $moduleDirName = basename(dirname(__DIR__));
+
     xoops_loadLanguage('admin', $moduleDirName);
 
     global $xoopsDB;
 
-    $countAccount = \Xmf\Database\TableLoad::loadTableFromYamlFile('tdmmoney_account', __DIR__ . '/account.yml');
-    $countCategory = \Xmf\Database\TableLoad::loadTableFromYamlFile('tdmmoney_category', __DIR__ . '/category.yml');
+    $countAccount   = \Xmf\Database\TableLoad::loadTableFromYamlFile('tdmmoney_account', __DIR__ . '/account.yml');
+    $countCategory  = \Xmf\Database\TableLoad::loadTableFromYamlFile('tdmmoney_category', __DIR__ . '/category.yml');
     $countOperation = \Xmf\Database\TableLoad::loadTableFromYamlFile('tdmmoney_operation', __DIR__ . '/operation.yml');
-
 
     $message = _AM_TDMMONEY_SAMPLEDATA_FAILED;
     //    if ($result) {
@@ -54,6 +50,6 @@ function loadSampleData()
         $message = _AM_TDMMONEY_SAMPLEDATA_SUCCESS;
     }
 
-//    return $message;
-    redirect_header( '../admin/account.php', 1, $message);
+    //    return $message;
+    redirect_header('../admin/account.php', 1, $message);
 }

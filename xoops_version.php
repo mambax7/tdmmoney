@@ -17,7 +17,7 @@ $moduleDirName = basename(__DIR__);
 
 $modversion['version']          = '1.2';
 $modversion['module_status']    = 'Beta 1';
-$modversion['release_date']     = '2017/02/21';
+$modversion['release_date']     = '2017/07/21';
 $modversion['name']             = _MI_TDMMONEY_NAME;
 $modversion['description']      = _MI_TDMMONEY_DESC;
 $modversion['credits']          = 'G. Mage';
@@ -40,36 +40,36 @@ $modversion['help']             = 'page=help';
 $modversion['module_website_url']  = 'www.xoops.org';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
-$modversion['min_xoops']           = '2.5.8';
+$modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = array('mysql' => '5.1');
+$modversion['min_db']              = ['mysql' => '5.1'];
 $modversion['system_menu']         = 1;
 
-$modversion['tables'] = array(
+$modversion['tables'] = [
     $moduleDirName . '_' . 'account',
     $moduleDirName . '_' . 'category',
     $moduleDirName . '_' . 'operation',
-);
+];
 
 // ------------------- Help files ------------------- //
-$modversion['helpsection'] = array(
-    array(
+$modversion['helpsection'] = [
+    [
         'name' => _MI_TDMMONEY_OVERVIEW,
         'link' => 'page=help'
-    ),
-    array(
+    ],
+    [
         'name' => _MI_TDMMONEY_DISCLAIMER,
         'link' => 'page=disclaimer'
-    ),
-    array(
+    ],
+    [
         'name' => _MI_TDMMONEY_LICENSE,
         'link' => 'page=license'
-    ),
-    array(
+    ],
+    [
         'name' => _MI_TDMMONEY_SUPPORT,
         'link' => 'page=support'
-    )
-);
+    ]
+];
 
 //Install/Uninstall Functions
 $modversion['onInstall']   = 'include/oninstall.php';
@@ -100,9 +100,9 @@ $modversion['templates'][3]['file']        = 'tdmmoney_submit.tpl';
 $modversion['templates'][3]['description'] = '';
 
 // ------------------- Config Options ------------------- //
-include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 
-$modversion['config'][] = array(
+$modversion['config'][] = [
     'name'        => 'TdmMoneyEditor',
     'title'       => '_MI_TDMMONEY_EDITOR',
     'description' => '',
@@ -111,36 +111,36 @@ $modversion['config'][] = array(
     'default'     => 'dhtmltextarea',
     'options'     => XoopsLists::getDirListAsArray(XOOPS_ROOT_PATH . '/class/xoopseditor'),
     'category'    => 'global',
-);
+];
 
-$modversion['config'][] = array(
+$modversion['config'][] = [
     'name'        => 'TdmMoneyFilter',
     'title'       => '_MI_TDMMONEY_FILTER',
     'description' => '',
     'formtype'    => 'select',
     'valuetype'   => 'int',
     'default'     => 3,
-    'options'     => array(
+    'options'     => [
         '_MI_TDMMONEY_FILTER1' => 1,
         '_MI_TDMMONEY_FILTER2' => 2,
         '_MI_TDMMONEY_FILTER3' => 3
-    ),
-);
+    ],
+];
 
-$modversion['config'][] = array(
+$modversion['config'][] = [
     'name'        => 'ShowSampleDataButton',
     'title'       => '_MI_TDMMONEY_SHOW_SAMPLE_DATA',
     'description' => '',
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => 1,
-);
+];
 
-$modversion['config'][] = array(
+$modversion['config'][] = [
     'name'        => 'displayPdf',
     'title'       => '_MI_TDMMONEY_DISPLAY_PDF',
     'description' => '_MI_TDMMONEY_DISPLAY_PDF_DSC',
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => 1
-);
+];

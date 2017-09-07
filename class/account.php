@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class TdmMoneyAccount
@@ -80,12 +80,12 @@ class TdmMoneyAccount extends XoopsObject
         //devise
         $form->addElement(new XoopsFormText(_AM_TDMMONEY_ACCOUNT_CURRENCY, 'account_currency', 10, 10, $this->getVar('account_currency')), true);
         //permissions
-        /* @var $memberHandler XoopsMemberHandler  */
+        /* @var $memberHandler XoopsMemberHandler */
         $memberHandler = xoops_getHandler('member');
         $group_list    = $memberHandler->getGroupList();
-        /* @var $gpermHandler XoopsGroupPermHandler  */
-        $gpermHandler  = xoops_getHandler('groupperm');
-        $full_list     = array_keys($group_list);
+        /* @var $gpermHandler XoopsGroupPermHandler */
+        $gpermHandler = xoops_getHandler('groupperm');
+        $full_list    = array_keys($group_list);
         global $xoopsModule;
         if (!$this->isNew()) {
             $groups_ids_view                 = $gpermHandler->getGroupIds('tdmmoney_view', $this->getVar('account_id'), $xoopsModule->getVar('mid'));

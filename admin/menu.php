@@ -13,15 +13,13 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-if (!isset($moduleDirName)) {
-    $moduleDirName = basename(dirname(__DIR__));
-}
+$moduleDirName = basename(dirname(__DIR__));
 
 if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
 } else {
     $moduleHelper = Xmf\Module\Helper::getHelper('system');
 }
-$adminObject = \Xmf\Module\Admin::getInstance();
+
 
 $pathIcon32    = \Xmf\Module\Admin::menuIconPath('');
 $pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
@@ -31,35 +29,35 @@ $moduleHelper->loadLanguage('admin');
 $moduleHelper->loadLanguage('modinfo');
 $moduleHelper->loadLanguage('main');
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _AM_MODULEADMIN_HOME,
     'link'  => 'admin/index.php',
     'icon'  => $pathIcon32 . '/home.png'
-);
+];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_ACCOUNT,
     'link'  => 'admin/account.php',
     'icon'  => $pathIcon32 . '/manage.png'
-);
-$adminmenu[] = array(
+];
+$adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_CATEGORY,
     'link'  => 'admin/category.php',
     'icon'  => $pathIcon32 . '/category.png'
-);
-$adminmenu[] = array(
+];
+$adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_OPERATION,
     'link'  => 'admin/operation.php',
     'icon'  => $pathIcon32 . '/exec.png'
-);
-$adminmenu[] = array(
+];
+$adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_PERMISSIONS,
     'link'  => 'admin/permissions.php',
     'icon'  => $pathIcon32 . '/permissions.png'
-);
+];
 
-$adminmenu[] = array(
+$adminmenu[] = [
     'title' => _AM_MODULEADMIN_ABOUT,
     'link'  => 'admin/about.php',
     'icon'  => $pathIcon32 . '/about.png'
-);
+];

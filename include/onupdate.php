@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    XOOPS Project http://xoops.org/
+ * @copyright    XOOPS Project https://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
@@ -18,8 +18,7 @@
  */
 
 if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof XoopsUser)
-    || !$GLOBALS['xoopsUser']->IsAdmin()
-) {
+    || !$GLOBALS['xoopsUser']->IsAdmin()) {
     exit('Restricted access' . PHP_EOL);
 }
 
@@ -90,20 +89,19 @@ function xoops_module_update_tdmmoney(XoopsModule $module, $previousVersion = nu
         $sql = 'ALTER TABLE `' . $db->prefix('tdmmoney_category') . '` DROP `cat_interval` ;';
         $db->query($sql);
 
-        include_once __DIR__ . '/config.php';
-        $configurator = new ModuleConfigurator();
+        require_once __DIR__ . '/config.php';
+        $configurator = new TdmmoneyConfigurator();
         $classUtil    = ucfirst($moduleDirName) . 'Utility';
         if (!class_exists($classUtil)) {
             xoops_load('utility', $moduleDirName);
         }
-
 
         //delete old HTML templates
         if (count($configurator->templateFolders) > 0) {
             foreach ($configurator->templateFolders as $folder) {
                 $templateFolder = $GLOBALS['xoops']->path('modules/' . $moduleDirName . $folder);
                 if (is_dir($templateFolder)) {
-                    $templateList = array_diff(scandir($templateFolder), array('..', '.'));
+                    $templateList = array_diff(scandir($templateFolder, SCANDIR_SORT_NONE), ['..', '.']);
                     foreach ($templateList as $k => $v) {
                         $fileInfo = new SplFileInfo($templateFolder . $v);
                         if ($fileInfo->getExtension() === 'html' && $fileInfo->getFilename() !== 'index.html') {
@@ -160,8 +158,9 @@ function xoops_module_update_tdmmoney(XoopsModule $module, $previousVersion = nu
         $sql = 'DELETE FROM ' . $xoopsDB->prefix('tplfile') . " WHERE `tpl_module` = '" . $module->getVar('dirname', 'n') . '\' AND `tpl_file` LIKE \'%.html%\'';
         $xoopsDB->queryF($sql);
 
-        /* @var $gpermHandler XoopsGroupPermHandler  */
+        /* @var $gpermHandler XoopsGroupPermHandler */
         $gpermHandler = xoops_getHandler('groupperm');
+
         return $gpermHandler->deleteByModule($module->getVar('mid'), 'item_read');
     }
 }
