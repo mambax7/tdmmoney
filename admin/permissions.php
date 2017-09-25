@@ -70,7 +70,7 @@ switch ($permission) {
 }
 
 $permissionsForm = new XoopsGroupPermForm($formTitle, $moduleId, $permissionName, $permissionDescription, 'admin/permissions.php');
-if ($permission == 1) {
+if (1 == $permission) {
     foreach ($global_perms_array as $perm_id => $permissionName) {
         $permissionsForm->addItem($perm_id, $permissionName);
     }

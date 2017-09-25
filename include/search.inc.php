@@ -28,7 +28,7 @@ function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
            . $xoopsDB->prefix('tdmmoney_operation')
            . ' WHERE operation_date != 0';
 
-    if ($userid != 0) {
+    if (0 != $userid) {
         $sql .= ' AND operation_submitter=' . (int)$userid . ' ';
     }
     require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/utility.php';

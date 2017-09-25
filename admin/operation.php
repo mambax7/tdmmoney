@@ -29,7 +29,7 @@ $criteria     = new CriteriaCompo();
 $criteria->setSort('account_name');
 $criteria->setOrder('ASC');
 $account_arr  = $accountHandler->getall($criteria);
-$menu_account .= '<option value="0"' . ($account_id == 0 ? ' selected="selected"' : '') . '>' . _AM_TDMMONEY_OPERATION_ALL . '</option>';
+$menu_account .= '<option value="0"' . (0 == $account_id ? ' selected="selected"' : '') . '>' . _AM_TDMMONEY_OPERATION_ALL . '</option>';
 foreach (array_keys($account_arr) as $i) {
     $menu_account .= '<option value="' . $i . '"' . ($account_id == $i ? ' selected="selected"' : '') . '>' . $account_arr[$i]->getVar('account_name') . '</option>';
 }
@@ -49,7 +49,7 @@ switch ($op) {
 
         $criteria = new CriteriaCompo();
         // gestion de l'affichage des comptes
-        if ($account_id == 0) {
+        if (0 == $account_id) {
             $display_account = false;
         } else {
             // affichage des filtres
@@ -60,17 +60,17 @@ switch ($op) {
                 $date_end   = strtotime($_REQUEST['date_end']);
             } else {
                 //sans filtre
-                if ($xoopsModuleConfig['TdmMoneyFilter'] == 1) {
+                if (1 == $xoopsModuleConfig['TdmMoneyFilter']) {
                     $date_start = 0;
                     $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
                 }
                 //filtre mois actuel
-                if ($xoopsModuleConfig['TdmMoneyFilter'] == 2) {
+                if (2 == $xoopsModuleConfig['TdmMoneyFilter']) {
                     $date_start = mktime(0, 0, 0, date('m'), 1, date('Y'));
                     $date_end   = mktime(0, 0, 0, date('m'), date('t'), date('Y'));
                 }
                 //filtre année actuelle
-                if ($xoopsModuleConfig['TdmMoneyFilter'] == 3) {
+                if (3 == $xoopsModuleConfig['TdmMoneyFilter']) {
                     $date_start = mktime(0, 0, 0, 1, 1, date('Y'));
                     $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
                 }
@@ -99,7 +99,7 @@ switch ($op) {
         $operation_arr = $operationHandler->getByLink($criteria);
         if (count($operation_arr) > 0) {
             // si en vue compte on calcul les soldes
-            if ($display_account === true) {
+            if (true === $display_account) {
                 $operation_balance_arr = array_reverse($operation_arr, true);
                 $account_balance       = $accountHandler->get($account_id);
                 $balance               = $account_balance->getVar('account_balance');
@@ -109,19 +109,19 @@ switch ($op) {
                 $operation_ammount = $operationHandler->getall($criteria_amount);
                 $balance_ammount   = 0;
                 foreach (array_keys($operation_ammount) as $i) {
-                    $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
+                    $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
                 }
                 $balance      += $balance_ammount;
                 $balance_save = $balance;
                 foreach (array_keys($operation_balance_arr) as $i) {
-                    $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
+                    $balance               = 1 == $operation_balance_arr[$i]->getVar('operation_type') ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
                     $operation_balance[$i] = $balance;
                 }
             }
             // affichage du header
             echo '<table width="100%" cellspacing="1" class="outer">';
             echo '<tr>';
-            if ($display_account === false) {
+            if (false === $display_account) {
                 echo '<th align="left" width="10%">' . _AM_TDMMONEY_OPERATION_ACCOUNT . '</th>';
             }
             echo '<th align="left" width="10%">' . _AM_TDMMONEY_OPERATION_DATE . '</th>';
@@ -130,7 +130,7 @@ switch ($op) {
             echo '<th align="left">' . _AM_TDMMONEY_OPERATION_DESCRIPTION . '</th>';
             echo '<th align="center" width="8%">' . _AM_TDMMONEY_OPERATION_WITHDRAW . '</th>';
             echo '<th align="center" width="8%">' . _AM_TDMMONEY_OPERATION_DEPOSIT . '</th>';
-            if ($display_account === true) {
+            if (true === $display_account) {
                 echo '<th align="right"  width="8%">' . _AM_TDMMONEY_OPERATION_BALANCE . '</th>';
             }
             echo '<th align="center" width="8%">' . _AM_TDMMONEY_ACTION . '</th>';
@@ -142,8 +142,8 @@ switch ($op) {
             $mytree = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
             foreach (array_keys($operation_arr) as $i) {
                 $category = TdmmoneyUtility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="../assets/images/deco/arrow.gif"> ');
-                if ($operation_arr[$i]->getVar('operation_sender') == 0) {
-                    if ($operation_arr[$i]->getVar('operation_outsender') == '') {
+                if (0 == $operation_arr[$i]->getVar('operation_sender')) {
+                    if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
                         $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
                     } else {
                         $sender = $operation_arr[$i]->getVar('operation_outsender');
@@ -152,7 +152,7 @@ switch ($op) {
                     $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
                 }
                 echo '<tr class="' . $class . '">';
-                if ($display_account === false) {
+                if (false === $display_account) {
                     echo '<td align="left" >' . $operation_arr[$i]->getVar('account_name') . '</td>';
                 }
                 echo '<td align="left" >' . formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's') . '</td>';
@@ -160,12 +160,12 @@ switch ($op) {
                 echo '<td align="left">' . $category . '</td>';
                 echo '<td align="left">' . $operation_arr[$i]->getVar('operation_description') . '</td>';
                 echo '<td align="center">';
-                echo $operation_arr[$i]->getVar('operation_type') == 1 ? $operation_arr[$i]->getVar('operation_amount') : '';
+                echo 1 == $operation_arr[$i]->getVar('operation_type') ? $operation_arr[$i]->getVar('operation_amount') : '';
                 echo '</td>';
                 echo '<td align="center">';
-                echo $operation_arr[$i]->getVar('operation_type') == 2 ? $operation_arr[$i]->getVar('operation_amount') : '';
+                echo 2 == $operation_arr[$i]->getVar('operation_type') ? $operation_arr[$i]->getVar('operation_amount') : '';
                 echo '</td>';
-                if ($display_account === true) {
+                if (true === $display_account) {
                     $display_operation_balance = $operation_balance[$i] < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $operation_balance[$i] . '</span>' : '<span style="font-weight: bold">' . $operation_balance[$i] . '</span>';
                     echo '<td align="right">' . $display_operation_balance . ' ' . $operation_arr[$i]->getVar('account_currency') . '</td>';
                 }
@@ -174,9 +174,9 @@ switch ($op) {
                 echo '<a href="operation.php?op=del&operation_id=' . $i . '&account_id=' . $operation_arr[$i]->getVar('operation_account') . '"><img src="' . $pathIcon16 . '/delete.png" alt="' . _AM_TDMMONEY_DEL . '" title="' . _AM_TDMMONEY_DEL . '"></a>';
                 echo '</td>';
                 echo '</tr>';
-                $class = ($class === 'even') ? 'odd' : 'even';
+                $class = ('even' === $class) ? 'odd' : 'even';
             }
-            if ($display_account === true) {
+            if (true === $display_account) {
                 echo '<tr class="' . $class . '">';
                 $display_account_balance = $balance_save < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $balance_save . '</span>' : '<span style="font-weight: bold">' . $balance_save . '</span>';
                 echo '<td align="right" colspan="6">' . _AM_TDMMONEY_OPERATION_REPORT . formatTimestamp($date_start - 86400, 's') . '</td>';
@@ -186,7 +186,7 @@ switch ($op) {
             }
             echo '</table>';
             // export en pdf
-            if ($display_account === true) {
+            if (true === $display_account) {
                 echo '<br><div align="center">' . _AM_TDMMONEY_OPERATION_EXPORTPDF . ': <a href="../makepdf.php?account_id=' . $account_id . '&date_start=' . $date_start . '&date_end=' . $date_end . '"><img src="../assets/images/deco/pdf.png"></a></div>';
             }
         }
@@ -238,7 +238,7 @@ switch ($op) {
         $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         $account_id   = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
-        if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
+        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -280,7 +280,7 @@ switch ($op) {
         $obj->setVar('operation_description', $_POST['operation_description']);
         $obj->setVar('operation_submitter', !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0);
         $obj->setVar('operation_date_created', time());
-        if ($_POST['operation_sender'] == 0) {
+        if (0 == $_POST['operation_sender']) {
             $obj->setVar('operation_sender', 0);
             $obj->setVar('operation_outsender', $_POST['operation_outsender']);
         } else {
@@ -288,11 +288,11 @@ switch ($op) {
             $obj->setVar('operation_outsender', '');
         }
         //vérification que operation_amount soit un entier
-        if ((int)$_REQUEST['operation_amount'] == 0 && $_REQUEST['operation_amount'] != '0') {
+        if (0 == (int)$_REQUEST['operation_amount'] && '0' != $_REQUEST['operation_amount']) {
             $erreur         = true;
             $message_erreur = _AM_TDMMONEY_OPERATION_ERREUR_AMOUNT . '<br>';
         }
-        if ($erreur === true) {
+        if (true === $erreur) {
             echo '<div class="errorMsg" style="text-align: left;">' . $message_erreur . '</div>';
         } else {
             if ($operationHandler->insert($obj)) {

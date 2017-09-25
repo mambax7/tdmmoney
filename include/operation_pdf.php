@@ -26,12 +26,12 @@ $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 $date_start = TdmmoneyUtility::cleanVars($_REQUEST, 'date_start', 0, 'int');
 $date_end   = TdmmoneyUtility::cleanVars($_REQUEST, 'date_end', 0, 'int');
 
-if ($account_id == 0) {
+if (0 == $account_id) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
 }
 //permissions
 $perm_pdf = $gpermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
-if ($perm_pdf === false) {
+if (false === $perm_pdf) {
     redirect_header('../index.php', 2, _NOPERM);
 }
 // Génération du pdf
@@ -161,12 +161,12 @@ $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
 $operation_ammount = $operationHandler->getall($criteria_amount);
 $balance_ammount   = 0;
 foreach (array_keys($operation_ammount) as $i) {
-    $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
+    $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
 }
 $balance      += $balance_ammount;
 $balance_save = $balance;
 foreach (array_keys($operation_balance_arr) as $i) {
-    $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
+    $balance               = 1 == $operation_balance_arr[$i]->getVar('operation_type') ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
     $operation_balance[$i] = $balance;
 }
 
@@ -193,8 +193,8 @@ $j = 0;
 foreach (array_keys($operation_arr) as $i) {
     $contenuTableau[$j] = formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's');
     ++$j;
-    if ($operation_arr[$i]->getVar('operation_sender') == 0) {
-        if ($operation_arr[$i]->getVar('operation_outsender') == '') {
+    if (0 == $operation_arr[$i]->getVar('operation_sender')) {
+        if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
             $contenuTableau[$j] = utf8_decode(XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1));
         } else {
             $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('operation_outsender'));
@@ -207,9 +207,9 @@ foreach (array_keys($operation_arr) as $i) {
     ++$j;
     $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('operation_description'));
     ++$j;
-    $contenuTableau[$j] = $operation_arr[$i]->getVar('operation_type') == 1 ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
+    $contenuTableau[$j] = 1 == $operation_arr[$i]->getVar('operation_type') ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
     ++$j;
-    $contenuTableau[$j] = $operation_arr[$i]->getVar('operation_type') == 2 ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
+    $contenuTableau[$j] = 2 == $operation_arr[$i]->getVar('operation_type') ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
     ++$j;
     $contenuTableau[$j] = '[R]' . $operation_balance[$i];
     ++$j;

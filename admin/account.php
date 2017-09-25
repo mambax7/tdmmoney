@@ -61,7 +61,7 @@ switch ($op) {
                 $balance_operation = $account_arr[$i]->getVar('account_balance');
                 foreach (array_keys($operation_arr) as $j) {
                     if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')) {
-                        $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
+                        $balance_operation = 1 == $operation_arr[$j]->getVar('operation_type') ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
                     }
                 }
                 echo '<tr class="' . $class . '">';
@@ -78,7 +78,7 @@ switch ($op) {
                 echo '<a href="account.php?op=del&account_id=' . $i . '"><img src="' . $pathIcon16 . '/delete.png" alt="' . _AM_TDMMONEY_DEL . '" title="' . _AM_TDMMONEY_DEL . '"></a>';
                 echo '</td>';
                 echo '</tr>';
-                $class = ($class === 'even') ? 'odd' : 'even';
+                $class = ('even' === $class) ? 'odd' : 'even';
             }
             echo '</table>';
         }
@@ -129,7 +129,7 @@ switch ($op) {
         global $xoopsModule;
         $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj        = $accountHandler->get($account_id);
-        if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
+        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('account.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -185,11 +185,11 @@ switch ($op) {
         $obj->setVar('account_balance', $_POST['account_balance']);
         $obj->setVar('account_currency', $_POST['account_currency']);
         //vérification que account_balance soit un entier
-        if ((int)$_REQUEST['account_balance'] == 0 && $_REQUEST['account_balance'] != '0') {
+        if (0 == (int)$_REQUEST['account_balance'] && '0' != $_REQUEST['account_balance']) {
             $erreur         = true;
             $message_erreur = _AM_TDMMONEY_ACCOUNT_ERREUR_BALANCE . '<br>';
         }
-        if ($erreur === true) {
+        if (true === $erreur) {
             echo '<div class="errorMsg" style="text-align: left;">' . $message_erreur . '</div>';
         } else {
             if ($accountHandler->insert($obj)) {

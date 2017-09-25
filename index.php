@@ -41,7 +41,7 @@ foreach (array_keys($account_arr) as $i) {
     $balance_operation = $account_arr[$i]->getVar('account_balance');
     foreach (array_keys($operation_arr) as $j) {
         if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')) {
-            $balance_operation = $operation_arr[$j]->getVar('operation_type') == 1 ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
+            $balance_operation = 1 == $operation_arr[$j]->getVar('operation_type') ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
         }
     }
     $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold;">' . $balance_operation . '</span>' : '<span style="font-weight: bold;">' . $balance_operation . '</span>';

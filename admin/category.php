@@ -56,7 +56,7 @@ switch ($op) {
                 echo '<a href="category.php?op=del&cid=' . $i . '"><img src="' . $pathIcon16 . '/delete.png" alt="' . _AM_TDMMONEY_DEL . '" title="' . _AM_TDMMONEY_DEL . '"></a>';
                 echo '</td>';
                 echo '</tr>';
-                $class = ($class === 'even') ? 'odd' : 'even';
+                $class = ('even' === $class) ? 'odd' : 'even';
             }
             echo '</table>';
         }
@@ -107,7 +107,7 @@ switch ($op) {
         global $xoopsModule;
         $cid = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
         $obj = $categoryHandler->get($cid);
-        if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
+        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }

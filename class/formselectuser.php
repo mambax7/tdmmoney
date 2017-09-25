@@ -37,7 +37,7 @@ class TDMXoopsFormSelectUser extends XoopsFormElementTray
         $select_element = new XoopsFormSelect('', $name, $value, $size, $multiple);
         if ($include_anon) {
             $select_element->addOption(0, $GLOBALS['xoopsConfig']['anonymous']);
-        } elseif ($include_sup != '') {
+        } elseif ('' != $include_sup) {
             $select_element->addOption(0, $include_sup);
         }
         /* @var $memberHandler XoopsMemberHandler */

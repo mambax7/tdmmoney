@@ -66,7 +66,7 @@ class TdmmoneyUtility
         $dir = opendir($src);
         //    @mkdir($dst);
         while (false !== ($file = readdir($dir))) {
-            if (($file !== '.') && ($file !== '..')) {
+            if (('.' !== $file) && ('..' !== $file)) {
                 if (is_dir($src . '/' . $file)) {
                     self::recurseCopy($src . '/' . $file, $dst . '/' . $file);
                 } else {
@@ -214,7 +214,7 @@ class TdmmoneyUtility
                 $ret = isset($global[$key]) ? filter_var($global[$key], FILTER_SANITIZE_NUMBER_INT) : $default;
                 break;
         }
-        if ($ret === false) {
+        if (false === $ret) {
             return $default;
         }
 

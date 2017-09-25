@@ -15,12 +15,12 @@ $account_id = Request::getInt('account_id', 0, 'GET');
 $date_start = Request::getInt('date_start', -1, 'GET');
 $date_end   = Request::getInt('date_end', -1, 'GET');
 
-if ($account_id == 0) {
+if (0 == $account_id) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
 }
 //permissions
 $perm_pdf = $gpermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
-if ($perm_pdf === false) {
+if (false === $perm_pdf) {
     redirect_header('../index.php', 2, _NOPERM);
 }
 //2.5.8
@@ -155,12 +155,12 @@ $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
 $operation_ammount = $operationHandler->getall($criteria_amount);
 $balance_ammount   = 0;
 foreach (array_keys($operation_ammount) as $i) {
-    $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
+    $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
 }
 $balance      += $balance_ammount;
 $balance_save = $balance;
 foreach (array_keys($operation_balance_arr) as $i) {
-    $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
+    $balance               = 1 == $operation_balance_arr[$i]->getVar('operation_type') ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
     $operation_balance[$i] = $balance;
 }
 

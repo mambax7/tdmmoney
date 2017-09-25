@@ -21,7 +21,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 
-if ($account_id == 0) {
+if (0 == $account_id) {
     redirect_header('index.php', 2, _MD_TDMMONEY_VIEWACCOUNT_REDIRECT_NOACCOUNT);
 }
 
@@ -39,17 +39,17 @@ if (isset($_REQUEST['date_start']) && isset($_REQUEST['date_end'])) {
     $date_end   = strtotime(TdmmoneyUtility::cleanVars($_REQUEST, 'date_end', 0, 'int'));
 } else {
     //sans filtre
-    if ($xoopsModuleConfig['TdmMoneyFilter'] == 1) {
+    if (1 == $xoopsModuleConfig['TdmMoneyFilter']) {
         $date_start = 0;
         $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
     }
     //filtre mois actuel
-    if ($xoopsModuleConfig['TdmMoneyFilter'] == 2) {
+    if (2 == $xoopsModuleConfig['TdmMoneyFilter']) {
         $date_start = mktime(0, 0, 0, date('m'), 1, date('Y'));
         $date_end   = mktime(0, 0, 0, date('m'), date('t'), date('Y'));
     }
     //filtre année actuelle
-    if ($xoopsModuleConfig['TdmMoneyFilter'] == 3) {
+    if (3 == $xoopsModuleConfig['TdmMoneyFilter']) {
         $date_start = mktime(0, 0, 0, 1, 1, date('Y'));
         $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
     }
@@ -87,12 +87,12 @@ if (count($operation_arr) > 0) {
     $operation_ammount = $operationHandler->getall($criteria_amount);
     $balance_ammount   = 0;
     foreach (array_keys($operation_ammount) as $i) {
-        $balance_ammount = $operation_ammount[$i]->getVar('operation_type') == 1 ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
+        $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
     }
     $balance      += $balance_ammount;
     $balance_save = $balance;
     foreach (array_keys($operation_balance_arr) as $i) {
-        $balance               = $operation_balance_arr[$i]->getVar('operation_type') == 1 ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
+        $balance               = 1 == $operation_balance_arr[$i]->getVar('operation_type') ? $balance - $operation_balance_arr[$i]->getVar('operation_amount') : $balance + $operation_balance_arr[$i]->getVar('operation_amount');
         $operation_balance[$i] = $balance;
     }
     // début de l'affichage des opérations
@@ -100,8 +100,8 @@ if (count($operation_arr) > 0) {
     $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
     foreach (array_keys($operation_arr) as $i) {
         $category = TdmmoneyUtility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif"> ');
-        if ($operation_arr[$i]->getVar('operation_sender') == 0) {
-            if ($operation_arr[$i]->getVar('operation_outsender') == '') {
+        if (0 == $operation_arr[$i]->getVar('operation_sender')) {
+            if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
                 $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
             } else {
                 $sender = $operation_arr[$i]->getVar('operation_outsender');
@@ -109,14 +109,14 @@ if (count($operation_arr) > 0) {
         } else {
             $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
         }
-        $withdraw                  = $operation_arr[$i]->getVar('operation_type') == 1 ? $operation_arr[$i]->getVar('operation_amount') : '';
-        $deposit                   = $operation_arr[$i]->getVar('operation_type') == 2 ? $operation_arr[$i]->getVar('operation_amount') : '';
+        $withdraw                  = 1 == $operation_arr[$i]->getVar('operation_type') ? $operation_arr[$i]->getVar('operation_amount') : '';
+        $deposit                   = 2 == $operation_arr[$i]->getVar('operation_type') ? $operation_arr[$i]->getVar('operation_amount') : '';
         $display_operation_balance = $operation_balance[$i] < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $operation_balance[$i] . '</span>' : '<span style="font-weight: bold">' . $operation_balance[$i] . '</span>';
 
         //action selon les permissions
         $perm_modif = $gpermHandler->checkRight('tdmmoney_ac', 8, $groups, $xoopsModule->getVar('mid')) ? true : false;
         $xoopsTpl->assign('perm_modif', $perm_modif);
-        if ($perm_modif === true) {
+        if (true === $perm_modif) {
             $action = '<a href="submit.php?op=edit&operation_id='
                       . $i
                       . '"><img src="'

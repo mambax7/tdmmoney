@@ -31,7 +31,7 @@ switch ($op) {
     case 'new':
     default:
         //permissions
-        if ($perm_submit === false) {
+        if (false === $perm_submit) {
             redirect_header('index.php', 2, _NOPERM);
         }
         //Affichage du formulaire de création des opérations
@@ -43,7 +43,7 @@ switch ($op) {
     // Pour éditer une opération
     case 'edit':
         //permissions
-        if ($perm_edit === false) {
+        if (false === $perm_edit) {
             redirect_header('index.php', 2, _NOPERM);
         }
         //Affichage du formulaire de création des opérations
@@ -56,14 +56,14 @@ switch ($op) {
     // Pour supprimer une opération
     case 'del':
         //permissions
-        if ($perm_edit === false) {
+        if (false === $perm_edit) {
             redirect_header('index.php', 2, _NOPERM);
         }
         global $xoopsModule;
         $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         $account_id   = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
-        if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
+        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -105,7 +105,7 @@ switch ($op) {
         $obj->setVar('operation_description', Xmf\Request::getText('operation_description', 0, 'POST'));//$_POST['operation_description']);
         $obj->setVar('operation_submitter', !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0);
         $obj->setVar('operation_date_created', time());
-        if ($_POST['operation_sender'] == 0) {
+        if (0 == $_POST['operation_sender']) {
             $obj->setVar('operation_sender', 0);
             $obj->setVar('operation_outsender', Xmf\Request::getInt('operation_outsender', 0, 'POST'));//$_POST['operation_outsender']);
         } else {
@@ -113,12 +113,12 @@ switch ($op) {
             $obj->setVar('operation_outsender', '');
         }
         //vérification que operation_amount soit un entier
-        if ((int)$_REQUEST['operation_amount'] == 0 && $_REQUEST['operation_amount'] != '0') {
+        if (0 == (int)$_REQUEST['operation_amount'] && '0' != $_REQUEST['operation_amount']) {
             $erreur         = true;
             $message_erreur = _AM_TDMMONEY_OPERATION_ERREUR_AMOUNT . '<br>';
             $obj->setVar('operation_amount', '');
         }
-        if ($erreur === true) {
+        if (true === $erreur) {
             $xoopsTpl->assign('error_message', $message_erreur);
         } else {
             if ($operationHandler->insert($obj)) {

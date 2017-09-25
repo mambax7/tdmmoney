@@ -61,7 +61,7 @@ class TdmMoneyOperation extends XoopsObject
     {
         global $xoopsDB, $xoopsModuleConfig, $xoopsUser;
 
-        if ($action === false) {
+        if (false === $action) {
             $action = $_SERVER['REQUEST_URI'];
         }
         //nom du formulaire selon l'action (editer ou ajouter):
@@ -92,7 +92,7 @@ class TdmMoneyOperation extends XoopsObject
         } else {
             $criteria->add(new Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
         }
-        if ($accountHandler->getCount($criteria) == 0) {
+        if (0 == $accountHandler->getCount($criteria)) {
             redirect_header('index.php', 2, _NOPERM);
         }
         $account_select = new XoopsFormSelect(_AM_TDMMONEY_ACCOUNT_NAME, 'operation_account', $this->getVar('operation_account'));
