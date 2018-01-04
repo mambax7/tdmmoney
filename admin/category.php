@@ -33,7 +33,7 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
-        $category_arr = $categoryHandler->getall($criteria);
+        $category_arr = $categoryHandler->getAll($criteria);
         if (count($category_arr) > 0) {
             echo '<table width="100%" cellspacing="1" class="outer">';
             echo '<tr>';
@@ -112,7 +112,7 @@ switch ($op) {
                 redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
             // supression des sous catégories
-            $category_arr      = $categoryHandler->getall();
+            $category_arr      = $categoryHandler->getAll();
             $mytree            = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $category_childcat = $mytree->getAllChild($cid);
             foreach (array_keys($category_childcat) as $i) {
@@ -127,7 +127,7 @@ switch ($op) {
             }
         } else {
             $message           = '';
-            $category_arr      = $categoryHandler->getall();
+            $category_arr      = $categoryHandler->getAll();
             $mytree            = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $category_childcat = $mytree->getAllChild($cid);
             if (count($category_childcat) > 0) {
@@ -171,7 +171,7 @@ switch ($op) {
         $obj->setVar('cat_desc', \Xmf\Request::getString('cat_desc', '', 'POST'));
         $obj->setVar('cat_weight', $cat_weight);
         //vérification que cat_weight soit un entier
-        if (0 === (int)$cat_weight && '0' != $_POST['cat_weight']) {
+        if (0 === $cat_weight && '0' != $_POST['cat_weight']) {
             $erreur         = true;
             $message_erreur = _AM_TDMMONEY_CAT_ERREUR_WEIGHT . '<br>';
         }

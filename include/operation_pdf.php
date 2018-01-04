@@ -158,7 +158,7 @@ $balance               = $account->getVar('account_balance');
 $criteria_amount       = new CriteriaCompo();
 $criteria_amount->add(new Criteria('operation_account', $account_id));
 $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
-$operation_ammount = $operationHandler->getall($criteria_amount);
+$operation_ammount = $operationHandler->getAll($criteria_amount);
 $balance_ammount   = 0;
 foreach (array_keys($operation_ammount) as $i) {
     $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');

@@ -31,7 +31,7 @@ function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
     if (0 != $userid) {
         $sql .= ' AND operation_submitter=' . (int)$userid . ' ';
     }
-    require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/utility.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/Utility.php';
     $access_view = TdmmoneyUtility::getMygetItemIds('tdmmoney_view', 'TDMMoney');
     if (is_array($access_view) && count($access_view) > 0) {
         $sql .= ' AND operation_account IN (' . implode(',', $access_view) . ') ';

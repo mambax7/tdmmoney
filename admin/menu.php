@@ -13,24 +13,19 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-$moduleDirName = basename(dirname(__DIR__));
 
-if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-} else {
-    $moduleHelper = Xmf\Module\Helper::getHelper('system');
-}
+use XoopsModules\Tdmmoney;
 
+require_once __DIR__ . '/../class/Helper.php';
+//require_once __DIR__ . '/../include/common.php';
+$helper = Tdmmoney\Helper::getInstance();
 
-$pathIcon32    = \Xmf\Module\Admin::menuIconPath('');
-$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
+$pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
+$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
-// Load language files
-$moduleHelper->loadLanguage('admin');
-$moduleHelper->loadLanguage('modinfo');
-$moduleHelper->loadLanguage('main');
 
 $adminmenu[] = [
-    'title' => _AM_MODULEADMIN_HOME,
+    'title' => _MI_TDMMONEY_MANAGER_INDEX,
     'link'  => 'admin/index.php',
     'icon'  => $pathIcon32 . '/home.png'
 ];
@@ -57,7 +52,7 @@ $adminmenu[] = [
 ];
 
 $adminmenu[] = [
-    'title' => _AM_MODULEADMIN_ABOUT,
+    'title' => _MI_TDMMONEY_MANAGER_ABOUT,
     'link'  => 'admin/about.php',
     'icon'  => $pathIcon32 . '/about.png'
 ];

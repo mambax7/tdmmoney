@@ -47,9 +47,9 @@ class TdmMoneyAccount extends XoopsObject
     public function get_new_enreg()
     {
         global $xoopsDB;
-        $new_enreg = $xoopsDB->getInsertId();
+        $newEnreg = $xoopsDB->getInsertId();
 
-        return $new_enreg;
+        return $newEnreg;
     }
 
     /**

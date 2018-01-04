@@ -20,16 +20,11 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/utility.php';
+require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/Utility.php';
 
 $moduleDirName = basename(__DIR__);
-
-if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-} else {
-    $moduleHelper = Xmf\Module\Helper::getHelper('system');
-}
-
-$myts = MyTextSanitizer::getInstance();
+$helper = Tdmmoney\Helper::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 
 $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
 //permission

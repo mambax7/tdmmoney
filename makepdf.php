@@ -31,6 +31,7 @@ xoops_loadLanguage('main', PUBLISHER_DIRNAME);
 // Génération du pdf
 //$pdf = new phpToPDF();
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
+
 $pdf->AddPage();
 
 //$pdf->startPageNums();
@@ -152,7 +153,7 @@ $balance               = $account->getVar('account_balance');
 $criteria_amount       = new CriteriaCompo();
 $criteria_amount->add(new Criteria('operation_account', $account_id));
 $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
-$operation_ammount = $operationHandler->getall($criteria_amount);
+$operation_ammount = $operationHandler->getAll($criteria_amount);
 $balance_ammount   = 0;
 foreach (array_keys($operation_ammount) as $i) {
     $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
@@ -164,7 +165,7 @@ foreach (array_keys($operation_balance_arr) as $i) {
     $operation_balance[$i] = $balance;
 }
 
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
+//$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
 
 //$doc_title  = TdmmoneyUtility::convertCharset($myts->undoHtmlSpecialChars($itemObj->getTitle()));
 //$docSubject = $myts->undoHtmlSpecialChars($categoryObj->name());

@@ -29,7 +29,7 @@ switch ($op) {
         $adminObject->displayNavigation(basename(__FILE__));
         $adminObject->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
 
-        if ($moduleHelper->getConfig('ShowSampleDataButton')) {
+        if ($helper->getConfig('ShowSampleDataButton')) {
             require_once __DIR__ . '/../testdata/index.php';
             $adminObject->addItemButton(_AM_TDMMONEY_ADD_SAMPLEDATA, '__DIR__ . /../../testdata/index.php?op=load', 'add');
         }
@@ -44,7 +44,7 @@ switch ($op) {
             $criteria = new CriteriaCompo();
             $criteria->setSort('operation_account');
             $criteria->setOrder('ASC');
-            $operation_arr = $operationHandler->getall($criteria);
+            $operation_arr = $operationHandler->getAll($criteria);
 
             echo '<table width="100%" cellspacing="1" class="outer">';
             echo '<tr>';
@@ -136,7 +136,7 @@ switch ($op) {
             // supression des opérations du compte
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('operation_account', $account_id));
-            $contents_arr = $operationHandler->getall($criteria);
+            $contents_arr = $operationHandler->getAll($criteria);
             foreach (array_keys($contents_arr) as $i) {
                 $objcontents = $operationHandler->get($contents_arr[$i]->getVar('operation_id'));
                 $operationHandler->delete($objcontents) or $objcontents->getHtmlErrors();
@@ -150,7 +150,7 @@ switch ($op) {
             $message  = '';
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('operation_account', $account_id));
-            $operation_arr = $operationHandler->getall($criteria);
+            $operation_arr = $operationHandler->getAll($criteria);
             if (count($operation_arr) > 0) {
                 $message .= _AM_TDMMONEY_CAT_DELOPERATION . '<br>';
                 foreach (array_keys($operation_arr) as $i) {

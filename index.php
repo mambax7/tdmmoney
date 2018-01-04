@@ -25,12 +25,12 @@ $criteria       = new CriteriaCompo();
 $criteria->add(new Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
 $criteria->setSort('account_name');
 $criteria->setOrder('ASC');
-$account_arr = $accountHandler->getall($criteria);
+$account_arr = $accountHandler->getAll($criteria);
 //pour le calcul des soldes:
 $criteria = new CriteriaCompo();
 $criteria->setSort('operation_account');
 $criteria->setOrder('ASC');
-$operation_arr = $operationHandler->getall($criteria);
+$operation_arr = $operationHandler->getAll($criteria);
 
 $count = 1;
 foreach (array_keys($account_arr) as $i) {

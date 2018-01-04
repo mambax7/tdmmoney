@@ -28,7 +28,7 @@ $menu_account .= "<select name=\"account_tri\" id=\"account_tri\" onchange=\"loc
 $criteria     = new CriteriaCompo();
 $criteria->setSort('account_name');
 $criteria->setOrder('ASC');
-$account_arr  = $accountHandler->getall($criteria);
+$account_arr  = $accountHandler->getAll($criteria);
 $menu_account .= '<option value="0"' . (0 == $account_id ? ' selected="selected"' : '') . '>' . _AM_TDMMONEY_OPERATION_ALL . '</option>';
 foreach (array_keys($account_arr) as $i) {
     $menu_account .= '<option value="' . $i . '"' . ($account_id == $i ? ' selected="selected"' : '') . '>' . $account_arr[$i]->getVar('account_name') . '</option>';
@@ -106,7 +106,7 @@ switch ($op) {
                 $criteria_amount       = new CriteriaCompo();
                 $criteria_amount->add(new Criteria('operation_account', $account_id));
                 $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
-                $operation_ammount = $operationHandler->getall($criteria_amount);
+                $operation_ammount = $operationHandler->getAll($criteria_amount);
                 $balance_ammount   = 0;
                 foreach (array_keys($operation_ammount) as $i) {
                     $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
@@ -137,7 +137,7 @@ switch ($op) {
             echo '</tr>';
             $class = 'odd';
             // début de l'affichage des opérations
-            $category_arr = $categoryHandler->getall();
+            $category_arr = $categoryHandler->getAll();
             require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/tree.php';
             $mytree = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
             foreach (array_keys($operation_arr) as $i) {

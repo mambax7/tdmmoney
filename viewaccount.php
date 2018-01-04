@@ -84,7 +84,7 @@ if (count($operation_arr) > 0) {
     $criteria_amount       = new CriteriaCompo();
     $criteria_amount->add(new Criteria('operation_account', $account_id));
     $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
-    $operation_ammount = $operationHandler->getall($criteria_amount);
+    $operation_ammount = $operationHandler->getAll($criteria_amount);
     $balance_ammount   = 0;
     foreach (array_keys($operation_ammount) as $i) {
         $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
@@ -96,7 +96,7 @@ if (count($operation_arr) > 0) {
         $operation_balance[$i] = $balance;
     }
     // début de l'affichage des opérations
-    $category_arr = $categoryHandler->getall();
+    $category_arr = $categoryHandler->getAll();
     $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
     foreach (array_keys($operation_arr) as $i) {
         $category = TdmmoneyUtility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif"> ');
@@ -167,7 +167,7 @@ if (count($operation_arr) > 0) {
     $perm_add = $gpermHandler->checkRight('tdmmoney_ac', 4, $groups, $xoopsModule->getVar('mid')) ? true : false;
     $xoopsTpl->assign('perm_add', $perm_add);
 
-    if ($moduleHelper->getConfig('displayPdf')) {
+    if ($helper->getConfig('displayPdf')) {
         $xoopsTpl->assign('displayPdf', 1);
     }
 

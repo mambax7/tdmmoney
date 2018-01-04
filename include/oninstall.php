@@ -64,15 +64,10 @@ function xoops_module_install_tdmmoney(XoopsModule $module)
     require_once dirname(__DIR__) . '/include/config.php';
 
     $moduleDirName = basename(dirname(__DIR__));
-
-    if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-    } else {
-        $moduleHelper = Xmf\Module\Helper::getHelper('system');
-    }
-
+    $helper = Tdmmoney\Helper::getInstance();
     // Load language files
-    $moduleHelper->loadLanguage('admin');
-    $moduleHelper->loadLanguage('modinfo');
+    $helper->loadLanguage('admin');
+    $helper->loadLanguage('modinfo');
 
     $configurator = new TdmmoneyConfigurator();
     $classUtil    = ucfirst($moduleDirName) . 'Utility';
@@ -83,7 +78,7 @@ function xoops_module_install_tdmmoney(XoopsModule $module)
     // default Permission Settings ----------------------
     global $xoopsModule;
     $moduleId  = $xoopsModule->getVar('mid');
-    $moduleId2 = $moduleHelper->getModule()->mid();
+    $moduleId2 = $helper->getModule()->mid();
     /* @var $gpermHandler XoopsGroupPermHandler */
     $gpermHandler = xoops_getHandler('groupperm');
     // access rights ------------------------------------------
