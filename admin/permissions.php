@@ -69,7 +69,7 @@ switch ($permission) {
         break;
 }
 
-$permissionsForm = new XoopsGroupPermForm($formTitle, $moduleId, $permissionName, $permissionDescription, 'admin/permissions.php');
+$permissionsForm = new \XoopsGroupPermForm($formTitle, $moduleId, $permissionName, $permissionDescription, 'admin/permissions.php');
 if (1 == $permission) {
     foreach ($global_perms_array as $perm_id => $permissionName) {
         $permissionsForm->addItem($perm_id, $permissionName);
@@ -78,7 +78,7 @@ if (1 == $permission) {
     $sql    = 'SELECT account_id, account_name FROM ' . $xoopsDB->prefix('tdmmoney_account') . ' ORDER BY account_name';
     $result = $xoopsDB->query($sql);
     if ($result) {
-        while ($row = $xoopsDB->fetchArray($result)) {
+        while (false !== ($row = $xoopsDB->fetchArray($result))) {
             $permissionsForm->addItem($row['account_id'], $row['account_name']);
         }
     }

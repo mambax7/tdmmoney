@@ -21,21 +21,21 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 // pour les permissions
 $access_account = TdmmoneyUtility::getMygetItemIds('tdmmoney_view', 'TDMMoney');
-$criteria       = new CriteriaCompo();
-$criteria->add(new Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
+$criteria       = new \CriteriaCompo();
+$criteria->add(new \Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
 $criteria->setSort('account_name');
 $criteria->setOrder('ASC');
 $account_arr = $accountHandler->getAll($criteria);
 //pour le calcul des soldes:
-$criteria = new CriteriaCompo();
+$criteria = new \CriteriaCompo();
 $criteria->setSort('operation_account');
 $criteria->setOrder('ASC');
 $operation_arr = $operationHandler->getAll($criteria);
 
 $count = 1;
 foreach (array_keys($account_arr) as $i) {
-    /*$criteria_operation = new CriteriaCompo();
-    $criteria_operation->add(new Criteria('operation_account', $i));
+    /*$criteria_operation = new \CriteriaCompo();
+    $criteria_operation->add(new \Criteria('operation_account', $i));
     $operation_arr = $operationHandler->getall($criteria_operation);*/
     //calcul des soldes
     $balance_operation = $account_arr[$i]->getVar('account_balance');

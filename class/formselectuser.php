@@ -34,7 +34,7 @@ class TDMXoopsFormSelectUser extends XoopsFormElementTray
     public function __construct($caption, $name, $include_anon = false, $include_sup = '', $value = null, $size = 1, $multiple = false)
     {
         $limit          = 200;
-        $select_element = new XoopsFormSelect('', $name, $value, $size, $multiple);
+        $select_element = new \XoopsFormSelect('', $name, $value, $size, $multiple);
         if ($include_anon) {
             $select_element->addOption(0, $GLOBALS['xoopsConfig']['anonymous']);
         } elseif ('' != $include_sup) {
@@ -45,9 +45,9 @@ class TDMXoopsFormSelectUser extends XoopsFormElementTray
         $user_count    = $memberHandler->getUserCount();
         $value         = is_array($value) ? $value : (empty($value) ? [] : [$value]);
         if ($user_count > $limit && count($value) > 0) {
-            $criteria = new CriteriaCompo(new Criteria('uid', '(' . implode(',', $value) . ')', 'IN'));
+            $criteria = new \CriteriaCompo(new \Criteria('uid', '(' . implode(',', $value) . ')', 'IN'));
         } else {
-            $criteria = new CriteriaCompo();
+            $criteria = new \CriteriaCompo();
             $criteria->setLimit($limit);
         }
         $criteria->setSort('uname');
@@ -93,9 +93,9 @@ class TDMXoopsFormSelectUser extends XoopsFormElementTray
             }
             </script>";
         $token       = $GLOBALS['xoopsSecurity']->createToken();
-        $action_tray = new XoopsFormElementTray('', ' | ');
-        $action_tray->addElement(new XoopsFormLabel('', '<a href="#" onclick="var sel = xoopsGetElementById(\'' . $name . "\');for (var i = sel.options.length-1; i >= 0; i--) {if (!sel.options[i].selected) {sel.options[i] = null;}} return false;\">'" . _MA_USER_REMOVE . '</a>'));
-        $action_tray->addElement(new XoopsFormLabel('', '<a href="#" onclick="openWithSelfMain(\''
+        $action_tray = new \XoopsFormElementTray('', ' | ');
+        $action_tray->addElement(new \XoopsFormLabel('', '<a href="#" onclick="var sel = xoopsGetElementById(\'' . $name . "\');for (var i = sel.options.length-1; i >= 0; i--) {if (!sel.options[i].selected) {sel.options[i] = null;}} return false;\">'" . _MA_USER_REMOVE . '</a>'));
+        $action_tray->addElement(new \XoopsFormLabel('', '<a href="#" onclick="openWithSelfMain(\''
                                                         . XOOPS_URL
                                                         . '/include/findusers.php?target='
                                                         . $name

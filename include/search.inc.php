@@ -53,7 +53,7 @@ function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
     $result = $xoopsDB->query($sql, $limit, $offset);
     $ret    = [];
     $i      = 0;
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $ret[$i]['image'] = 'assets/images/deco/contact.png';
         $ret[$i]['link']  = 'viewaccount.php?account_id=' . $myrow['operation_account'] . '';
         $ret[$i]['title'] = $myrow['operation_amount'] . '-' . $myrow['operation_description'];

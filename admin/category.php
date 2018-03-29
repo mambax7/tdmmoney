@@ -30,7 +30,7 @@ switch ($op) {
         $adminObject->addItemButton(_AM_TDMMONEY_CAT_NEW, 'category.php?op=new', 'add');
         $adminObject->displayButton('left');
 
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
         $category_arr = $categoryHandler->getAll($criteria);
@@ -113,7 +113,7 @@ switch ($op) {
             }
             // supression des sous catégories
             $category_arr      = $categoryHandler->getAll();
-            $mytree            = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
+            $mytree            = new \XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $category_childcat = $mytree->getAllChild($cid);
             foreach (array_keys($category_childcat) as $i) {
                 // supression de la sous catégorie
@@ -128,7 +128,7 @@ switch ($op) {
         } else {
             $message           = '';
             $category_arr      = $categoryHandler->getAll();
-            $mytree            = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
+            $mytree            = new \XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $category_childcat = $mytree->getAllChild($cid);
             if (count($category_childcat) > 0) {
                 $message .= _AM_TDMMONEY_CAT_DELSOUSCAT . ' <br><br>';

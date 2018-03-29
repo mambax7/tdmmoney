@@ -14,6 +14,10 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmmoney;
+/** @var Tdmmoney\Helper $helper */
+$helper = Tdmmoney\Helper::getInstance();
+
 require_once __DIR__ . '/admin_header.php';
 //On recupere la valeur de l'argument op dans l'URL$
 $op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
@@ -25,7 +29,7 @@ $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 $menu_account = '<form id="form_account" name="form_account" method="get" action="operation.php">';
 $menu_account .= _AM_TDMMONEY_OPERATION_LISTBYACCOUNT;
 $menu_account .= "<select name=\"account_tri\" id=\"account_tri\" onchange=\"location='" . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . "/admin/operation.php?op=list&account_id='+this.options[this.selectedIndex].value\">";
-$criteria     = new CriteriaCompo();
+$criteria     = new \CriteriaCompo();
 $criteria->setSort('account_name');
 $criteria->setOrder('ASC');
 $account_arr  = $accountHandler->getAll($criteria);
@@ -47,45 +51,45 @@ switch ($op) {
         echo $menu_account;
         $adminObject->displayButton('left');
 
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         // gestion de l'affichage des comptes
         if (0 == $account_id) {
             $display_account = false;
         } else {
             // affichage des filtres
             $display_account = true;
-            $criteria->add(new Criteria('operation_account', $account_id));
+            $criteria->add(new \Criteria('operation_account', $account_id));
             if (isset($_REQUEST['date_start']) && isset($_REQUEST['date_end'])) {
                 $date_start = strtotime($_REQUEST['date_start']);
                 $date_end   = strtotime($_REQUEST['date_end']);
             } else {
                 //sans filtre
-                if (1 == $xoopsModuleConfig['TdmMoneyFilter']) {
+                if (1 == $helper->getConfig('TdmMoneyFilter')) {
                     $date_start = 0;
                     $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
                 }
                 //filtre mois actuel
-                if (2 == $xoopsModuleConfig['TdmMoneyFilter']) {
+                if (2 == $helper->getConfig('TdmMoneyFilter')) {
                     $date_start = mktime(0, 0, 0, date('m'), 1, date('Y'));
                     $date_end   = mktime(0, 0, 0, date('m'), date('t'), date('Y'));
                 }
                 //filtre année actuelle
-                if (3 == $xoopsModuleConfig['TdmMoneyFilter']) {
+                if (3 == $helper->getConfig('TdmMoneyFilter')) {
                     $date_start = mktime(0, 0, 0, 1, 1, date('Y'));
                     $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
                 }
             }
-            $criteria->add(new Criteria('operation_date', $date_start, '>='));
-            $criteria->add(new Criteria('operation_date', $date_end, '<='));
-            $form = new XoopsThemeForm(_AM_TDMMONEY_OPERATION_FILTER, 'form', 'operation.php', 'post', true);
+            $criteria->add(new \Criteria('operation_date', $date_start, '>='));
+            $criteria->add(new \Criteria('operation_date', $date_end, '<='));
+            $form = new \XoopsThemeForm(_AM_TDMMONEY_OPERATION_FILTER, 'form', 'operation.php', 'post', true);
             $form->setExtra('enctype="multipart/form-data"');
-            $filer = new XoopsFormElementTray(_AM_TDMMONEY_OPERATION_FILTER);
-            $filer->addElement(new XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_START, 'date_start', '', $date_start));
-            $filer->addElement(new XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_END, 'date_end', '', $date_end));
-            $filer->addElement(new XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+            $filer = new \XoopsFormElementTray(_AM_TDMMONEY_OPERATION_FILTER);
+            $filer->addElement(new \XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_START, 'date_start', '', $date_start));
+            $filer->addElement(new \XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_END, 'date_end', '', $date_end));
+            $filer->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
             $form->addElement($filer);
-            $form->addElement(new XoopsFormHidden('op', 'list'));
-            $form->addElement(new XoopsFormHidden('account_id', $account_id));
+            $form->addElement(new \XoopsFormHidden('op', 'list'));
+            $form->addElement(new \XoopsFormHidden('account_id', $account_id));
             $form->display();
         }
         // extraction des données
@@ -103,9 +107,9 @@ switch ($op) {
                 $operation_balance_arr = array_reverse($operation_arr, true);
                 $account_balance       = $accountHandler->get($account_id);
                 $balance               = $account_balance->getVar('account_balance');
-                $criteria_amount       = new CriteriaCompo();
-                $criteria_amount->add(new Criteria('operation_account', $account_id));
-                $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
+                $criteria_amount       = new \CriteriaCompo();
+                $criteria_amount->add(new \Criteria('operation_account', $account_id));
+                $criteria_amount->add(new \Criteria('operation_date', $date_start, '<'));
                 $operation_ammount = $operationHandler->getAll($criteria_amount);
                 $balance_ammount   = 0;
                 foreach (array_keys($operation_ammount) as $i) {

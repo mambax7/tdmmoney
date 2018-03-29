@@ -38,7 +38,7 @@ if (is_object($xoopsUser)) {
 
 if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');
-    $xoopsTpl = new XoopsTpl();
+    $xoopsTpl = new \XoopsTpl();
 }
 $xoopsTpl->assign('module_url', XOOPS_URL . "/modules/$moduleDirName/");
 xoops_loadLanguage('admin', $xoopsModule->getVar('dirname', 'e'));

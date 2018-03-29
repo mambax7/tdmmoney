@@ -14,7 +14,9 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\Tdmmoney;
+
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class TdmMoneyOperation
@@ -59,7 +61,9 @@ class TdmMoneyOperation extends XoopsObject
      */
     public function getForm($action = false)
     {
-        global $xoopsDB, $xoopsModuleConfig, $xoopsUser;
+        global $xoopsDB,  $xoopsUser;
+        /** @var Tdmmoney\Helper $helper */
+        $helper = Tdmmoney\Helper::getInstance();
 
         if (false === $action) {
             $action = $_SERVER['REQUEST_URI'];
@@ -67,10 +71,10 @@ class TdmMoneyOperation extends XoopsObject
         //nom du formulaire selon l'action (editer ou ajouter):
         $title = $this->isNew() ? sprintf(_AM_TDMMONEY_OPERATION_ADD) : sprintf(_AM_TDMMONEY_OPERATION_EDIT, $this->getVar('operation_id'));
         //création du formulaire
-        $form = new XoopsThemeForm($title, 'form', $action, 'post', true);
+        $form = new \XoopsThemeForm($title, 'form', $action, 'post', true);
         $form->setExtra('enctype="multipart/form-data"');
         //type d'opération
-        $type    = new XoopsFormRadio(_AM_TDMMONEY_OPERATION_TYPE, 'operation_type', $this->isNew() ? 1 : $this->getVar('operation_type', 'e'));
+        $type    = new \XoopsFormRadio(_AM_TDMMONEY_OPERATION_TYPE, 'operation_type', $this->isNew() ? 1 : $this->getVar('operation_type', 'e'));
         $options = [
             1 => _AM_TDMMONEY_OPERATION_WITHDRAW,
             2 => _AM_TDMMONEY_OPERATION_DEPOSIT
@@ -81,51 +85,51 @@ class TdmMoneyOperation extends XoopsObject
         // pour les permissions
         $accountHandler = xoops_getModuleHandler('account', 'TDMMoney');
         $access_account = TdmmoneyUtility::getMygetItemIds('tdmmoney_submit', 'TDMMoney');
-        $criteria       = new CriteriaCompo();
+        $criteria       = new \CriteriaCompo();
         $criteria->setSort('account_name');
         $criteria->setOrder('ASC');
         if ($xoopsUser) {
             $xoopsModule = XoopsModule::getByDirname('TDMMoney');
             if (!$xoopsUser->isAdmin($xoopsModule->mid())) {
-                $criteria->add(new Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
+                $criteria->add(new \Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
             }
         } else {
-            $criteria->add(new Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
+            $criteria->add(new \Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
         }
         if (0 == $accountHandler->getCount($criteria)) {
             redirect_header('index.php', 2, _NOPERM);
         }
-        $account_select = new XoopsFormSelect(_AM_TDMMONEY_ACCOUNT_NAME, 'operation_account', $this->getVar('operation_account'));
+        $account_select = new \XoopsFormSelect(_AM_TDMMONEY_ACCOUNT_NAME, 'operation_account', $this->getVar('operation_account'));
         $account_select->addOptionArray($accountHandler->getList($criteria));
         $form->addElement($account_select, true);
         //tiers
         require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/formselectuser.php';
-        $sender = new XoopsFormElementTray(_AM_TDMMONEY_OPERATION_SENDER);
+        $sender = new \XoopsFormElementTray(_AM_TDMMONEY_OPERATION_SENDER);
         $sender->addElement(new TDMXoopsFormSelectUser('', 'operation_sender', false, _AM_TDMMONEY_OPERATION_OUTSIDE, $this->getVar('operation_sender'), 1, false), true);
-        $outsender = new XoopsFormText(_AM_TDMMONEY_OPERATION_OUTSENDER, 'operation_outsender', 25, 50, $this->getVar('operation_outsender'));
+        $outsender = new \XoopsFormText(_AM_TDMMONEY_OPERATION_OUTSENDER, 'operation_outsender', 25, 50, $this->getVar('operation_outsender'));
         $sender->addElement($outsender);
         $form->addElement($sender);
         //choix de la catégorie
         $categoryHandler = xoops_getModuleHandler('category', 'tdmmoney');
-        $criteria        = new CriteriaCompo();
+        $criteria        = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
         $category_arr = $categoryHandler->getall($criteria);
-        $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
-        //        $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
+        $mytree       = new \XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
+        //        $form->addElement(new \XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
         $moduleDirName = basename(dirname(__DIR__));
         $module        = XoopsModule::getByDirname($moduleDirName);
         if (TdmMoneyUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
             $catSelect = $mytree->makeSelectElement('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false, 0, '', _AM_TDMMONEY_OPERATION_CATEGORY);
             $form->addElement($catSelect);
         } else {
-            $form->addElement(new XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
+            $form->addElement(new \XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
         }
 
         //date
-        $form->addElement(new XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_DATE, 'operation_date', '', $this->getVar('operation_date')), true);
+        $form->addElement(new \XoopsFormTextDateSelect(_AM_TDMMONEY_OPERATION_DATE, 'operation_date', '', $this->getVar('operation_date')), true);
         //montant
-        $form->addElement(new XoopsFormText(_AM_TDMMONEY_OPERATION_AMOUNT, 'operation_amount', 10, 10, $this->getVar('operation_amount')), true);
+        $form->addElement(new \XoopsFormText(_AM_TDMMONEY_OPERATION_AMOUNT, 'operation_amount', 10, 10, $this->getVar('operation_amount')), true);
         //description
         $editor_configs           = [];
         $editor_configs['name']   = 'operation_description';
@@ -134,16 +138,16 @@ class TdmMoneyOperation extends XoopsObject
         $editor_configs['cols']   = 80;
         $editor_configs['width']  = '100%';
         $editor_configs['height'] = '400px';
-        $editor_configs['editor'] = $xoopsModuleConfig['TdmMoneyEditor'];
-        $form->addElement(new XoopsFormEditor(_AM_TDMMONEY_OPERATION_DESCRIPTION, 'operation_description', $editor_configs));
+        $editor_configs['editor'] = $helper->getConfig('TdmMoneyEditor');
+        $form->addElement(new \XoopsFormEditor(_AM_TDMMONEY_OPERATION_DESCRIPTION, 'operation_description', $editor_configs));
         //pour enregistrer le formulaire
-        $form->addElement(new XoopsFormHidden('op', 'save'));
+        $form->addElement(new \XoopsFormHidden('op', 'save'));
         // pour passer "operation_id" si on modifie le compte
         if (!$this->isNew()) {
-            $form->addElement(new XoopsFormHidden('operation_id', $this->getVar('operation_id')));
+            $form->addElement(new \XoopsFormHidden('operation_id', $this->getVar('operation_id')));
         }
         //boutton d'envoi du formulaire
-        $form->addElement(new XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+        $form->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
 
         return $form;
     }
@@ -156,7 +160,7 @@ class TdmMoneyOperationHandler extends XoopsPersistableObjectHandler
 {
     /**
      * TdmMoneyOperationHandler constructor.
-     * @param null|object|XoopsDatabase $db
+     * @param null|object|\XoopsDatabase $db
      */
     public function __construct($db)
     {

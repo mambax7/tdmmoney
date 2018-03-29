@@ -14,6 +14,10 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmmoney;
+/** @var Tdmmoney\Helper $helper */
+$helper = Tdmmoney\Helper::getInstance();
+
 require_once __DIR__ . '/header.php';
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_viewaccount.tpl';
@@ -31,40 +35,40 @@ if (!$gpermHandler->checkRight('tdmmoney_view', $account_id, $groups, $xoopsModu
 }
 
 // affichage des filtres
-$criteria        = new CriteriaCompo();
+$criteria        = new \CriteriaCompo();
 $display_account = true;
-$criteria->add(new Criteria('operation_account', $account_id));
+$criteria->add(new \Criteria('operation_account', $account_id));
 if (isset($_REQUEST['date_start']) && isset($_REQUEST['date_end'])) {
     $date_start = strtotime(TdmmoneyUtility::cleanVars($_REQUEST, 'date_start', 0, 'int'));
     $date_end   = strtotime(TdmmoneyUtility::cleanVars($_REQUEST, 'date_end', 0, 'int'));
 } else {
     //sans filtre
-    if (1 == $xoopsModuleConfig['TdmMoneyFilter']) {
+    if (1 == $helper->getConfig('TdmMoneyFilter')) {
         $date_start = 0;
         $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
     }
     //filtre mois actuel
-    if (2 == $xoopsModuleConfig['TdmMoneyFilter']) {
+    if (2 == $helper->getConfig('TdmMoneyFilter')) {
         $date_start = mktime(0, 0, 0, date('m'), 1, date('Y'));
         $date_end   = mktime(0, 0, 0, date('m'), date('t'), date('Y'));
     }
     //filtre année actuelle
-    if (3 == $xoopsModuleConfig['TdmMoneyFilter']) {
+    if (3 == $helper->getConfig('TdmMoneyFilter')) {
         $date_start = mktime(0, 0, 0, 1, 1, date('Y'));
         $date_end   = mktime(0, 0, 0, 12, 31, date('Y'));
     }
 }
-$criteria->add(new Criteria('operation_date', $date_start, '>='));
-$criteria->add(new Criteria('operation_date', $date_end, '<='));
-$form = new XoopsThemeForm(_MD_TDMMONEY_VIEWACCOUNT_FILTER, 'form', 'viewaccount.php', 'post', true);
+$criteria->add(new \Criteria('operation_date', $date_start, '>='));
+$criteria->add(new \Criteria('operation_date', $date_end, '<='));
+$form = new \XoopsThemeForm(_MD_TDMMONEY_VIEWACCOUNT_FILTER, 'form', 'viewaccount.php', 'post', true);
 $form->setExtra('enctype="multipart/form-data"');
-$filer = new XoopsFormElementTray(_MD_TDMMONEY_VIEWACCOUNT_FILTER);
-$filer->addElement(new XoopsFormTextDateSelect(_MD_TDMMONEY_VIEWACCOUNT_START, 'date_start', '', $date_start));
-$filer->addElement(new XoopsFormTextDateSelect(_MD_TDMMONEY_VIEWACCOUNT_END, 'date_end', '', $date_end));
-$filer->addElement(new XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+$filer = new \XoopsFormElementTray(_MD_TDMMONEY_VIEWACCOUNT_FILTER);
+$filer->addElement(new \XoopsFormTextDateSelect(_MD_TDMMONEY_VIEWACCOUNT_START, 'date_start', '', $date_start));
+$filer->addElement(new \XoopsFormTextDateSelect(_MD_TDMMONEY_VIEWACCOUNT_END, 'date_end', '', $date_end));
+$filer->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
 $form->addElement($filer);
-$form->addElement(new XoopsFormHidden('op', 'list'));
-$form->addElement(new XoopsFormHidden('account_id', $account_id));
+$form->addElement(new \XoopsFormHidden('op', 'list'));
+$form->addElement(new \XoopsFormHidden('account_id', $account_id));
 $xoopsTpl->assign('form', $form->render());
 
 //pour faire une jointure de table
@@ -81,9 +85,9 @@ if (count($operation_arr) > 0) {
     $operation_balance_arr = array_reverse($operation_arr, true);
     $account_balance       = $accountHandler->get($account_id);
     $balance               = $account_balance->getVar('account_balance');
-    $criteria_amount       = new CriteriaCompo();
-    $criteria_amount->add(new Criteria('operation_account', $account_id));
-    $criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
+    $criteria_amount       = new \CriteriaCompo();
+    $criteria_amount->add(new \Criteria('operation_account', $account_id));
+    $criteria_amount->add(new \Criteria('operation_date', $date_start, '<'));
     $operation_ammount = $operationHandler->getAll($criteria_amount);
     $balance_ammount   = 0;
     foreach (array_keys($operation_ammount) as $i) {
@@ -97,7 +101,7 @@ if (count($operation_arr) > 0) {
     }
     // début de l'affichage des opérations
     $category_arr = $categoryHandler->getAll();
-    $mytree       = new XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
+    $mytree       = new \XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
     foreach (array_keys($operation_arr) as $i) {
         $category = TdmmoneyUtility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif"> ');
         if (0 == $operation_arr[$i]->getVar('operation_sender')) {

@@ -35,13 +35,13 @@ switch ($op) {
         }
         $adminObject->displayButton('left');
 
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         $criteria->setSort('account_name');
         $criteria->setOrder('ASC');
         $account_arr = $accountHandler->getAll($criteria);
         if (count($account_arr) > 0) {
             //pour le calcul des soldes:
-            $criteria = new CriteriaCompo();
+            $criteria = new \CriteriaCompo();
             $criteria->setSort('operation_account');
             $criteria->setOrder('ASC');
             $operation_arr = $operationHandler->getAll($criteria);
@@ -134,8 +134,8 @@ switch ($op) {
                 redirect_header('account.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
             // supression des opérations du compte
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('operation_account', $account_id));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('operation_account', $account_id));
             $contents_arr = $operationHandler->getAll($criteria);
             foreach (array_keys($contents_arr) as $i) {
                 $objcontents = $operationHandler->get($contents_arr[$i]->getVar('operation_id'));
@@ -148,8 +148,8 @@ switch ($op) {
             }
         } else {
             $message  = '';
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('operation_account', $account_id));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('operation_account', $account_id));
             $operation_arr = $operationHandler->getAll($criteria);
             if (count($operation_arr) > 0) {
                 $message .= _AM_TDMMONEY_CAT_DELOPERATION . '<br>';
@@ -198,10 +198,10 @@ switch ($op) {
                 $perm_id = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
                 /* @var $gpermHandler XoopsGroupPermHandler */
                 $gpermHandler = xoops_getHandler('groupperm');
-                $criteria     = new CriteriaCompo();
-                $criteria->add(new Criteria('gperm_itemid', $perm_id, '='));
-                $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
-                $criteria->add(new Criteria('gperm_name', 'tdmmoney_view', '='));
+                $criteria     = new \CriteriaCompo();
+                $criteria->add(new \Criteria('gperm_itemid', $perm_id, '='));
+                $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
+                $criteria->add(new \Criteria('gperm_name', 'tdmmoney_view', '='));
                 $gpermHandler->deleteAll($criteria);
                 if (isset($_POST['groups_view'])) {
                     foreach ($_POST['groups_view'] as $onegroup_id) {
@@ -211,10 +211,10 @@ switch ($op) {
                 //permission pour editer
                 $perm_id      = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
                 $gpermHandler = xoops_getHandler('groupperm');
-                $criteria     = new CriteriaCompo();
-                $criteria->add(new Criteria('gperm_itemid', $perm_id, '='));
-                $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
-                $criteria->add(new Criteria('gperm_name', 'tdmmoney_submit', '='));
+                $criteria     = new \CriteriaCompo();
+                $criteria->add(new \Criteria('gperm_itemid', $perm_id, '='));
+                $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
+                $criteria->add(new \Criteria('gperm_name', 'tdmmoney_submit', '='));
                 $gpermHandler->deleteAll($criteria);
                 if (isset($_POST['groups_submit'])) {
                     foreach ($_POST['groups_submit'] as $onegroup_id) {

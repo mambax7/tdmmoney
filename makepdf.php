@@ -134,10 +134,10 @@ $proprieteContenu = [
     'BRD_TYPE_NEW_PAGE' => '',
 ];
 $account          = $accountHandler->get($account_id);
-$criteria         = new CriteriaCompo();
-$criteria->add(new Criteria('operation_account', $account_id));
-$criteria->add(new Criteria('operation_date', $date_start, '>='));
-$criteria->add(new Criteria('operation_date', $date_end, '<='));
+$criteria         = new \CriteriaCompo();
+$criteria->add(new \Criteria('operation_account', $account_id));
+$criteria->add(new \Criteria('operation_date', $date_start, '>='));
+$criteria->add(new \Criteria('operation_date', $date_end, '<='));
 $criteria->setSort('operation_date');
 $criteria->setOrder('DESC');
 //pour faire une jointure de table
@@ -150,9 +150,9 @@ $operation_arr = $operationHandler->getByLink($criteria);
 // Calcul des soldes
 $operation_balance_arr = array_reverse($operation_arr, true);
 $balance               = $account->getVar('account_balance');
-$criteria_amount       = new CriteriaCompo();
-$criteria_amount->add(new Criteria('operation_account', $account_id));
-$criteria_amount->add(new Criteria('operation_date', $date_start, '<'));
+$criteria_amount       = new \CriteriaCompo();
+$criteria_amount->add(new \Criteria('operation_account', $account_id));
+$criteria_amount->add(new \Criteria('operation_date', $date_start, '<'));
 $operation_ammount = $operationHandler->getAll($criteria_amount);
 $balance_ammount   = 0;
 foreach (array_keys($operation_ammount) as $i) {

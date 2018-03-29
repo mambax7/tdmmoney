@@ -16,7 +16,7 @@
 
 use XoopsModules\Tdmmoney;
 
-require_once __DIR__ . '/../class/Helper.php';
+// require_once __DIR__ . '/../class/Helper.php';
 //require_once __DIR__ . '/../include/common.php';
 $helper = Tdmmoney\Helper::getInstance();
 

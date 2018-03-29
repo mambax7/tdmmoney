@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class TdmMoneyAccount
@@ -67,18 +67,18 @@ class TdmMoneyAccount extends XoopsObject
         //nom du formulaire selon l'action (editer ou ajouter):
         $title = $this->isNew() ? sprintf(_AM_TDMMONEY_ACCOUNT_ADD) : sprintf(_AM_TDMMONEY_ACCOUNT_EDIT, $this->getVar('account_name'));
         //création du formulaire
-        $form = new XoopsThemeForm($title, 'form', $action, 'post', true);
+        $form = new \XoopsThemeForm($title, 'form', $action, 'post', true);
         $form->setExtra('enctype="multipart/form-data"');
         //nom
-        $form->addElement(new XoopsFormText(_AM_TDMMONEY_ACCOUNT_NAME, 'account_name', 50, 255, $this->getVar('account_name')), true);
+        $form->addElement(new \XoopsFormText(_AM_TDMMONEY_ACCOUNT_NAME, 'account_name', 50, 255, $this->getVar('account_name')), true);
         //banque
-        $form->addElement(new XoopsFormText(_AM_TDMMONEY_ACCOUNT_BANK, 'account_bank', 50, 255, $this->getVar('account_bank')), true);
+        $form->addElement(new \XoopsFormText(_AM_TDMMONEY_ACCOUNT_BANK, 'account_bank', 50, 255, $this->getVar('account_bank')), true);
         //adresse
-        $form->addElement(new XoopsFormTextArea(_AM_TDMMONEY_ACCOUNT_ADRESS, 'account_adress', $this->getVar('account_adress', 'e'), 4, 47));
+        $form->addElement(new \XoopsFormTextArea(_AM_TDMMONEY_ACCOUNT_ADRESS, 'account_adress', $this->getVar('account_adress', 'e'), 4, 47));
         //solde
-        $form->addElement(new XoopsFormText(_AM_TDMMONEY_ACCOUNT_BALANCE, 'account_balance', 10, 10, $this->getVar('account_balance')), true);
+        $form->addElement(new \XoopsFormText(_AM_TDMMONEY_ACCOUNT_BALANCE, 'account_balance', 10, 10, $this->getVar('account_balance')), true);
         //devise
-        $form->addElement(new XoopsFormText(_AM_TDMMONEY_ACCOUNT_CURRENCY, 'account_currency', 10, 10, $this->getVar('account_currency')), true);
+        $form->addElement(new \XoopsFormText(_AM_TDMMONEY_ACCOUNT_CURRENCY, 'account_currency', 10, 10, $this->getVar('account_currency')), true);
         //permissions
         /* @var $memberHandler XoopsMemberHandler */
         $memberHandler = xoops_getHandler('member');
@@ -91,12 +91,12 @@ class TdmMoneyAccount extends XoopsObject
             $groups_ids_view                 = $gpermHandler->getGroupIds('tdmmoney_view', $this->getVar('account_id'), $xoopsModule->getVar('mid'));
             $groups_ids_submit               = $gpermHandler->getGroupIds('tdmmoney_submit', $this->getVar('account_id'), $xoopsModule->getVar('mid'));
             $groups_ids_view                 = array_values($groups_ids_view);
-            $groups_news_can_view_checkbox   = new XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_VIEW_DSC, 'groups_view[]', $groups_ids_view);
+            $groups_news_can_view_checkbox   = new \XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_VIEW_DSC, 'groups_view[]', $groups_ids_view);
             $groups_ids_submit               = array_values($groups_ids_submit);
-            $groups_news_can_submit_checkbox = new XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_SUBMIT_DSC, 'groups_submit[]', $groups_ids_submit);
+            $groups_news_can_submit_checkbox = new \XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_SUBMIT_DSC, 'groups_submit[]', $groups_ids_submit);
         } else {
-            $groups_news_can_view_checkbox   = new XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_VIEW_DSC, 'groups_view[]', $full_list);
-            $groups_news_can_submit_checkbox = new XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_SUBMIT_DSC, 'groups_submit[]', $full_list);
+            $groups_news_can_view_checkbox   = new \XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_VIEW_DSC, 'groups_view[]', $full_list);
+            $groups_news_can_submit_checkbox = new \XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_SUBMIT_DSC, 'groups_submit[]', $full_list);
         }
         // pour voir
         $groups_news_can_view_checkbox->addOptionArray($group_list);
@@ -106,13 +106,13 @@ class TdmMoneyAccount extends XoopsObject
         $form->addElement($groups_news_can_submit_checkbox);
 
         //pour enregistrer le formulaire
-        $form->addElement(new XoopsFormHidden('op', 'save'));
+        $form->addElement(new \XoopsFormHidden('op', 'save'));
         // pour passer "account_id" si on modifie le compte
         if (!$this->isNew()) {
-            $form->addElement(new XoopsFormHidden('account_id', $this->getVar('account_id')));
+            $form->addElement(new \XoopsFormHidden('account_id', $this->getVar('account_id')));
         }
         //boutton d'envoi du formulaire
-        $form->addElement(new XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
+        $form->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
 
         return $form;
     }
