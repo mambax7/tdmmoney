@@ -28,8 +28,8 @@ $myts = \MyTextSanitizer::getInstance();
 
 $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
 //permission
-/* @var $gpermHandler XoopsGroupPermHandler */
-$gpermHandler = xoops_getHandler('groupperm');
+/* @var $grouppermHandler XoopsGroupPermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups =& $xoopsUser->getGroups();
 } else {

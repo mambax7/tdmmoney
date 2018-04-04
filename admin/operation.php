@@ -20,10 +20,10 @@ $helper = Tdmmoney\Helper::getInstance();
 
 require_once __DIR__ . '/admin_header.php';
 //On recupere la valeur de l'argument op dans l'URL$
-$op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
+$op = Tdmmoney\Utility::cleanVars($_REQUEST, 'op', 'list', 'string');
 //$pathIcon16      = \Xmf\Module\Admin::iconUrl('', 16);
 
-$account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+$account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 
 // Sous-menu
 $menu_account = '<form id="form_account" name="form_account" method="get" action="operation.php">';
@@ -145,7 +145,7 @@ switch ($op) {
             require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/tree.php';
             $mytree = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
             foreach (array_keys($operation_arr) as $i) {
-                $category = TdmmoneyUtility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="../assets/images/deco/arrow.gif"> ');
+                $category = Tdmmoney\Utility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="../assets/images/deco/arrow.gif"> ');
                 if (0 == $operation_arr[$i]->getVar('operation_sender')) {
                     if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
                         $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
@@ -222,7 +222,7 @@ switch ($op) {
         $adminObject->displayButton('left');
 
         //Affichage du formulaire de création des opérations
-        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $operation_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
         $form         = $obj->getForm();
         $form->display();
@@ -239,8 +239,8 @@ switch ($op) {
         $adminObject->displayButton('left');
 
         global $xoopsModule;
-        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
-        $account_id   = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+        $operation_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $account_id   = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
         if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -267,7 +267,7 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $operation_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         if (isset($_REQUEST['operation_id'])) {
             $obj = $operationHandler->get($operation_id);
         } else {

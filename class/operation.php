@@ -84,7 +84,7 @@ class TdmMoneyOperation extends XoopsObject
         //choix du compte
         // pour les permissions
         $accountHandler = xoops_getModuleHandler('account', 'TDMMoney');
-        $access_account = TdmmoneyUtility::getMygetItemIds('tdmmoney_submit', 'TDMMoney');
+        $access_account = Tdmmoney\Utility::getMygetItemIds('tdmmoney_submit', 'TDMMoney');
         $criteria       = new \CriteriaCompo();
         $criteria->setSort('account_name');
         $criteria->setOrder('ASC');
@@ -114,7 +114,7 @@ class TdmMoneyOperation extends XoopsObject
         $criteria        = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
-        $category_arr = $categoryHandler->getall($criteria);
+        $category_arr = $categoryHandler->getAll($criteria);
         $mytree       = new \XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
         //        $form->addElement(new \XoopsFormLabel(_AM_TDMMONEY_OPERATION_CATEGORY, $mytree->makeSelBox('operation_category', 'cat_title', '--', $this->getVar('operation_category'), false)), true);
         $moduleDirName = basename(dirname(__DIR__));

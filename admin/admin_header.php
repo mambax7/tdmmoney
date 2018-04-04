@@ -39,8 +39,8 @@ if ($xoopsUser) {
 }
 
 //permission
-/* @var $gpermHandler XoopsGroupPermHandler */
-$gpermHandler = xoops_getHandler('groupperm');
+/* @var $grouppermHandler XoopsGroupPermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups =& $xoopsUser->getGroups();
 } else {

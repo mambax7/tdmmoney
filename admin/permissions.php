@@ -21,7 +21,7 @@ xoops_cp_header();
 //$adminObject = new ModuleAdmin();
 $adminObject->displayNavigation(basename(__FILE__));
 
-$permission = TdmmoneyUtility::cleanVars($_POST, 'permission', 1, 'int');
+$permission = Tdmmoney\Utility::cleanVars($_POST, 'permission', 1, 'int');
 
 $selected                  = [
     '',

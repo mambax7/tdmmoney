@@ -20,7 +20,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 // pour les permissions
-$access_account = TdmmoneyUtility::getMygetItemIds('tdmmoney_view', 'TDMMoney');
+$access_account = Tdmmoney\Utility::getMygetItemIds('tdmmoney_view', 'TDMMoney');
 $criteria       = new \CriteriaCompo();
 $criteria->add(new \Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
 $criteria->setSort('account_name');
@@ -36,7 +36,7 @@ $count = 1;
 foreach (array_keys($account_arr) as $i) {
     /*$criteria_operation = new \CriteriaCompo();
     $criteria_operation->add(new \Criteria('operation_account', $i));
-    $operation_arr = $operationHandler->getall($criteria_operation);*/
+    $operation_arr = $operationHandler->getAll($criteria_operation);*/
     //calcul des soldes
     $balance_operation = $account_arr[$i]->getVar('account_balance');
     foreach (array_keys($operation_arr) as $j) {

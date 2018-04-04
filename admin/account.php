@@ -17,7 +17,7 @@
 require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
-$op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
+$op = Tdmmoney\Utility::cleanVars($_REQUEST, 'op', 'list', 'string');
 
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
@@ -110,7 +110,7 @@ switch ($op) {
         $adminObject->displayButton('left');
 
         //Affichage du formulaire de création des comptes
-        $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+        $account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj        = $accountHandler->get($account_id);
         $form       = $obj->getForm();
         $form->display();
@@ -127,7 +127,7 @@ switch ($op) {
         $adminObject->displayButton('left');
 
         global $xoopsModule;
-        $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+        $account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj        = $accountHandler->get($account_id);
         if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -170,7 +170,7 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        $account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+        $account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         if (isset($_REQUEST['account_id'])) {
             $obj = $accountHandler->get($account_id);
         } else {
@@ -196,29 +196,29 @@ switch ($op) {
                 $newaccount_id = $obj->get_new_enreg();
                 //permission pour voir
                 $perm_id = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
-                /* @var $gpermHandler XoopsGroupPermHandler */
-                $gpermHandler = xoops_getHandler('groupperm');
+                /* @var $grouppermHandler XoopsGroupPermHandler */
+                $grouppermHandler = xoops_getHandler('groupperm');
                 $criteria     = new \CriteriaCompo();
                 $criteria->add(new \Criteria('gperm_itemid', $perm_id, '='));
                 $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new \Criteria('gperm_name', 'tdmmoney_view', '='));
-                $gpermHandler->deleteAll($criteria);
+                $grouppermHandler->deleteAll($criteria);
                 if (isset($_POST['groups_view'])) {
                     foreach ($_POST['groups_view'] as $onegroup_id) {
-                        $gpermHandler->addRight('tdmmoney_view', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
+                        $grouppermHandler->addRight('tdmmoney_view', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
                 }
                 //permission pour editer
                 $perm_id      = isset($_REQUEST['account_id']) ? $account_id : $newaccount_id;
-                $gpermHandler = xoops_getHandler('groupperm');
+                $grouppermHandler = xoops_getHandler('groupperm');
                 $criteria     = new \CriteriaCompo();
                 $criteria->add(new \Criteria('gperm_itemid', $perm_id, '='));
                 $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new \Criteria('gperm_name', 'tdmmoney_submit', '='));
-                $gpermHandler->deleteAll($criteria);
+                $grouppermHandler->deleteAll($criteria);
                 if (isset($_POST['groups_submit'])) {
                     foreach ($_POST['groups_submit'] as $onegroup_id) {
-                        $gpermHandler->addRight('tdmmoney_submit', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
+                        $grouppermHandler->addRight('tdmmoney_submit', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
                 }
 

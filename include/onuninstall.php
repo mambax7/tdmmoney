@@ -8,6 +8,8 @@
  * @link            https://xoops.org XOOPS
  */
 
+use XoopsModules\Tdmmoney;
+
 /**
  * Prepares system prior to attempting to uninstall module
  * @param XoopsModule $module {@link XoopsModule}

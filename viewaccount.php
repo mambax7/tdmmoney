@@ -23,14 +23,14 @@ require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_viewaccount.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-$account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+$account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 
 if (0 == $account_id) {
     redirect_header('index.php', 2, _MD_TDMMONEY_VIEWACCOUNT_REDIRECT_NOACCOUNT);
 }
 
 // pour les permissions
-if (!$gpermHandler->checkRight('tdmmoney_view', $account_id, $groups, $xoopsModule->getVar('mid'))) {
+if (!$grouppermHandler->checkRight('tdmmoney_view', $account_id, $groups, $xoopsModule->getVar('mid'))) {
     redirect_header('index.php', 2, _NOPERM);
 }
 
@@ -39,8 +39,8 @@ $criteria        = new \CriteriaCompo();
 $display_account = true;
 $criteria->add(new \Criteria('operation_account', $account_id));
 if (isset($_REQUEST['date_start']) && isset($_REQUEST['date_end'])) {
-    $date_start = strtotime(TdmmoneyUtility::cleanVars($_REQUEST, 'date_start', 0, 'int'));
-    $date_end   = strtotime(TdmmoneyUtility::cleanVars($_REQUEST, 'date_end', 0, 'int'));
+    $date_start = strtotime(Tdmmoney\Utility::cleanVars($_REQUEST, 'date_start', 0, 'int'));
+    $date_end   = strtotime(Tdmmoney\Utility::cleanVars($_REQUEST, 'date_end', 0, 'int'));
 } else {
     //sans filtre
     if (1 == $helper->getConfig('TdmMoneyFilter')) {
@@ -103,7 +103,7 @@ if (count($operation_arr) > 0) {
     $category_arr = $categoryHandler->getAll();
     $mytree       = new \XoopsObjectTree($category_arr, 'cat_cid', 'cat_pid');
     foreach (array_keys($operation_arr) as $i) {
-        $category = TdmmoneyUtility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif"> ');
+        $category = Tdmmoney\Utility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif"> ');
         if (0 == $operation_arr[$i]->getVar('operation_sender')) {
             if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
                 $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
@@ -118,7 +118,7 @@ if (count($operation_arr) > 0) {
         $display_operation_balance = $operation_balance[$i] < 0 ? '<span style="color: #ff0000; font-weight: bold">' . $operation_balance[$i] . '</span>' : '<span style="font-weight: bold">' . $operation_balance[$i] . '</span>';
 
         //action selon les permissions
-        $perm_modif = $gpermHandler->checkRight('tdmmoney_ac', 8, $groups, $xoopsModule->getVar('mid')) ? true : false;
+        $perm_modif = $grouppermHandler->checkRight('tdmmoney_ac', 8, $groups, $xoopsModule->getVar('mid')) ? true : false;
         $xoopsTpl->assign('perm_modif', $perm_modif);
         if (true === $perm_modif) {
             $action = '<a href="submit.php?op=edit&operation_id='
@@ -164,11 +164,11 @@ if (count($operation_arr) > 0) {
     $xoopsTpl->assign('account_name', $account_balance->getVar('account_name'));
 
     //export pdf selon les permissions
-    $perm_pdf = $gpermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
+    $perm_pdf = $grouppermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
     $xoopsTpl->assign('perm_pdf', $perm_pdf);
 
     //ajout selon les permissions
-    $perm_add = $gpermHandler->checkRight('tdmmoney_ac', 4, $groups, $xoopsModule->getVar('mid')) ? true : false;
+    $perm_add = $grouppermHandler->checkRight('tdmmoney_ac', 4, $groups, $xoopsModule->getVar('mid')) ? true : false;
     $xoopsTpl->assign('perm_add', $perm_add);
 
     if ($helper->getConfig('displayPdf')) {

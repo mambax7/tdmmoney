@@ -86,7 +86,7 @@ class TdmMoneyCategory extends XoopsObject
 
             $moduleDirName = basename(dirname(__DIR__));
             $module        = XoopsModule::getByDirname($moduleDirName);
-            if (TdmmoneyUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
+            if (Tdmmoney\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
                 $catSelect = new \XoopsFormLabel(_AM_TDMMONEY_CAT_PARENT, $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0)->render());
                 $form->addElement($catSelect);
             } else {

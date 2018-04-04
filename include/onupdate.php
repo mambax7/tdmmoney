@@ -17,6 +17,8 @@
  * @author       XOOPS Development Team
  */
 
+use XoopsModules\Tdmmoney;
+
 if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof \XoopsUser)
     || !$GLOBALS['xoopsUser']->IsAdmin()) {
     exit('Restricted access' . PHP_EOL);
@@ -71,10 +73,10 @@ function xoops_module_update_tdmmoney(\XoopsModule $module, $previousVersion = n
 
     /** @var Tdmmoney\Helper $helper */
     /** @var Tdmmoney\Utility $utility */
-    /** @var Tdmmoney\Configurator $configurator */
+    /** @var Tdmmoney\Common\Configurator $configurator */
     $helper  = Tdmmoney\Helper::getInstance();
     $utility = new Tdmmoney\Utility();
-    $configurator = new Tdmmoney\Configurator();
+    $configurator = new Tdmmoney\Common\Configurator();
 
     if ($previousVersion < 120) {
         $db  = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -152,9 +154,9 @@ function xoops_module_update_tdmmoney(\XoopsModule $module, $previousVersion = n
         $sql = 'DELETE FROM ' . $xoopsDB->prefix('tplfile') . " WHERE `tpl_module` = '" . $module->getVar('dirname', 'n') . '\' AND `tpl_file` LIKE \'%.html%\'';
         $xoopsDB->queryF($sql);
 
-        /* @var $gpermHandler XoopsGroupPermHandler */
-        $gpermHandler = xoops_getHandler('groupperm');
+        /* @var $grouppermHandler XoopsGroupPermHandler */
+        $grouppermHandler = xoops_getHandler('groupperm');
 
-        return $gpermHandler->deleteByModule($module->getVar('mid'), 'item_read');
+        return $grouppermHandler->deleteByModule($module->getVar('mid'), 'item_read');
     }
 }

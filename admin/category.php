@@ -17,7 +17,7 @@
 require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
-$op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'list', 'string');
+$op = Tdmmoney\Utility::cleanVars($_REQUEST, 'op', 'list', 'string');
 
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
@@ -88,7 +88,7 @@ switch ($op) {
         $adminObject->displayButton('left');
 
         //Affichage du formulaire de création des catégories
-        $cid  = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
+        $cid  = Tdmmoney\Utility::cleanVars($_REQUEST, 'cid', 0, 'int');
         $obj  = $categoryHandler->get($cid);
         $form = $obj->getForm();
         $form->display();
@@ -105,7 +105,7 @@ switch ($op) {
         $adminObject->displayButton('left');
 
         global $xoopsModule;
-        $cid = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
+        $cid = Tdmmoney\Utility::cleanVars($_REQUEST, 'cid', 0, 'int');
         $obj = $categoryHandler->get($cid);
         if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -154,7 +154,7 @@ switch ($op) {
         $cid = \Xmf\Request::getInt('cid', 0, 'POST');
         $obj = $categoryHandler->get($cid);
         /*
-        $cid = TdmmoneyUtility::cleanVars($_REQUEST, 'cid', 0, 'int');
+        $cid = Tdmmoney\Utility::cleanVars($_REQUEST, 'cid', 0, 'int');
         if (isset($_REQUEST['cid'])) {
             $obj = $categoryHandler->get($cid);
         } else {

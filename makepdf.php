@@ -19,7 +19,7 @@ if (0 == $account_id) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
 }
 //permissions
-$perm_pdf = $gpermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
+$perm_pdf = $grouppermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
 if (false === $perm_pdf) {
     redirect_header('../index.php', 2, _NOPERM);
 }
@@ -167,7 +167,7 @@ foreach (array_keys($operation_balance_arr) as $i) {
 
 //$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
 
-//$doc_title  = TdmmoneyUtility::convertCharset($myts->undoHtmlSpecialChars($itemObj->getTitle()));
+//$doc_title  = Tdmmoney\Utility::convertCharset($myts->undoHtmlSpecialChars($itemObj->getTitle()));
 //$docSubject = $myts->undoHtmlSpecialChars($categoryObj->name());
 
 //$docKeywords = $myts->undoHtmlSpecialChars($itemObj->meta_keywords());
@@ -182,8 +182,8 @@ $pdf->SetSubject($docSubject);
 //$pdf->SetKeywords(XOOPS_URL . ', '.' by TCPDF_for_XOOPS (chg-web.org), '.$doc_title);
 $pdf->SetKeywords($docKeywords);
 
-$firstLine  = TdmmoneyUtility::convertCharset($GLOBALS['xoopsConfig']['sitename']) . ' (' . XOOPS_URL . ')';
-$secondLine = TdmmoneyUtility::convertCharset($GLOBALS['xoopsConfig']['slogan']);
+$firstLine  = Tdmmoney\Utility::convertCharset($GLOBALS['xoopsConfig']['sitename']) . ' (' . XOOPS_URL . ')';
+$secondLine = Tdmmoney\Utility::convertCharset($GLOBALS['xoopsConfig']['slogan']);
 
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $firstLine, $secondLine);
 $pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $firstLine, $secondLine, [0, 64, 255], [0, 64, 128]);

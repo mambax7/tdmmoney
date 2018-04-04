@@ -22,15 +22,15 @@ require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.p
 //include __DIR__ . '/../fpdf/phpToPDF.php';
 include __DIR__ . '/../admin/admin_header.php';
 
-$account_id = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
-$date_start = TdmmoneyUtility::cleanVars($_REQUEST, 'date_start', 0, 'int');
-$date_end   = TdmmoneyUtility::cleanVars($_REQUEST, 'date_end', 0, 'int');
+$account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+$date_start = Tdmmoney\Utility::cleanVars($_REQUEST, 'date_start', 0, 'int');
+$date_end   = Tdmmoney\Utility::cleanVars($_REQUEST, 'date_end', 0, 'int');
 
 if (0 == $account_id) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
 }
 //permissions
-$perm_pdf = $gpermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
+$perm_pdf = $grouppermHandler->checkRight('tdmmoney_ac', 16, $groups, $xoopsModule->getVar('mid')) ? true : false;
 if (false === $perm_pdf) {
     redirect_header('../index.php', 2, _NOPERM);
 }

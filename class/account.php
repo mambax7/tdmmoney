@@ -83,13 +83,13 @@ class TdmMoneyAccount extends XoopsObject
         /* @var $memberHandler XoopsMemberHandler */
         $memberHandler = xoops_getHandler('member');
         $group_list    = $memberHandler->getGroupList();
-        /* @var $gpermHandler XoopsGroupPermHandler */
-        $gpermHandler = xoops_getHandler('groupperm');
+        /* @var $grouppermHandler XoopsGroupPermHandler */
+        $grouppermHandler = xoops_getHandler('groupperm');
         $full_list    = array_keys($group_list);
         global $xoopsModule;
         if (!$this->isNew()) {
-            $groups_ids_view                 = $gpermHandler->getGroupIds('tdmmoney_view', $this->getVar('account_id'), $xoopsModule->getVar('mid'));
-            $groups_ids_submit               = $gpermHandler->getGroupIds('tdmmoney_submit', $this->getVar('account_id'), $xoopsModule->getVar('mid'));
+            $groups_ids_view                 = $grouppermHandler->getGroupIds('tdmmoney_view', $this->getVar('account_id'), $xoopsModule->getVar('mid'));
+            $groups_ids_submit               = $grouppermHandler->getGroupIds('tdmmoney_submit', $this->getVar('account_id'), $xoopsModule->getVar('mid'));
             $groups_ids_view                 = array_values($groups_ids_view);
             $groups_news_can_view_checkbox   = new \XoopsFormCheckBox(_AM_TDMMONEY_PERMISSIONS_VIEW_DSC, 'groups_view[]', $groups_ids_view);
             $groups_ids_submit               = array_values($groups_ids_submit);

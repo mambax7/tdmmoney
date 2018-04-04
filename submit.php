@@ -19,11 +19,11 @@ require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_submit.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 //pemissions
-$perm_submit = $gpermHandler->checkRight('tdmmoney_ac', 4, $groups, $xoopsModule->getVar('mid')) ? true : false;
-$perm_edit   = $gpermHandler->checkRight('tdmmoney_ac', 8, $groups, $xoopsModule->getVar('mid')) ? true : false;
+$perm_submit = $grouppermHandler->checkRight('tdmmoney_ac', 4, $groups, $xoopsModule->getVar('mid')) ? true : false;
+$perm_edit   = $grouppermHandler->checkRight('tdmmoney_ac', 8, $groups, $xoopsModule->getVar('mid')) ? true : false;
 
 // Get Action type
-$op = TdmmoneyUtility::cleanVars($_REQUEST, 'op', 'new', 'string');
+$op = Tdmmoney\Utility::cleanVars($_REQUEST, 'op', 'new', 'string');
 
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
@@ -47,7 +47,7 @@ switch ($op) {
             redirect_header('index.php', 2, _NOPERM);
         }
         //Affichage du formulaire de création des opérations
-        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $operation_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
         $form         = $obj->getForm();
         $xoopsTpl->assign('form', $form->render());
@@ -60,8 +60,8 @@ switch ($op) {
             redirect_header('index.php', 2, _NOPERM);
         }
         global $xoopsModule;
-        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
-        $account_id   = TdmmoneyUtility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+        $operation_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $account_id   = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
         $obj          = $operationHandler->get($operation_id);
         if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -88,7 +88,7 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('operation.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        $operation_id = TdmmoneyUtility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
+        $operation_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'operation_id', 0, 'int');
         if (isset($_REQUEST['operation_id'])) {
             $obj = $operationHandler->get($operation_id);
         } else {
