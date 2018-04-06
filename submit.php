@@ -113,7 +113,7 @@ switch ($op) {
             $obj->setVar('operation_outsender', '');
         }
         //vérification que operation_amount soit un entier
-        if (0 == (int)$_REQUEST['operation_amount'] && '0' != $_REQUEST['operation_amount']) {
+        if (0 == \Xmf\Request::getInt('operation_amount', 0, 'REQUEST') && '0' != $_REQUEST['operation_amount']) {
             $erreur         = true;
             $message_erreur = _AM_TDMMONEY_OPERATION_ERREUR_AMOUNT . '<br>';
             $obj->setVar('operation_amount', '');

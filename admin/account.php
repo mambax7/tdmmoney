@@ -185,7 +185,7 @@ switch ($op) {
         $obj->setVar('account_balance', $_POST['account_balance']);
         $obj->setVar('account_currency', $_POST['account_currency']);
         //vérification que account_balance soit un entier
-        if (0 == (int)$_REQUEST['account_balance'] && '0' != $_REQUEST['account_balance']) {
+        if (0 == \Xmf\Request::getInt('account_balance', 0, 'REQUEST') && '0' != $_REQUEST['account_balance']) {
             $erreur         = true;
             $message_erreur = _AM_TDMMONEY_ACCOUNT_ERREUR_BALANCE . '<br>';
         }
