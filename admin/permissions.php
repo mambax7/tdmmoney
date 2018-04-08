@@ -18,7 +18,7 @@ require_once __DIR__ . '/admin_header.php';
 //Affichage de la partie haute de l'administration de Xoops
 xoops_cp_header();
 
-//$adminObject = new ModuleAdmin();
+//$adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 
 $permission = Tdmmoney\Utility::cleanVars($_POST, 'permission', 1, 'int');
