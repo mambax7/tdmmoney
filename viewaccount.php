@@ -15,13 +15,14 @@
  */
 
 use XoopsModules\Tdmmoney;
-/** @var Tdmmoney\Helper $helper */
-$helper = Tdmmoney\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_viewaccount.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
+
+/** @var Tdmmoney\Helper $helper */
+$helper = Tdmmoney\Helper::getInstance();
 
 $account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 
@@ -106,12 +107,12 @@ if (count($operation_arr) > 0) {
         $category = Tdmmoney\Utility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif"> ');
         if (0 == $operation_arr[$i]->getVar('operation_sender')) {
             if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
-                $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
+                $sender = \XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
             } else {
                 $sender = $operation_arr[$i]->getVar('operation_outsender');
             }
         } else {
-            $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
+            $sender = \XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
         }
         $withdraw                  = 1 == $operation_arr[$i]->getVar('operation_type') ? $operation_arr[$i]->getVar('operation_amount') : '';
         $deposit                   = 2 == $operation_arr[$i]->getVar('operation_type') ? $operation_arr[$i]->getVar('operation_amount') : '';

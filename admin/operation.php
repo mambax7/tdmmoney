@@ -15,10 +15,12 @@
  */
 
 use XoopsModules\Tdmmoney;
+
+require_once __DIR__ . '/admin_header.php';
+
 /** @var Tdmmoney\Helper $helper */
 $helper = Tdmmoney\Helper::getInstance();
 
-require_once __DIR__ . '/admin_header.php';
 //On recupere la valeur de l'argument op dans l'URL$
 $op = Tdmmoney\Utility::cleanVars($_REQUEST, 'op', 'list', 'string');
 //$pathIcon16      = \Xmf\Module\Admin::iconUrl('', 16);
@@ -148,12 +150,12 @@ switch ($op) {
                 $category = Tdmmoney\Utility::getPathTree($mytree, $operation_arr[$i]->getVar('operation_category'), $category_arr, 'cat_title', $prefix = ' <img src="../assets/images/deco/arrow.gif"> ');
                 if (0 == $operation_arr[$i]->getVar('operation_sender')) {
                     if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
-                        $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
+                        $sender = \XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
                     } else {
                         $sender = $operation_arr[$i]->getVar('operation_outsender');
                     }
                 } else {
-                    $sender = XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
+                    $sender = \XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1);
                 }
                 echo '<tr class="' . $class . '">';
                 if (false === $display_account) {

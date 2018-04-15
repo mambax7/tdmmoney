@@ -20,7 +20,7 @@ defined('XOOPS_ROOT_PATH') || die('Restricted access');
 /**
  * Class TdmmoneyCorePreload
  */
-class TdmmoneyCorePreload extends XoopsPreloadItem
+class TdmmoneyCorePreload extends \XoopsPreloadItem
 {
     // to add PSR-4 autoloader
     /**

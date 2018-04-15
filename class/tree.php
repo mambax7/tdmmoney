@@ -19,7 +19,7 @@ require_once XOOPS_ROOT_PATH . '/class/tree.php';
 /**
  * Class TdmObjectTree
  */
-class TdmObjectTree extends XoopsObjectTree
+class TdmObjectTree extends \XoopsObjectTree
 {
     /**
      * TdmObjectTree constructor.

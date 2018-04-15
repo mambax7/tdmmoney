@@ -30,7 +30,7 @@ switch ($op) {
         $adminObject->addItemButton(_AM_TDMMONEY_ACCOUNT_NEW, 'account.php?op=new', 'add');
 
         if ($helper->getConfig('ShowSampleDataButton')) {
-            require_once __DIR__ . '/../testdata/index.php';
+            require_once  dirname(__DIR__) . '/testdata/index.php';
             $adminObject->addItemButton(_AM_TDMMONEY_ADD_SAMPLEDATA, '__DIR__ . /../../testdata/index.php?op=load', 'add');
         }
         $adminObject->displayButton('left');

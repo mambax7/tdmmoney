@@ -19,7 +19,7 @@ require_once XOOPS_ROOT_PATH . '/class/tree.php';
 /**
  * Class TDMXoopsFormSelectUser
  */
-class TDMXoopsFormSelectUser extends XoopsFormElementTray
+class TDMXoopsFormSelectUser extends \XoopsFormElementTray
 {
     /**
      * TDMXoopsFormSelectUser constructor.

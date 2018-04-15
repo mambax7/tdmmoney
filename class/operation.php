@@ -21,7 +21,7 @@ defined('XOOPS_ROOT_PATH') || die('Restricted access');
 /**
  * Class TdmMoneyOperation
  */
-class TdmMoneyOperation extends XoopsObject
+class TdmMoneyOperation extends \XoopsObject
 {
     //Constructor
     /**
@@ -156,7 +156,7 @@ class TdmMoneyOperation extends XoopsObject
 /**
  * Class TdmMoneyOperationHandler
  */
-class TdmMoneyOperationHandler extends XoopsPersistableObjectHandler
+class TdmMoneyOperationHandler extends \XoopsPersistableObjectHandler
 {
     /**
      * TdmMoneyOperationHandler constructor.

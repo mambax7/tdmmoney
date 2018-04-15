@@ -16,11 +16,11 @@
 
 //use tecnickcom\tcpdf;
 
-require_once __DIR__ . '/../../../mainfile.php';
+require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 
 require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
-//include __DIR__ . '/../fpdf/phpToPDF.php';
-include __DIR__ . '/../admin/admin_header.php';
+//include  dirname(__DIR__) . '/fpdf/phpToPDF.php';
+include  dirname(__DIR__) . '/admin/admin_header.php';
 
 $account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 $date_start = Tdmmoney\Utility::cleanVars($_REQUEST, 'date_start', 0, 'int');

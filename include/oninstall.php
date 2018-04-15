@@ -31,7 +31,7 @@ use XoopsModules\Tdmmoney;
 function xoops_module_pre_install_tdmmoney(\XoopsModule $module)
 {
     $moduleDirName = basename(dirname(__DIR__));
-    $classUtil     = ucfirst($moduleDirName) . 'Utility';
+    $classUtil     = new Tdmmoney\Utility();
     if (!class_exists($classUtil)) {
         xoops_load('utility', $moduleDirName);
     }
@@ -72,7 +72,7 @@ function xoops_module_install_tdmmoney(\XoopsModule $module)
     $helper->loadLanguage('modinfo');
 
     $configurator = new TdmmoneyConfigurator();
-    $classUtil    = ucfirst($moduleDirName) . 'Utility';
+    $classUtil    = new Tdmmoney\Utility();
     if (!class_exists($classUtil)) {
         xoops_load('utility', $moduleDirName);
     }
@@ -100,7 +100,7 @@ function xoops_module_install_tdmmoney(\XoopsModule $module)
 
     //  ---  COPY blank.png FILES ---------------
     if (count($configurator->copyBlankFiles) > 0) {
-        $file = __DIR__ . '/../assets/images/blank.png';
+        $file =  dirname(__DIR__) . '/assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $classUtil::copyFile($file, $dest);

@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
