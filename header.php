@@ -14,7 +14,9 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+use XoopsModules\Tdmmoney;
+
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
@@ -23,15 +25,16 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/Utility.php';
 
 $moduleDirName = basename(__DIR__);
+/** @var Tdmmoney\Helper $helper */
 $helper = Tdmmoney\Helper::getInstance();
-$myts = \MyTextSanitizer::getInstance();
+$myts   = \MyTextSanitizer::getInstance();
 
 $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
 //permission
-/* @var $grouppermHandler XoopsGroupPermHandler */
+/* @var XoopsGroupPermHandler $grouppermHandler */
 $grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
-    $groups =& $xoopsUser->getGroups();
+    $groups = &$xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
@@ -43,9 +46,9 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl))
 $xoopsTpl->assign('module_url', XOOPS_URL . "/modules/$moduleDirName/");
 xoops_loadLanguage('admin', $xoopsModule->getVar('dirname', 'e'));
 
-/* @var $accountHandler XoopsPersistableObjectHandler */
-$accountHandler = xoops_getModuleHandler('account', $moduleDirName);
-/* @var $categoryHandler XoopsPersistableObjectHandler */
-$categoryHandler = xoops_getModuleHandler('category', $moduleDirName);
-/* @var $operationHandler XoopsPersistableObjectHandler */
-$operationHandler = xoops_getModuleHandler('operation', $moduleDirName);
+/* @var XoopsPersistableObjectHandler $accountHandler */
+$accountHandler = $helper->getHandler('Account');
+/* @var XoopsPersistableObjectHandler $categoryHandler */
+$categoryHandler = $helper->getHandler('Category');
+/* @var XoopsPersistableObjectHandler $operationHandler */
+$operationHandler = $helper->getHandler('Operation');

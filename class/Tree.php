@@ -1,4 +1,7 @@
 <?php
+
+namespace XoopsModules\Tdmmoney;
+
 /**
  * TDMMoney
  *
@@ -13,16 +16,15 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
 
 /**
- * Class TdmObjectTree
+ * Class Tree
  */
-class TdmObjectTree extends \XoopsObjectTree
+class Tree extends \XoopsObjectTree
 {
     /**
-     * TdmObjectTree constructor.
+     * Tree constructor.
      * @param array  $objectArr
      * @param string $myId
      * @param string $parentId
@@ -40,7 +42,7 @@ class TdmObjectTree extends \XoopsObjectTree
      * @param        $prefix_orig
      * @param string $prefix_curr
      */
-    public function _makeArrayTreeOptions($fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '')
+    public function makeArrayTreeOptions($fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '')
     {
         if ($key > 0) {
             $value       = $this->tree[$key]['obj']->getVar($this->myId);
@@ -49,7 +51,7 @@ class TdmObjectTree extends \XoopsObjectTree
         }
         if (isset($this->tree[$key]['child']) && !empty($this->tree[$key]['child'])) {
             foreach ($this->tree[$key]['child'] as $childkey) {
-                $this->_makeArrayTreeOptions($fieldName, $childkey, $ret, $prefix_orig, $prefix_curr);
+                $this->makeArrayTreeOptions($fieldName, $childkey, $ret, $prefix_orig, $prefix_curr);
             }
         }
     }
@@ -63,7 +65,7 @@ class TdmObjectTree extends \XoopsObjectTree
     public function makeArrayTree($fieldName, $prefix = '-', $key = 0)
     {
         $ret = [];
-        $this->_makeArrayTreeOptions($fieldName, $key, $ret, $prefix);
+        $this->makeArrayTreeOptions($fieldName, $key, $ret, $prefix);
 
         return $ret;
     }

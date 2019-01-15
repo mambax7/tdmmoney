@@ -20,9 +20,21 @@
  * @return array
  */
 
+use XoopsModules\Tdmmoney;
+
+/**
+ * @param $queryarray
+ * @param $andor
+ * @param $limit
+ * @param $offset
+ * @param $userid
+ * @return array
+ */
 function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB;
+
+    $moduleDirName = basename(dirname(__DIR__));
 
     $sql = 'SELECT operation_id, operation_account, operation_category, operation_type, operation_sender, operation_outsender, operation_date, operation_amount, operation_description, operation_submitter, operation_date_created FROM '
            . $xoopsDB->prefix('tdmmoney_operation')
@@ -31,8 +43,8 @@ function tdmmoney_search($queryarray, $andor, $limit, $offset, $userid)
     if (0 != $userid) {
         $sql .= ' AND operation_submitter=' . (int)$userid . ' ';
     }
-    require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/Utility.php';
-    $access_view = Tdmmoney\Utility::getMygetItemIds('tdmmoney_view', 'TDMMoney');
+
+    $access_view = Tdmmoney\Utility::getMygetItemIds('tdmmoney_view', $moduleDirName);
     if (is_array($access_view) && count($access_view) > 0) {
         $sql .= ' AND operation_account IN (' . implode(',', $access_view) . ') ';
     } else {

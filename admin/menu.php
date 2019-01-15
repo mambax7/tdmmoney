@@ -16,43 +16,52 @@
 
 use XoopsModules\Tdmmoney;
 
-// require_once  dirname(__DIR__) . '/class/Helper.php';
 //require_once  dirname(__DIR__) . '/include/common.php';
+/** @var Tdmmoney\Helper $helper */
 $helper = Tdmmoney\Helper::getInstance();
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
-$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
-
+if (is_object($helper->getModule())) {
+    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+}
 
 $adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_INDEX,
     'link'  => 'admin/index.php',
-    'icon'  => $pathIcon32 . '/home.png'
+    'icon'  => $pathIcon32 . '/home.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_ACCOUNT,
     'link'  => 'admin/account.php',
-    'icon'  => $pathIcon32 . '/manage.png'
+    'icon'  => $pathIcon32 . '/manage.png',
 ];
 $adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_CATEGORY,
     'link'  => 'admin/category.php',
-    'icon'  => $pathIcon32 . '/category.png'
+    'icon'  => $pathIcon32 . '/category.png',
 ];
 $adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_OPERATION,
     'link'  => 'admin/operation.php',
-    'icon'  => $pathIcon32 . '/exec.png'
+    'icon'  => $pathIcon32 . '/exec.png',
 ];
 $adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_PERMISSIONS,
     'link'  => 'admin/permissions.php',
-    'icon'  => $pathIcon32 . '/permissions.png'
+    'icon'  => $pathIcon32 . '/permissions.png',
 ];
+
+if ($helper->getConfig('displayDeveloperTools')) {
+    $adminmenu[] = [
+        'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE'),
+        'link' => 'admin/migrate.php',
+        'icon' => $pathIcon32 . '/database_go.png',
+    ];
+}
 
 $adminmenu[] = [
     'title' => _MI_TDMMONEY_MANAGER_ABOUT,
     'link'  => 'admin/about.php',
-    'icon'  => $pathIcon32 . '/about.png'
+    'icon'  => $pathIcon32 . '/about.png',
 ];

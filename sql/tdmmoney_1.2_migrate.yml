@@ -1,0 +1,87 @@
+tdmmoney_account:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4'
+    columns:
+        -
+            name: account_id
+            attributes: ' int(8)  NOT NULL auto_increment'
+        -
+            name: account_name
+            attributes: ' varchar(255)  NOT NULL '
+        -
+            name: account_bank
+            attributes: ' varchar(255)  NOT NULL '
+        -
+            name: account_adress
+            attributes: ' text  NOT NULL '
+        -
+            name: account_balance
+            attributes: ' decimal(10,2)  NOT NULL  DEFAULT ''0.00'' '
+        -
+            name: account_currency
+            attributes: ' varchar(10)  NOT NULL '
+    keys:
+        PRIMARY:
+            columns: account_id
+            unique: true
+tdmmoney_category:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4'
+    columns:
+        -
+            name: cat_cid
+            attributes: ' int(5) unsigned  NOT NULL auto_increment'
+        -
+            name: cat_pid
+            attributes: ' int(5) unsigned  NOT NULL '
+        -
+            name: cat_title
+            attributes: ' varchar(255)  NOT NULL '
+        -
+            name: cat_desc
+            attributes: ' text  NOT NULL '
+        -
+            name: cat_weight
+            attributes: ' int(5)  NOT NULL '
+    keys:
+        PRIMARY:
+            columns: cat_cid
+            unique: true
+tdmmoney_operation:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4'
+    columns:
+        -
+            name: operation_id
+            attributes: ' int(8)  NOT NULL auto_increment'
+        -
+            name: operation_account
+            attributes: ' int(8)  NOT NULL '
+        -
+            name: operation_category
+            attributes: ' int(8)  NOT NULL '
+        -
+            name: operation_type
+            attributes: ' int(8)  NOT NULL '
+        -
+            name: operation_sender
+            attributes: ' int(8)  NOT NULL '
+        -
+            name: operation_outsender
+            attributes: ' varchar(50)  NOT NULL '
+        -
+            name: operation_date
+            attributes: ' int(10)  NOT NULL '
+        -
+            name: operation_amount
+            attributes: ' decimal(10,2)  NOT NULL  DEFAULT ''0.00'' '
+        -
+            name: operation_description
+            attributes: ' text  NOT NULL '
+        -
+            name: operation_submitter
+            attributes: ' int(10)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: operation_date_created
+            attributes: ' int(10)  NOT NULL  DEFAULT ''0'' '
+    keys:
+        PRIMARY:
+            columns: operation_id
+            unique: true

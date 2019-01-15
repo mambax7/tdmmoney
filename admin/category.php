@@ -14,6 +14,8 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmmoney;
+
 require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
@@ -42,9 +44,8 @@ switch ($op) {
             echo '<th align="center" width="10%">' . _AM_TDMMONEY_CAT_WEIGHT2 . '</th>';
             echo '<th align="center" width="10%">' . _AM_TDMMONEY_ACTION . '</th>';
             echo '</tr>';
-            $class = 'odd';
-            require_once XOOPS_ROOT_PATH . '/modules/tdmmoney/class/tree.php';
-            $mytree             = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
+            $class              = 'odd';
+            $mytree             = new Tdmmoney\Tree($category_arr, 'cat_cid', 'cat_pid');
             $category_ArrayTree = $mytree->makeArrayTree('cat_title', '<img src="../assets/images/deco/arrow.gif">');
             foreach (array_keys($category_ArrayTree) as $i) {
                 echo '<tr class="' . $class . '">';
@@ -61,7 +62,6 @@ switch ($op) {
             echo '</table>';
         }
         break;
-
     // vue création
     case 'new':
         //Affichage de la partie haute de l'administration de Xoops
@@ -73,10 +73,10 @@ switch ($op) {
 
         //Affichage du formulaire de création des catégories
         $obj  = $categoryHandler->create();
+        /** @var \XoopsThemeForm $form */
         $form = $obj->getForm();
         $form->display();
         break;
-
     // Pour éditer une catégorie
     case 'edit':
         //Affichage de la partie haute de l'administration de Xoops
@@ -93,7 +93,6 @@ switch ($op) {
         $form = $obj->getForm();
         $form->display();
         break;
-
     // Pour supprimer une catégorie
     case 'del':
         //Affichage de la partie haute de l'administration de Xoops
@@ -107,7 +106,7 @@ switch ($op) {
         global $xoopsModule;
         $cid = Tdmmoney\Utility::cleanVars($_REQUEST, 'cid', 0, 'int');
         $obj = $categoryHandler->get($cid);
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (\Xmf\Request::hasVar('ok', 'REQUEST') && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -133,7 +132,7 @@ switch ($op) {
             if (count($category_childcat) > 0) {
                 $message .= _AM_TDMMONEY_CAT_DELSOUSCAT . ' <br><br>';
                 foreach (array_keys($category_childcat) as $i) {
-                    $message .= '<b><span style="color : Red;">' . $category_childcat[$i]->getVar('cat_title') . '</span></b><br>';
+                    $message .= '<b><span style="color : #ff0000;">' . $category_childcat[$i]->getVar('cat_title') . '</span></b><br>';
                 }
             } else {
                 $message .= '';
@@ -141,11 +140,10 @@ switch ($op) {
             xoops_confirm([
                               'ok'  => 1,
                               'cid' => $cid,
-                              'op'  => 'del'
+                              'op'  => 'del',
                           ], $_SERVER['REQUEST_URI'], sprintf(_AM_TDMMONEY_SUREDEL, $obj->getVar('cat_title')) . '<br><br>' . $message);
         }
         break;
-
     // Pour sauver une catégorie
     case 'save':
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -155,14 +153,14 @@ switch ($op) {
         $obj = $categoryHandler->get($cid);
         /*
         $cid = Tdmmoney\Utility::cleanVars($_REQUEST, 'cid', 0, 'int');
-        if (isset($_REQUEST['cid'])) {
+        if (\Xmf\Request::hasVar('cid', 'REQUEST')) {
             $obj = $categoryHandler->get($cid);
         } else {
             $obj = $categoryHandler->create();
         }
         */
-        $erreur         = false;
-        $message_erreur = '';
+        $erreur       = false;
+        $errorMessage = '';
         // Récupération des variables:
         $cat_weight = \Xmf\Request::getInt('cat_weight', 0, 'POST');
         $cat_pid    = \Xmf\Request::getInt('cat_pid', 0, 'POST');
@@ -172,24 +170,24 @@ switch ($op) {
         $obj->setVar('cat_weight', $cat_weight);
         //vérification que cat_weight soit un entier
         if (0 === $cat_weight && '0' != $_POST['cat_weight']) {
-            $erreur         = true;
-            $message_erreur = _AM_TDMMONEY_CAT_ERREUR_WEIGHT . '<br>';
+            $erreur       = true;
+            $errorMessage = _AM_TDMMONEY_CAT_ERREUR_WEIGHT . '<br>';
         }
         //vérification que pid ne soit pas égale à cid
         if (!$obj->isNew() && $cid == $cat_pid) {
-            $erreur         = true;
-            $message_erreur .= _AM_TDMMONEY_CAT_ERREUR_CAT;
+            $erreur       = true;
+            $errorMessage .= _AM_TDMMONEY_CAT_ERREUR_CAT;
         }
         /*
-        if (isset($_REQUEST['cid'])) {
+        if (\Xmf\Request::hasVar('cid', 'REQUEST')) {
             if ($_REQUEST['cid'] == $_REQUEST['cat_pid']) {
                 $erreur         = true;
-                $message_erreur .= _AM_TDMMONEY_CAT_ERREUR_CAT;
+                $errorMessage .= _AM_TDMMONEY_CAT_ERREUR_CAT;
             }
         }
         */
         if (true === $erreur) {
-            echo '<div class="errorMsg left">' . $message_erreur . '</div>';
+            echo '<div class="errorMsg left">' . $errorMessage . '</div>';
         } else {
             if ($categoryHandler->insert($obj)) {
                 redirect_header('category.php?op=list', 1, _AM_TDMMONEY_CAT_SAVE);

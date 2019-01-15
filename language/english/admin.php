@@ -19,7 +19,7 @@ define('_AM_TDMMONEY_ACTION', 'Action');
 define('_AM_TDMMONEY_DEL', 'Remove');
 define('_AM_TDMMONEY_DISPLAY', 'Display');
 define('_AM_TDMMONEY_EDIT', 'Edit');
-define('_AM_TDMMONEY_SUREDEL', "Are you sure to delete: <b><span style='color : Red'> %s </span></b>");
+define('_AM_TDMMONEY_SUREDEL', "Are you sure to delete: <b><span style='color : #ff0000'> %s </span></b>");
 
 //index.php
 define('_AM_TDMMONEY_MANAGER_ABOUT', 'About');

@@ -1,8 +1,6 @@
-<?php namespace XoopsModules\Tdmmoney;
+<?php
 
-use Xmf\Request;
-use XoopsModules\Tdmmoney;
-use XoopsModules\Tdmmoney\Common;
+namespace XoopsModules\Tdmmoney;
 
 /**
  * Class Utility
@@ -17,8 +15,6 @@ class Utility
 
     //--------------- Custom module methods -----------------------------
 
-
-
     /**
      * @param $permtype
      * @param $dirname
@@ -27,13 +23,13 @@ class Utility
     public static function getMygetItemIds($permtype, $dirname)
     {
         global $xoopsUser;
-        /* @var $moduleHandler XoopsModuleHandler */
+        /* @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $tdmModule     = $moduleHandler->getByDirname($dirname);
         $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        /* @var $grouppermHandler XoopsGroupPermHandler */
+        /* @var \XoopsGroupPermHandler $grouppermHandler */
         $grouppermHandler = xoops_getHandler('groupperm');
-        $categories   = $grouppermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
+        $categories       = $grouppermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
 
         return $categories;
     }
@@ -106,8 +102,8 @@ class Utility
             $serialize = serialize($unserialize);
 
             return $serialize;
-        } else {
-            return @iconv('windows-1256', 'UTF-8', $item);
         }
+
+        return @iconv('windows-1256', 'UTF-8', $item);
     }
 }

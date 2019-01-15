@@ -1,4 +1,7 @@
 <?php
+
+namespace XoopsModules\Tdmmoney;
+
 /**
  * TDMMoney
  *
@@ -19,13 +22,14 @@ use XoopsModules\Tdmmoney;
 defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class TdmMoneyCategory
+ * Class Category
  */
-class TdmMoneyCategory extends \XoopsObject
+class Category extends \XoopsObject
 {
     //Constructor
+
     /**
-     * TdmMoneyCategory constructor.
+     * Category constructor.
      */
     public function __construct()
     {
@@ -46,7 +50,7 @@ class TdmMoneyCategory extends \XoopsObject
 
     /**
      * @param bool $action
-     * @return XoopsThemeForm
+     * @return \XoopsThemeForm
      */
     public function getForm($action = false)
     {
@@ -75,7 +79,7 @@ class TdmMoneyCategory extends \XoopsObject
         $editor_configs['editor'] = $helper->getConfig('TdmMoneyEditor');
         $form->addElement(new \XoopsFormEditor(_AM_TDMMONEY_CAT_DSC, 'cat_desc', $editor_configs), false);
         // Pour faire une sous-catégorie
-        $categoryHandler = xoops_getModuleHandler('category', 'tdmmoney');
+        $categoryHandler = $helper->getHandler('Category');
         $criteria        = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
@@ -85,7 +89,7 @@ class TdmMoneyCategory extends \XoopsObject
             //        $form->addElement(new \XoopsFormLabel(_AM_TDMMONEY_CAT_SUBCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
 
             $moduleDirName = basename(dirname(__DIR__));
-            $module        = XoopsModule::getByDirname($moduleDirName);
+            $module        = \XoopsModule::getByDirname($moduleDirName);
             if (Tdmmoney\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
                 $catSelect = new \XoopsFormLabel(_AM_TDMMONEY_CAT_PARENT, $mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0)->render());
                 $form->addElement($catSelect);
@@ -106,20 +110,5 @@ class TdmMoneyCategory extends \XoopsObject
         $form->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
 
         return $form;
-    }
-}
-
-/**
- * Class TdmMoneyCategoryHandler
- */
-class TdmMoneyCategoryHandler extends \XoopsPersistableObjectHandler
-{
-    /**
-     * TdmMoneyCategoryHandler constructor.
-     * @param null|object|\XoopsDatabase $db
-     */
-    public function __construct($db)
-    {
-        parent::__construct($db, 'tdmmoney_category', 'TdmMoneyCategory', 'cat_cid', 'cat_title');
     }
 }

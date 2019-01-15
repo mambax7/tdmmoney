@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
  * which is considered copyrighted (c) material of the original comment or credit authors.
@@ -14,8 +13,7 @@
  * @since           2.5.9
  * @author          Michael Beck (aka Mamba)
  */
-
-require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 
 $moduleDirName = basename(dirname(__DIR__));
 
@@ -46,7 +44,7 @@ function loadSampleData()
     //        $message = _AD_GWIKI_ADD_HELP_OK;
     //    }
 
-    if (0 < $countAccount && 0 < $countCategory && 0 < $countOperation) {
+    if ($countAccount > 0 && $countCategory > 0 && $countOperation > 0) {
         $message = _AM_TDMMONEY_SAMPLEDATA_SUCCESS;
     }
 

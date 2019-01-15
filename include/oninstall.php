@@ -18,11 +18,11 @@
  */
 
 use XoopsModules\Tdmmoney;
+use XoopsModules\Tdmmoney\Common;
 
 //require_once __DIR__ . '/setup.php';
 
 /**
- *
  * Prepares system prior to attempting to install module
  * @param XoopsModule $module {@link XoopsModule}
  *
@@ -30,58 +30,52 @@ use XoopsModules\Tdmmoney;
  */
 function xoops_module_pre_install_tdmmoney(\XoopsModule $module)
 {
-    $moduleDirName = basename(dirname(__DIR__));
-    $classUtil     = new Tdmmoney\Utility();
-    if (!class_exists($classUtil)) {
-        xoops_load('utility', $moduleDirName);
-    }
+    include __DIR__ . '/common.php';
+    /** @var \XoopsModules\Tdmmoney\Utility $utility */
+    $utility = new \XoopsModules\Tdmmoney\Utility();
     //check for minimum XOOPS version
-    if (!$classUtil::checkVerXoops($module)) {
-        return false;
-    }
+    $xoopsSuccess = $utility::checkVerXoops($module);
 
     // check for minimum PHP version
-    if (!$classUtil::checkVerPhp($module)) {
-        return false;
+    $phpSuccess = $utility::checkVerPhp($module);
+
+    if (false !== $xoopsSuccess && false !== $phpSuccess) {
+        $moduleTables = &$module->getInfo('tables');
+        foreach ($moduleTables as $table) {
+            $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
+        }
     }
 
-    $mod_tables =& $module->getInfo('tables');
-    foreach ($mod_tables as $table) {
-        $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
-    }
-
-    return true;
+    return $xoopsSuccess && $phpSuccess;
 }
 
 /**
- *
  * Performs tasks required during installation of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if installation successful, false if not
  */
 function xoops_module_install_tdmmoney(\XoopsModule $module)
 {
-    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    require_once dirname(__DIR__) . '/include/config.php';
+    require_once dirname(__DIR__) . '/preloads/autoloader.php';
 
     $moduleDirName = basename(dirname(__DIR__));
-    $helper = Tdmmoney\Helper::getInstance();
+
+    /** @var Tdmmoney\Helper $helper */
+    /** @var Tdmmoney\Utility $utility */
+    /** @var Tdmmoney\Common\Configurator $configurator */
+    $helper       = Tdmmoney\Helper::getInstance();
+    $utility      = new Tdmmoney\Utility();
+    $configurator = new Common\Configurator();
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');
 
-    $configurator = new TdmmoneyConfigurator();
-    $classUtil    = new Tdmmoney\Utility();
-    if (!class_exists($classUtil)) {
-        xoops_load('utility', $moduleDirName);
-    }
-
     // default Permission Settings ----------------------
-    global $xoopsModule;
-    $moduleId  = $xoopsModule->getVar('mid');
-    $moduleId2 = $helper->getModule()->mid();
-    /* @var $grouppermHandler XoopsGroupPermHandler */
+
+    $moduleId = $module->getVar('mid');
+    //    $moduleId2    = $helper->getModule()->mid();
+    //$moduleName = $module->getVar('name');
     $grouppermHandler = xoops_getHandler('groupperm');
     // access rights ------------------------------------------
     $grouppermHandler->addRight($moduleDirName . '_approve', 1, XOOPS_GROUP_ADMIN, $moduleId);
@@ -94,18 +88,34 @@ function xoops_module_install_tdmmoney(\XoopsModule $module)
     if (count($configurator->uploadFolders) > 0) {
         //    foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
         foreach (array_keys($configurator->uploadFolders) as $i) {
-            $classUtil::createFolder($configurator->uploadFolders[$i]);
+            $utility::createFolder($configurator->uploadFolders[$i]);
         }
     }
 
     //  ---  COPY blank.png FILES ---------------
     if (count($configurator->copyBlankFiles) > 0) {
-        $file =  dirname(__DIR__) . '/assets/images/blank.png';
+        $file = dirname(__DIR__) . '/assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
-            $classUtil::copyFile($file, $dest);
+            $utility::copyFile($file, $dest);
         }
     }
+
+    /*
+        //  ---  COPY test folder files ---------------
+    if (count($configurator->copyTestFolders) > 0) {
+        //        $file =  dirname(__DIR__) . '/testdata/images/';
+        foreach (array_keys($configurator->copyTestFolders) as $i) {
+            $src  = $configurator->copyTestFolders[$i][0];
+            $dest = $configurator->copyTestFolders[$i][1];
+            $utility::rcopy($src, $dest);
+        }
+    }
+    */
+
+    //delete .html entries from the tpl table
+    $sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('tplfile') . " WHERE `tpl_module` = '" . $module->getVar('dirname', 'n') . "' AND `tpl_file` LIKE '%.html%'";
+    $GLOBALS['xoopsDB']->queryF($sql);
 
     return true;
 }

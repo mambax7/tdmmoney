@@ -8,15 +8,12 @@
  * @link            https://xoops.org XOOPS
  */
 
-use XoopsModules\Tdmmoney;
-
 /**
  * Prepares system prior to attempting to uninstall module
  * @param XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if ready to uninstall, false if not
  */
-
 function xoops_module_pre_uninstall_tdmmoney(\XoopsModule $module)
 {
     // Do some synchronization
@@ -24,7 +21,6 @@ function xoops_module_pre_uninstall_tdmmoney(\XoopsModule $module)
 }
 
 /**
- *
  * Performs tasks required during uninstallation of the module
  * @param XoopsModule $module {@link XoopsModule}
  *

@@ -14,6 +14,8 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmmoney;
+
 require_once __DIR__ . '/admin_header.php';
 //Affichage de la partie haute de l'administration de Xoops
 xoops_cp_header();
@@ -26,7 +28,7 @@ $permission = Tdmmoney\Utility::cleanVars($_POST, 'permission', 1, 'int');
 $selected                  = [
     '',
     '',
-    ''
+    '',
 ];
 $selected[$permission - 1] = ' selected';
 
@@ -54,7 +56,7 @@ switch ($permission) {
         $global_perms_array    = [
             '4'  => _AM_TDMMONEY_PERMISSIONS_4,
             '8'  => _AM_TDMMONEY_PERMISSIONS_8,
-            '16' => _AM_TDMMONEY_PERMISSIONS_16
+            '16' => _AM_TDMMONEY_PERMISSIONS_16,
         ];
         break;
     case 2: // View permission
@@ -71,8 +73,8 @@ switch ($permission) {
 
 $permissionsForm = new \XoopsGroupPermForm($formTitle, $moduleId, $permissionName, $permissionDescription, 'admin/permissions.php');
 if (1 == $permission) {
-    foreach ($global_perms_array as $perm_id => $permissionName) {
-        $permissionsForm->addItem($perm_id, $permissionName);
+    foreach ($global_perms_array as $permId => $permissionName) {
+        $permissionsForm->addItem($permId, $permissionName);
     }
 } else {
     $sql    = 'SELECT account_id, account_name FROM ' . $xoopsDB->prefix('tdmmoney_account') . ' ORDER BY account_name';

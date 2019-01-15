@@ -16,21 +16,26 @@
  * @since
  * @author       XOOPS Development Team
  */
-
-require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-// require_once  dirname(__DIR__) . '/class/Utility.php';
+
+require dirname(__DIR__) . '/include/common.php';
+//require  dirname(__DIR__) . '/include/config.php';
 
 $moduleDirName = basename(dirname(__DIR__));
-$helper = Tdmmoney\Helper::getInstance();
+
+/** @var \XoopsModules\Tdmmoney\Helper $helper */
+$helper = \XoopsModules\Tdmmoney\Helper::getInstance();
+
+/** @var \Xmf\Module\Admin $adminObject */
 $adminObject = \Xmf\Module\Admin::getInstance();
 
 if ($xoopsUser) {
-    $xoopsModule = XoopsModule::getByDirname($moduleDirName);
+    $xoopsModule = \XoopsModule::getByDirname($moduleDirName);
     if (!$xoopsUser->isAdmin($xoopsModule->mid())) {
         redirect_header(XOOPS_URL . '/', 3, _NOPERM);
     }
@@ -39,10 +44,10 @@ if ($xoopsUser) {
 }
 
 //permission
-/* @var $grouppermHandler XoopsGroupPermHandler */
+/* @var XoopsGroupPermHandler $grouppermHandler */
 $grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
-    $groups =& $xoopsUser->getGroups();
+    $groups = &$xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
@@ -64,9 +69,9 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl))
 }
 $xoopsTpl->assign('module_url', XOOPS_URL . "/modules/$moduleDirName/");
 //appel des class
-/* @var $accountHandler TdmMoneyAccountHandler */
-$accountHandler = xoops_getModuleHandler('account', $moduleDirName);
-/* @var $categoryHandler TdmMoneyCategoryHandler */
-$categoryHandler = xoops_getModuleHandler('category', $moduleDirName);
-/* @var $operationHandler TdmMoneyOperationHandler */
-$operationHandler = xoops_getModuleHandler('operation', $moduleDirName);
+/* @var \XoopsModules\Tdmmoney\AccountHandler $accountHandler */
+$accountHandler = $helper->getHandler('Account');
+/* @var \XoopsModules\Tdmmoney\CategoryHandler $categoryHandler */
+$categoryHandler = $helper->getHandler('Category');
+/* @var \XoopsModules\Tdmmoney\OperationHandler $operationHandler */
+$operationHandler = $helper->getHandler('Operation');

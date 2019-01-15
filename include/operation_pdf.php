@@ -15,18 +15,19 @@
  */
 
 //use tecnickcom\tcpdf;
+use XoopsModules\Tdmmoney;
 
-require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 
 require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
-//include  dirname(__DIR__) . '/fpdf/phpToPDF.php';
-include  dirname(__DIR__) . '/admin/admin_header.php';
+//require_once dirname(__DIR__) . '/fpdf/phpToPDF.php';
+require_once dirname(__DIR__) . '/admin/admin_header.php';
 
-$account_id = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
+$accountId  = Tdmmoney\Utility::cleanVars($_REQUEST, 'account_id', 0, 'int');
 $date_start = Tdmmoney\Utility::cleanVars($_REQUEST, 'date_start', 0, 'int');
 $date_end   = Tdmmoney\Utility::cleanVars($_REQUEST, 'date_end', 0, 'int');
 
-if (0 == $account_id) {
+if (0 == $accountId) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
 }
 //permissions
@@ -48,7 +49,7 @@ $proprietesTableau = [
     'BRD_COLOR' => [
         0,
         0,
-        0
+        0,
     ],
     'BRD_SIZE'  => '0.3',
 ];
@@ -58,7 +59,7 @@ $proprieteHeader = [
     'T_COLOR'           => [
         0,
         0,
-        0
+        0,
     ],
     'T_SIZE'            => 10,
     'T_FONT'            => 'Arial',
@@ -70,17 +71,17 @@ $proprieteHeader = [
     'BG_COLOR_COL0'     => [
         192,
         192,
-        192
+        192,
     ],
     'BG_COLOR'          => [
         192,
         192,
-        192
+        192,
     ],
     'BRD_COLOR'         => [
         0,
         0,
-        0
+        0,
     ],
     'BRD_SIZE'          => 0.2,
     'BRD_TYPE'          => '0',
@@ -102,7 +103,7 @@ $contenuHeader = [
     '[B]' . utf8_decode(_AM_TDMMONEY_OPERATION_DESCRIPTION),
     '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_WITHDRAW),
     '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_DEPOSIT),
-    '[BR]' . utf8_decode(_AM_TDMMONEY_OPERATION_BALANCE)
+    '[BR]' . utf8_decode(_AM_TDMMONEY_OPERATION_BALANCE),
 ];
 
 // Définition des propriétés du reste du contenu du tableau.
@@ -110,7 +111,7 @@ $proprieteContenu = [
     'T_COLOR'           => [
         0,
         0,
-        0
+        0,
     ],
     'T_SIZE'            => 10,
     'T_FONT'            => 'Arial',
@@ -122,25 +123,25 @@ $proprieteContenu = [
     'BG_COLOR_COL0'     => [
         255,
         255,
-        255
+        255,
     ],
     'BG_COLOR'          => [
         255,
         255,
-        255
+        255,
     ],
     'BRD_COLOR'         => [
         0,
         0,
-        0
+        0,
     ],
     'BRD_SIZE'          => 0.1,
     'BRD_TYPE'          => 'T',
     'BRD_TYPE_NEW_PAGE' => '',
 ];
-$account          = $accountHandler->get($account_id);
+$account          = $accountHandler->get($accountId);
 $criteria         = new \CriteriaCompo();
-$criteria->add(new \Criteria('operation_account', $account_id));
+$criteria->add(new \Criteria('operation_account', $accountId));
 $criteria->add(new \Criteria('operation_date', $date_start, '>='));
 $criteria->add(new \Criteria('operation_date', $date_end, '<='));
 $criteria->setSort('operation_date');
@@ -150,18 +151,18 @@ $operationHandler->table_link   = $operationHandler->db->prefix('tdmmoney_catego
 $operationHandler->field_link   = 'cat_cid'; // champ de la table en jointure
 $operationHandler->field_object = 'operation_category'; // champ de la table courante
 
-$operation_arr = $operationHandler->getByLink($criteria);
+$operationArray = $operationHandler->getByLink($criteria);
 
 // Calcul des soldes
-$operation_balance_arr = array_reverse($operation_arr, true);
+$operation_balance_arr = array_reverse($operationArray, true);
 $balance               = $account->getVar('account_balance');
 $criteria_amount       = new \CriteriaCompo();
-$criteria_amount->add(new \Criteria('operation_account', $account_id));
+$criteria_amount->add(new \Criteria('operation_account', $accountId));
 $criteria_amount->add(new \Criteria('operation_date', $date_start, '<'));
-$operation_ammount = $operationHandler->getAll($criteria_amount);
-$balance_ammount   = 0;
-foreach (array_keys($operation_ammount) as $i) {
-    $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
+$operationAmmount = $operationHandler->getAll($criteria_amount);
+$balance_ammount  = 0;
+foreach (array_keys($operationAmmount) as $i) {
+    $balance_ammount = 1 == $operationAmmount[$i]->getVar('operation_type') ? $balance_ammount - $operationAmmount[$i]->getVar('operation_amount') : $balance_ammount + $operationAmmount[$i]->getVar('operation_amount');
 }
 $balance      += $balance_ammount;
 $balance_save = $balance;
@@ -190,26 +191,26 @@ $pdf->SetFont('Arial', '', 12);
 $pdf->Cell(190, 8, _AM_TDMMONEY_PDF_ACCOUNT . ': ' . $account->getVar('account_name') . ' ' . _AM_TDMMONEY_PDF_CURRENCY . ' ' . $account->getVar('account_currency'), 0, 1, 'R');
 
 $j = 0;
-foreach (array_keys($operation_arr) as $i) {
-    $contenuTableau[$j] = formatTimestamp($operation_arr[$i]->getVar('operation_date'), 's');
+foreach (array_keys($operationArray) as $i) {
+    $contenuTableau[$j] = formatTimestamp($operationArray[$i]->getVar('operation_date'), 's');
     ++$j;
-    if (0 == $operation_arr[$i]->getVar('operation_sender')) {
-        if ('' == $operation_arr[$i]->getVar('operation_outsender')) {
-            $contenuTableau[$j] = utf8_decode(\XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1));
+    if (0 == $operationArray[$i]->getVar('operation_sender')) {
+        if ('' == $operationArray[$i]->getVar('operation_outsender')) {
+            $contenuTableau[$j] = utf8_decode(\XoopsUser::getUnameFromId($operationArray[$i]->getVar('operation_sender'), 1));
         } else {
-            $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('operation_outsender'));
+            $contenuTableau[$j] = utf8_decode($operationArray[$i]->getVar('operation_outsender'));
         }
     } else {
-        $contenuTableau[$j] = utf8_decode(\XoopsUser::getUnameFromId($operation_arr[$i]->getVar('operation_sender'), 1));
+        $contenuTableau[$j] = utf8_decode(\XoopsUser::getUnameFromId($operationArray[$i]->getVar('operation_sender'), 1));
     }
     ++$j;
-    $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('cat_title'));
+    $contenuTableau[$j] = utf8_decode($operationArray[$i]->getVar('cat_title'));
     ++$j;
-    $contenuTableau[$j] = utf8_decode($operation_arr[$i]->getVar('operation_description'));
+    $contenuTableau[$j] = utf8_decode($operationArray[$i]->getVar('operation_description'));
     ++$j;
-    $contenuTableau[$j] = 1 == $operation_arr[$i]->getVar('operation_type') ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
+    $contenuTableau[$j] = 1 == $operationArray[$i]->getVar('operation_type') ? '[C]' . $operationArray[$i]->getVar('operation_amount') : '';
     ++$j;
-    $contenuTableau[$j] = 2 == $operation_arr[$i]->getVar('operation_type') ? '[C]' . $operation_arr[$i]->getVar('operation_amount') : '';
+    $contenuTableau[$j] = 2 == $operationArray[$i]->getVar('operation_type') ? '[C]' . $operationArray[$i]->getVar('operation_amount') : '';
     ++$j;
     $contenuTableau[$j] = '[R]' . $operation_balance[$i];
     ++$j;

@@ -1,4 +1,7 @@
 <?php
+
+namespace XoopsModules\Tdmmoney;
+
 /**
  * TDMMoney
  *
@@ -14,16 +17,17 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-defined('XOOPS_ROOT_PATH') || die('Restricted access');
+//defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class TdmMoneyAccount
+ * Class Account
  */
-class TdmMoneyAccount extends \XoopsObject
+class Account extends \XoopsObject
 {
     //Constructor
+
     /**
-     * TdmMoneyAccount constructor.
+     * Account constructor.
      */
     public function __construct()
     {
@@ -54,7 +58,7 @@ class TdmMoneyAccount extends \XoopsObject
 
     /**
      * @param bool $action
-     * @return XoopsThemeForm
+     * @return \XoopsThemeForm
      */
     public function getForm($action = false)
     {
@@ -80,12 +84,12 @@ class TdmMoneyAccount extends \XoopsObject
         //devise
         $form->addElement(new \XoopsFormText(_AM_TDMMONEY_ACCOUNT_CURRENCY, 'account_currency', 10, 10, $this->getVar('account_currency')), true);
         //permissions
-        /* @var $memberHandler XoopsMemberHandler */
+        /* @var \XoopsMemberHandler $memberHandler */
         $memberHandler = xoops_getHandler('member');
         $group_list    = $memberHandler->getGroupList();
-        /* @var $grouppermHandler XoopsGroupPermHandler */
+        /* @var \XoopsGroupPermHandler $grouppermHandler */
         $grouppermHandler = xoops_getHandler('groupperm');
-        $full_list    = array_keys($group_list);
+        $full_list        = array_keys($group_list);
         global $xoopsModule;
         if (!$this->isNew()) {
             $groups_ids_view                 = $grouppermHandler->getGroupIds('tdmmoney_view', $this->getVar('account_id'), $xoopsModule->getVar('mid'));
@@ -115,20 +119,5 @@ class TdmMoneyAccount extends \XoopsObject
         $form->addElement(new \XoopsFormButton('', 'submit', _SUBMIT, 'submit'));
 
         return $form;
-    }
-}
-
-/**
- * Class TDMMoneytdmmoney_accountHandler
- */
-class TdmMoneyAccountHandler extends \XoopsPersistableObjectHandler
-{
-    /**
-     * TdmMoneyAccountHandler constructor.
-     * @param null|object|XoopsDatabase $db
-     */
-    public function __construct($db)
-    {
-        parent::__construct($db, 'tdmmoney_account', 'TdmMoneyAccount', 'account_id', 'account_name');
     }
 }

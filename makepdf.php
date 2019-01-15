@@ -5,17 +5,18 @@
  * Created by montuy337513 / philodenelle - http://www.chg-web.org
  */
 
-use \Xmf\Request;
+use Xmf\Request;
+use XoopsModules\Tdmmoney;
 
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/header.php';
 
-$account_id = Request::getInt('account_id', 0, 'GET');
+$accountId  = Request::getInt('account_id', 0, 'GET');
 $date_start = Request::getInt('date_start', -1, 'GET');
 $date_end   = Request::getInt('date_end', -1, 'GET');
 
-if (0 == $account_id) {
+if (0 == $accountId) {
     redirect_header('../index.php', 2, _AM_TDMMONEY_PDF_NOACCOUNTS);
 }
 //permissions
@@ -26,7 +27,7 @@ if (false === $perm_pdf) {
 //2.5.8
 require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
 
-xoops_loadLanguage('main', PUBLISHER_DIRNAME);
+xoops_loadLanguage('main', TDMMONEY_DIRNAME);
 
 // Génération du pdf
 //$pdf = new phpToPDF();
@@ -43,7 +44,7 @@ $proprietesTableau = [
     'BRD_COLOR' => [
         0,
         0,
-        0
+        0,
     ],
     'BRD_SIZE'  => '0.3',
 ];
@@ -53,7 +54,7 @@ $proprieteHeader = [
     'T_COLOR'           => [
         0,
         0,
-        0
+        0,
     ],
     'T_SIZE'            => 10,
     'T_FONT'            => 'Arial',
@@ -65,17 +66,17 @@ $proprieteHeader = [
     'BG_COLOR_COL0'     => [
         192,
         192,
-        192
+        192,
     ],
     'BG_COLOR'          => [
         192,
         192,
-        192
+        192,
     ],
     'BRD_COLOR'         => [
         0,
         0,
-        0
+        0,
     ],
     'BRD_SIZE'          => 0.2,
     'BRD_TYPE'          => '0',
@@ -97,7 +98,7 @@ $contenuHeader = [
     '[B]' . utf8_decode(_AM_TDMMONEY_OPERATION_DESCRIPTION),
     '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_WITHDRAW),
     '[BC]' . utf8_decode(_AM_TDMMONEY_OPERATION_DEPOSIT),
-    '[BR]' . utf8_decode(_AM_TDMMONEY_OPERATION_BALANCE)
+    '[BR]' . utf8_decode(_AM_TDMMONEY_OPERATION_BALANCE),
 ];
 
 // Définition des propriétés du reste du contenu du tableau.
@@ -105,7 +106,7 @@ $proprieteContenu = [
     'T_COLOR'           => [
         0,
         0,
-        0
+        0,
     ],
     'T_SIZE'            => 10,
     'T_FONT'            => 'Arial',
@@ -117,25 +118,25 @@ $proprieteContenu = [
     'BG_COLOR_COL0'     => [
         255,
         255,
-        255
+        255,
     ],
     'BG_COLOR'          => [
         255,
         255,
-        255
+        255,
     ],
     'BRD_COLOR'         => [
         0,
         0,
-        0
+        0,
     ],
     'BRD_SIZE'          => 0.1,
     'BRD_TYPE'          => 'T',
     'BRD_TYPE_NEW_PAGE' => '',
 ];
-$account          = $accountHandler->get($account_id);
+$account          = $accountHandler->get($accountId);
 $criteria         = new \CriteriaCompo();
-$criteria->add(new \Criteria('operation_account', $account_id));
+$criteria->add(new \Criteria('operation_account', $accountId));
 $criteria->add(new \Criteria('operation_date', $date_start, '>='));
 $criteria->add(new \Criteria('operation_date', $date_end, '<='));
 $criteria->setSort('operation_date');
@@ -145,18 +146,18 @@ $operationHandler->table_link   = $operationHandler->db->prefix('tdmmoney_catego
 $operationHandler->field_link   = 'cat_cid'; // champ de la table en jointure
 $operationHandler->field_object = 'operation_category'; // champ de la table courante
 
-$operation_arr = $operationHandler->getByLink($criteria);
+$operationArray = $operationHandler->getByLink($criteria);
 
 // Calcul des soldes
-$operation_balance_arr = array_reverse($operation_arr, true);
+$operation_balance_arr = array_reverse($operationArray, true);
 $balance               = $account->getVar('account_balance');
 $criteria_amount       = new \CriteriaCompo();
-$criteria_amount->add(new \Criteria('operation_account', $account_id));
+$criteria_amount->add(new \Criteria('operation_account', $accountId));
 $criteria_amount->add(new \Criteria('operation_date', $date_start, '<'));
-$operation_ammount = $operationHandler->getAll($criteria_amount);
-$balance_ammount   = 0;
-foreach (array_keys($operation_ammount) as $i) {
-    $balance_ammount = 1 == $operation_ammount[$i]->getVar('operation_type') ? $balance_ammount - $operation_ammount[$i]->getVar('operation_amount') : $balance_ammount + $operation_ammount[$i]->getVar('operation_amount');
+$operationAmmount = $operationHandler->getAll($criteria_amount);
+$balance_ammount  = 0;
+foreach (array_keys($operationAmmount) as $i) {
+    $balance_ammount = 1 == $operationAmmount[$i]->getVar('operation_type') ? $balance_ammount - $operationAmmount[$i]->getVar('operation_amount') : $balance_ammount + $operationAmmount[$i]->getVar('operation_amount');
 }
 $balance      += $balance_ammount;
 $balance_save = $balance;

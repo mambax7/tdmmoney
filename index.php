@@ -14,42 +14,46 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmmoney;
+
 require_once __DIR__ . '/header.php';
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmmoney_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 // pour les permissions
-$access_account = Tdmmoney\Utility::getMygetItemIds('tdmmoney_view', 'TDMMoney');
+$access_account = Tdmmoney\Utility::getMygetItemIds('tdmmoney_view', $moduleDirName);
 $criteria       = new \CriteriaCompo();
 $criteria->add(new \Criteria('account_id', '(' . implode(',', $access_account) . ')', 'IN'));
 $criteria->setSort('account_name');
 $criteria->setOrder('ASC');
-$account_arr = $accountHandler->getAll($criteria);
+$accountArray = $accountHandler->getAll($criteria);
 //pour le calcul des soldes:
 $criteria = new \CriteriaCompo();
 $criteria->setSort('operation_account');
 $criteria->setOrder('ASC');
-$operation_arr = $operationHandler->getAll($criteria);
+$operationArray = $operationHandler->getAll($criteria);
 
 $count = 1;
-foreach (array_keys($account_arr) as $i) {
+foreach (array_keys($accountArray) as $i) {
     /*$criteria_operation = new \CriteriaCompo();
     $criteria_operation->add(new \Criteria('operation_account', $i));
-    $operation_arr = $operationHandler->getAll($criteria_operation);*/
+    $operationArray = $operationHandler->getAll($criteria_operation);*/
     //calcul des soldes
-    $balance_operation = $account_arr[$i]->getVar('account_balance');
-    foreach (array_keys($operation_arr) as $j) {
-        if ($operation_arr[$j]->getVar('operation_account') == $account_arr[$i]->getVar('account_id')) {
-            $balance_operation = 1 == $operation_arr[$j]->getVar('operation_type') ? $balance_operation - $operation_arr[$j]->getVar('operation_amount') : $balance_operation + $operation_arr[$j]->getVar('operation_amount');
+    $balanceOperation = $accountArray[$i]->getVar('account_balance');
+    foreach (array_keys($operationArray) as $j) {
+        /** @var \XoopsModules\Tdmmoney\Account[] $accountArray */
+        /** @var \XoopsModules\Tdmmoney\Operation[] $operationArray */
+        if ($operationArray[$j]->getVar('operation_account') == $accountArray[$i]->getVar('account_id')) {
+            $balanceOperation = 1 == $operationArray[$j]->getVar('operation_type') ? $balanceOperation - $operationArray[$j]->getVar('operation_amount') : $balanceOperation + $operationArray[$j]->getVar('operation_amount');
         }
     }
-    $display_balance_operation = $balance_operation < 0 ? '<span style="color: #ff0000; font-weight: bold;">' . $balance_operation . '</span>' : '<span style="font-weight: bold;">' . $balance_operation . '</span>';
+    $displayBalanceOperation = $balanceOperation < 0 ? '<span style="color: #ff0000; font-weight: bold;">' . $balanceOperation . '</span>' : '<span style="font-weight: bold;">' . $balanceOperation . '</span>';
     $xoopsTpl->append('account', [
-        'account_id'   => $account_arr[$i]->getVar('account_id'),
-        'account_name' => $account_arr[$i]->getVar('account_name'),
-        'balance'      => $display_balance_operation,
-        'count'        => $count
+        'account_id'   => $accountArray[$i]->getVar('account_id'),
+        'account_name' => $accountArray[$i]->getVar('account_name'),
+        'balance'      => $displayBalanceOperation,
+        'count'        => $count,
     ]);
     ++$count;
 }
